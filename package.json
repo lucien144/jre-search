@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+    "compendium-js": "^0.0.31",
+    "diskdb": "^0.1.17",
+    "dotenv": "^6.0.0",
+    "pos": "^0.4.2",
+    "simple-youtube-api": "^5.0.2",
+    "string": "^3.3.3",
+    "text-miner": "^1.0.6"
+  },
+  "devDependencies": {
+    "xo": "^0.22.0"
+  }
+}
