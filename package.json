@@ -1,4 +1,5 @@
 {
+  "private": true,
   "dependencies": {
     "compendium-js": "^0.0.31",
     "diskdb": "^0.1.17",
