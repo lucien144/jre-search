@@ -15,35 +15,37 @@ videos.forEach(video => {
 	const taggedWords = tagger.tag(words);
 
 	let name = '';
-	for (i in taggedWords) {
-		const taggedWord = taggedWords[i];
-		const word = taggedWord[0];
-		const tag = taggedWord[1];
-		// Console.log(word + " /" + tag);
-		let found = false;
-		if (tag === 'JJ') {
-			name = `${name} ${word}`;
-			found = true;
-		}
-		if (tag === 'NN' || tag === 'NNP' || tag === 'NNS') {
-			name = `${name} ${word}`;
-			found = true;
-		}
-		if (!found && name !== '') {
-			let id = S(name).trim().s.toLowerCase();
-			id = id.replace(/[^\w]/gi, '');
-			let val = S(name).trim().s;
-			val = val.replace(/[^\w\s]/gi, '');
-			if (keywords[id] === undefined) {
-				keywords[id] = {
-					original: name,
-					name: val,
-					count: 1
-				};
-			} else {
-				keywords[id].count++;
+	for (const i in taggedWords) {
+		if (!{}.hasOwnProperty.call(taggedWords, i)) {
+			const taggedWord = taggedWords[i];
+			const word = taggedWord[0];
+			const tag = taggedWord[1];
+			// Console.log(word + " /" + tag);
+			let found = false;
+			if (tag === 'JJ') {
+				name = `${name} ${word}`;
+				found = true;
 			}
-			name = '';
+			if (tag === 'NN' || tag === 'NNP' || tag === 'NNS') {
+				name = `${name} ${word}`;
+				found = true;
+			}
+			if (!found && name !== '') {
+				let id = S(name).trim().s.toLowerCase();
+				id = id.replace(/[^\w]/gi, '');
+				let val = S(name).trim().s;
+				val = val.replace(/[^\w\s]/gi, '');
+				if (keywords[id] === undefined) {
+					keywords[id] = {
+						original: name,
+						name: val,
+						count: 1
+					};
+				} else {
+					keywords[id].count++;
+				}
+				name = '';
+			}
 		}
 	}
 });
