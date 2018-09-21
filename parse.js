@@ -16,7 +16,7 @@ videos.forEach(video => {
 
 	let name = '';
 	for (const i in taggedWords) {
-		if (!{}.hasOwnProperty.call(taggedWords, i)) {
+		if ({}.hasOwnProperty.call(taggedWords, i)) {
 			const taggedWord = taggedWords[i];
 			const word = taggedWord[0];
 			const tag = taggedWord[1];
