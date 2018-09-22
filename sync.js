@@ -28,7 +28,7 @@ const syncData = async () => {
 		results.forEach(video => {
 			if (video.title === undefined) {
 				results = false;
-			} else if (/^Joe Rogan Experience #(\d*)(\s?[-]{0,}\s?)(.*)$/i.test(video.title)) {
+			} else { // if (/^Joe Rogan Experience #(\d*)(\s?[-]{0,}\s?)(.*)$/i.test(video.title)) {
 				db.videos.save(video);
 				console.log(video.title);
 				console.log(video.publishedAt);
