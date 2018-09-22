@@ -26,7 +26,7 @@ videos.forEach(video => {
 				name = `${name} ${word}`;
 				found = true;
 			}
-			if (tag === 'NN' || tag === 'NNP' || tag === 'NNS') {
+			if (tag === 'NN' || tag === 'NNP' || tag === 'NNPS' || tag === 'NNS') {
 				name = `${name} ${word}`;
 				found = true;
 			}
