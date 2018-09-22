@@ -15,19 +15,31 @@ videos.forEach(video => {
 	const taggedWords = tagger.tag(words);
 
 	let name = '';
+	let tags = [];
 	for (const i in taggedWords) {
 		if ({}.hasOwnProperty.call(taggedWords, i)) {
 			const taggedWord = taggedWords[i];
 			const word = taggedWord[0];
 			const tag = taggedWord[1];
-			// Console.log(word + " /" + tag);
 			let found = false;
-			if (tag === 'JJ') {
+
+			// Foreign Word
+			if (tag === 'FW') {
 				name = `${name} ${word}`;
+				tags.push(tag);
 				found = true;
 			}
+
+			// Adjective (big, ...)
+			if (tag === 'JJ') {
+				name = `${name} ${word}`;
+				tags.push(tag);
+				found = true;
+			}
+
 			if (tag === 'NN' || tag === 'NNP' || tag === 'NNPS' || tag === 'NNS') {
 				name = `${name} ${word}`;
+				tags.push(tag);
 				found = true;
 			}
 			if (!found && name !== '') {
@@ -39,22 +51,24 @@ videos.forEach(video => {
 					keywords[id] = {
 						original: name,
 						name: val,
+						tags: tags,
 						count: 1
 					};
 				} else {
 					keywords[id].count++;
 				}
 				name = '';
+				tags = [];
 			}
 		}
 	}
 });
 
-// L(keywords);
-// l(Object.keys(keywords).length);
-
 for (const key in keywords) {
-	if (keywords[key].count > 20) {
+	if (keywords[key].count > 10) {
 		l(keywords[key]);
 	}
 }
+
+l(Object.keys(keywords).length);
+l(videos.length);
