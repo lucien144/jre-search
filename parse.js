@@ -12,20 +12,31 @@ const hosts = {};
 const tags = {};
 const titles = [];
 
+/**
+ * Really simple webalize function.
+ *
+ * @param {String} title
+ */
 const getId = title => {
 	const id = S(title).trim().s.toLowerCase();
 	return id.replace(/[^\w]/gi, '');
 };
 
-const saveKeyword = (keyword, pool) => {
+/**
+ * Saves keyword in a dictionary.
+ *
+ * @param {String} keyword
+ * @param {Object} dict
+ */
+const saveKeyword = (keyword, dict) => {
 	const id = getId(keyword);
-	if (pool[id] === undefined) {
-		pool[id] = {
+	if (dict[id] === undefined) {
+		dict[id] = {
 			original: keyword,
 			count: 1
 		};
 	} else {
-		pool[id].count++;
+		dict[id].count++;
 	}
 };
 
