@@ -14,3 +14,11 @@ test('multiple hosts', t => {
 	t.is(title.hosts[1], 'Elon Musk');
 	t.is(title.hosts[2], 'Niel deGrasse');
 });
+
+test('multiple hosts without spaces', t => {
+	const title = parseTitle('Joe Rogan Experience #144 Jon Jones,Elon Musk &Niel deGrasse (part 1)');
+	t.is(title.hosts.length, 3);
+	t.is(title.hosts[0], 'Jon Jones');
+	t.is(title.hosts[1], 'Elon Musk');
+	t.is(title.hosts[2], 'Niel deGrasse');
+});
