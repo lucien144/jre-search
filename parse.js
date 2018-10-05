@@ -58,7 +58,7 @@ const parseTitle = title => {
 	if (matches) {
 		return {
 			episode: Number(matches.groups.episode),
-			hosts: matches.groups.hosts.split(/[,&]+/).map(el => S(el).trim().s)
+			hosts: matches.groups.hosts.split(/([,&]+|\sand\s)/).map(el => S(el).trim().s)
 		};
 	}
 	return false;
