@@ -27,16 +27,7 @@ const parseEntities = description => {
 	return description;
 };
 
-const parseQuotes = description => {
-	const regex = new RegExp('("(?<title>.*?)")|(\'[^s](?<title2>.*?)\')', 'gms');
-	let match;
-	while ((match = regex.exec(description)) !== null) {
-		const title = match.groups.title || match.groups.title2;
-		helpers.saveKeyword(title, keywords);
-		description = description.replace(match[0], '');
-	}
-	return description;
-};
+
 
 videos.forEach(video => {
 	let {title, description} = video;
@@ -48,7 +39,7 @@ videos.forEach(video => {
 			description = description.replace(host, '');
 		});
 
-		description = parseQuotes(description);
+		description = helpers.parseQuotes(description, keywords);
 		description = parseEntities(description);
 
 		let noun = '';

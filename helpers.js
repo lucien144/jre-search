@@ -38,3 +38,19 @@ exports.saveKeyword = (keyword, dict) => {
 		dict[id].count++;
 	}
 };
+
+/**
+ * Parse "this is a quote" quotes from a description text.
+ * @param {string} description Copy of text.
+ * @param {object} dictionary A dictionary to save found quotes to.
+ */
+exports.parseQuotes = (description, dictionary) => {
+	const regex = new RegExp('("(?<title>.*?)")|(\'[^s](?<title2>.*?)\')', 'gms');
+	let match;
+	while ((match = regex.exec(description)) !== null) {
+		const title = match.groups.title || match.groups.title2;
+		exports.saveKeyword(title, dictionary);
+		description = description.replace(match[0], '');
+	}
+	return description;
+};
