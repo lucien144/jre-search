@@ -3,6 +3,7 @@ const l = console.log;
 const S = require('string');
 const diskdb = require('diskdb');
 const compendium = require('compendium-js');
+const helpers = require('./helpers');
 
 const db = diskdb.connect('./db', ['videos']);
 const videos = db.videos.find();
@@ -64,20 +65,9 @@ const parseQuotes = description => {
 	return description;
 };
 
-const parseTitle = title => {
-	const matches = title.match(/^Joe Rogan Experience #(?<episode>\d*)(\s?[-]{0,}\s?)(?<hosts>.*?)(?<part>\s?\(part\s[0-9]{1,}\))?$/i);
-	if (matches) {
-		return {
-			episode: Number(matches.groups.episode),
-			hosts: matches.groups.hosts.split(/([,&]+|\sand\s)/).map(el => S(el).trim().s)
-		};
-	}
-	return false;
-};
-
 videos.forEach(video => {
 	let {title, description} = video;
-	title = parseTitle(title);
+	title = helpers.parseTitle(title);
 	if (title && titles.filter(val => val.episode === title.episode).length === 0) {
 		titles.push(title);
 		title.hosts.forEach(host => {
