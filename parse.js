@@ -13,39 +13,12 @@ const hosts = {};
 const tags = {};
 const titles = [];
 
-/**
- * Really simple webalize function.
- *
- * @param {String} title
- */
-const getId = title => {
-	const id = S(title).trim().s.toLowerCase();
-	return id.replace(/[^\w]/gi, '');
-};
-
-/**
- * Saves keyword in a dictionary.
- *
- * @param {String} keyword
- * @param {Object} dict
- */
-const saveKeyword = (keyword, dict) => {
-	const id = getId(keyword);
-	if (dict[id] === undefined) {
-		dict[id] = {
-			original: keyword,
-			count: 1
-		};
-	} else {
-		dict[id].count++;
-	}
-};
 
 const parseEntities = description => {
 	const anal = compendium.analyse(description);
 	try {
 		anal[0].entities.forEach(entity => {
-			saveKeyword(entity.raw, keywords);
+			helpers.saveKeyword(entity.raw, keywords);
 			description = description.replace(entity.raw, '');
 		});
 	} catch (error) {
@@ -59,7 +32,7 @@ const parseQuotes = description => {
 	let match;
 	while ((match = regex.exec(description)) !== null) {
 		const title = match.groups.title || match.groups.title2;
-		saveKeyword(title, keywords);
+		helpers.saveKeyword(title, keywords);
 		description = description.replace(match[0], '');
 	}
 	return description;
@@ -71,7 +44,7 @@ videos.forEach(video => {
 	if (title && titles.filter(val => val.episode === title.episode).length === 0) {
 		titles.push(title);
 		title.hosts.forEach(host => {
-			saveKeyword(host, hosts);
+			helpers.saveKeyword(host, hosts);
 			description = description.replace(host, '');
 		});
 
@@ -87,8 +60,8 @@ videos.forEach(video => {
 					found = true;
 				}
 				if (noun !== '' && !found) {
-					saveKeyword(noun, keywords);
-					saveKeyword(noun, tags);
+					helpers.saveKeyword(noun, keywords);
+					helpers.saveKeyword(noun, tags);
 					noun = '';
 				}
 			});
