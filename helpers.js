@@ -45,12 +45,18 @@ exports.saveKeyword = (keyword, dict) => {
  * @param {object} dictionary A dictionary to save found quotes to.
  */
 exports.parseQuotes = (description, dictionary) => {
-	const regex = new RegExp('("(?<title>.*?)")|(\'[^s](?<title2>.*?)\')', 'gms');
+	const regex = new RegExp('("(?<title>.+?)")|((?=[^\w]|\A)\'(?<title2>.+?)\'(?=[^s]))', 'gms');
 	let match;
+	const matches = [];
 	while ((match = regex.exec(description)) !== null) {
 		const title = match.groups.title || match.groups.title2;
 		exports.saveKeyword(title, dictionary);
-		description = description.replace(match[0], '');
+		matches.push(match[0]);
 	}
+
+	matches.forEach(desc => {
+		description = description.replace(desc, '');
+	});
+
 	return description;
 };
