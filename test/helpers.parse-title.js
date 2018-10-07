@@ -23,8 +23,8 @@ test('multiple hosts without spaces', t => {
 	t.is(title.hosts[2], 'Niel deGrasse');
 });
 
-test('dashes and parts as word', t => {
-	const title = parseTitle('Joe Rogan Experience #144 - Bruce Lipton PHD (Part Two)');
+test('dashes, parts as word and multiple spaces', t => {
+	const title = parseTitle('Joe Rogan Experience #165  - Bruce Lipton PHD (PART ONE)');
 	t.is(title.hosts.length, 1);
 	t.is(title.hosts[0], 'Bruce Lipton PHD');
 });
