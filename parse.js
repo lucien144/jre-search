@@ -1,4 +1,6 @@
 console.time('execution');
+require('dotenv').config();
+
 const l = console.log;
 
 const diskdb = require('diskdb');
@@ -30,7 +32,7 @@ videos.forEach(video => {
 	let {title, description} = video;
 	title = helpers.parseTitle(title);
 
-	// titles.filter(val => val.episode === title.episode).length === 0
+	// Titles.filter(val => val.episode === title.episode).length === 0
 	// 👉 Some episodes are doubled in the list of videos, therefore we need to filter them out.
 	if (title && titles.filter(val => val.episode === title.episode).length === 0) {
 		titles.push(title);
@@ -58,4 +60,28 @@ videos.forEach(video => {
 			});
 		});
 	}
-});console.timeEnd('execution');
+});
+
+const MongoClient = require('mongodb').MongoClient;
+const assert = require('assert');
+const url = process.env.MONGO_DSN;
+const dbName = process.env.MONGO_DBNAME;
+const client = new MongoClient(url, {useNewUrlParser: true});
+// Use connect method to connect to the server
+client.connect(err => {
+	assert.equal(null, err);
+	const db = client.db(dbName);
+
+	// Save the collection
+	for (const id in hosts) {
+		if (hosts.hasOwnProperty(id)) {
+			const host = hosts[id];
+			db.collection('hosts').insertOne(host, (err, r) => {
+				assert.strictEqual(null, err);
+			});
+		}
+	}
+	client.close();
+});
+
+console.timeEnd('execution');
