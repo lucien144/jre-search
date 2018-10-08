@@ -26,8 +26,6 @@ const parseEntities = (description, video) => {
 	return description;
 };
 
-
-
 videos.forEach(video => {
 	let {title, description} = video;
 	title = helpers.parseTitle(title);
