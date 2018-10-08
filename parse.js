@@ -1,3 +1,4 @@
+console.time('execution');
 const l = console.log;
 
 const S = require('string');
@@ -58,4 +59,4 @@ videos.forEach(video => {
 			});
 		});
 	}
-});
+});console.timeEnd('execution');
