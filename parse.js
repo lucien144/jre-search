@@ -1,7 +1,6 @@
 console.time('execution');
 const l = console.log;
 
-const S = require('string');
 const diskdb = require('diskdb');
 const compendium = require('compendium-js');
 const helpers = require('./helpers');
@@ -13,7 +12,6 @@ const keywords = {};
 const hosts = {};
 const tags = {};
 const titles = [];
-
 
 const parseEntities = description => {
 	const anal = compendium.analyse(description);
