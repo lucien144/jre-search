@@ -27,16 +27,19 @@ exports.getId = title => {
  *
  * @param {String} keyword
  * @param {Object} dict
+ * @param {Object} video
  */
-exports.saveKeyword = (keyword, dict) => {
+exports.saveKeyword = (keyword, dict, video) => {
 	const id = exports.getId(keyword);
 	if (dict[id] === undefined) {
 		dict[id] = {
 			original: keyword,
-			count: 1
+			count: 1,
+			videos: [video]
 		};
 	} else {
 		dict[id].count++;
+		dict[id].videos.push(video)
 	}
 };
 

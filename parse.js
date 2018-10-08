@@ -5,7 +5,7 @@ const diskdb = require('diskdb');
 const compendium = require('compendium-js');
 const helpers = require('./helpers');
 
-const db = diskdb.connect('./db', ['videos']);
+const db = diskdb.connect('./db', ['videos', 'hosts']);
 const videos = db.videos.find();
 
 const keywords = {};
@@ -13,11 +13,11 @@ const hosts = {};
 const tags = {};
 const titles = [];
 
-const parseEntities = description => {
+const parseEntities = (description, video) => {
 	const anal = compendium.analyse(description);
 	try {
 		anal[0].entities.forEach(entity => {
-			helpers.saveKeyword(entity.raw, keywords);
+			helpers.saveKeyword(entity.raw, keywords, video);
 			description = description.replace(entity.raw, '');
 		});
 	} catch (error) {
@@ -34,12 +34,12 @@ videos.forEach(video => {
 	if (title && titles.filter(val => val.episode === title.episode).length === 0) {
 		titles.push(title);
 		title.hosts.forEach(host => {
-			helpers.saveKeyword(host, hosts);
+			helpers.saveKeyword(host, hosts, video);
 			description = description.replace(host, '');
 		});
 
 		description = helpers.parseQuotes(description, keywords);
-		description = parseEntities(description);
+		description = parseEntities(description, video);
 
 		let noun = '';
 		compendium.analyse(description).forEach(anal => {
@@ -50,8 +50,8 @@ videos.forEach(video => {
 					found = true;
 				}
 				if (noun !== '' && !found) {
-					helpers.saveKeyword(noun, keywords);
-					helpers.saveKeyword(noun, tags);
+					helpers.saveKeyword(noun, keywords, video);
+					helpers.saveKeyword(noun, tags, video);
 					noun = '';
 				}
 			});
