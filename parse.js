@@ -3,12 +3,11 @@ require('dotenv').config();
 
 const l = console.log;
 
-const diskdb = require('diskdb');
+const MongoClient = require('mongodb').MongoClient;
+const client = new MongoClient(process.env.MONGO_DSN, {useNewUrlParser: true});
+
 const compendium = require('compendium-js');
 const helpers = require('./helpers');
-
-const db = diskdb.connect('./db', ['videos', 'hosts']);
-const videos = db.videos.find();
 
 const keywords = {};
 const hosts = {};
@@ -28,7 +27,7 @@ const parseEntities = (description, video) => {
 	return description;
 };
 
-videos.forEach(video => {
+const parse = video => {
 	let {title, description} = video;
 	title = helpers.parseTitle(title);
 
@@ -60,28 +59,29 @@ videos.forEach(video => {
 			});
 		});
 	}
-});
+};
 
-const MongoClient = require('mongodb').MongoClient;
-const assert = require('assert');
-const url = process.env.MONGO_DSN;
-const dbName = process.env.MONGO_DBNAME;
-const client = new MongoClient(url, {useNewUrlParser: true});
-// Use connect method to connect to the server
-client.connect(err => {
-	assert.equal(null, err);
-	const db = client.db(dbName);
-
-	// Save the collection
-	for (const id in hosts) {
-		if (hosts.hasOwnProperty(id)) {
-			const host = hosts[id];
-			db.collection('hosts').insertOne(host, (err, r) => {
-				assert.strictEqual(null, err);
-			});
+(async () => {
+	await client.connect();
+	const db = client.db(process.env.MONGO_DBNAME);
+	const videos = db.collection('videos').find({});
+	try {
+		while(await videos.hasNext()) {
+			const video = await videos.next();
+			parse(video);
 		}
+
+
+		for (const id in hosts) {
+			if (hosts.hasOwnProperty(id)) {
+				const host = hosts[id];
+				db.collection('hosts').insertOne(host);
+			}
+		}
+
+	} finally {
+		client.close();
 	}
-	client.close();
-});
+})().catch(err => console.error(err));
 
 console.timeEnd('execution');

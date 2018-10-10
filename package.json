@@ -2,7 +2,6 @@
   "private": true,
   "dependencies": {
     "compendium-js": "^0.0.31",
-    "diskdb": "^0.1.17",
     "dotenv": "^6.0.0",
     "mongodb": "^3.1.6",
     "pos": "^0.4.2",
