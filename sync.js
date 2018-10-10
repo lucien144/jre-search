@@ -1,14 +1,17 @@
 require('dotenv').config();
 
 const YouTube = require('simple-youtube-api');
-
 const API = new YouTube(process.env.API_KEY);
 
-const diskdb = require('diskdb');
-
-const db = diskdb.connect('./db', ['videos']);
+const MongoClient = require('mongodb').MongoClient;
+const client = new MongoClient(process.env.MONGO_DSN, {useNewUrlParser: true});
 
 const syncData = async () => {
+	console.time('execution');
+	await client.connect();
+	const db = client.db(process.env.MONGO_DBNAME);
+	db.collection('videos').deleteMany({});
+
 	let results = false;
 	let publishedBefore = null;
 	let options = {};
@@ -29,7 +32,7 @@ const syncData = async () => {
 			if (video.title === undefined) {
 				results = false;
 			} else { // if (/^Joe Rogan Experience #(\d*)(\s?[-]{0,}\s?)(.*)$/i.test(video.title)) {
-				db.videos.save(video);
+				db.collection('videos').insertOne(video);
 				console.log(video.title);
 				console.log(video.publishedAt);
 				console.log('---');
@@ -39,6 +42,9 @@ const syncData = async () => {
 			}
 		});
 	} while (results);
+
+	client.close();
+	console.timeEnd('execution');
 };
 
 syncData();
