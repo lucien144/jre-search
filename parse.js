@@ -71,11 +71,16 @@ const parse = video => {
 			parse(video);
 		}
 
+		// Mongo: Save all dictionaries to collections
+		const collections = {hosts, tags, keywords};
+		for (const collection in collections) {
+			if (!collections.hasOwnProperty(collection)) continue;
+			db.collection(collection).deleteMany({});
 
-		for (const id in hosts) {
-			if (hosts.hasOwnProperty(id)) {
-				const host = hosts[id];
-				db.collection('hosts').insertOne(host);
+			for (const id in collections[collection]) {
+				if (!collections[collection].hasOwnProperty(id)) continue;
+				const host = collections[collection][id];
+				db.collection(collection).insertOne(host);
 			}
 		}
 
