@@ -19,7 +19,7 @@ module.exports = function (app, db) {
 	};
 
 	app.get('/hosts', (req, res) => {
-		const search = req.query.search;
+		const {search} = req.query;
 		if (search) {
 			const reg = new RegExp(`^${search}`, 'i');
 			db.collection('hosts').find({original: reg}).toArray((err, hosts) => {
