@@ -1,7 +1,7 @@
 # Joe Rogan Experience podcast on 🚀 🍄
 Advanced search for Joe Rogan Experience podcast.
 
-[![Build Status: Linux](https://travis-ci.org/lucien144/jre-search.svg?branch=master)(https://travis-ci.org/lucien144/jre-search)
+[![Build Status: Linux](https://travis-ci.org/lucien144/jre-search.svg?branch=master)](https://travis-ci.org/lucien144/jre-search)
 [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/xojs/xo)
 
 ## Installation
