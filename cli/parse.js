@@ -7,7 +7,7 @@ const MongoClient = require('mongodb').MongoClient;
 const client = new MongoClient(process.env.MONGO_DSN, {useNewUrlParser: true});
 
 const compendium = require('compendium-js');
-const helpers = require('./helpers');
+const helpers = require('../helpers');
 
 const keywords = {};
 const hosts = {};
