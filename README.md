@@ -1,5 +1,16 @@
-# jre-search
+# Joe Rogan Experience podcast on 🚀 🍄
 Advanced search for Joe Rogan Experience podcast.
+
+## Installation
+
+`npm i`
+
+### Create `.env` file in the project's root folder
+```
+API_KEY=123YourApiKey
+MONGO_DSN=mongodb://localhost:27017/
+MONGO_DBNAME=jre-search
+```
 
 ## Commands
 
@@ -15,4 +26,5 @@ Advanced search for Joe Rogan Experience podcast.
 | Endpoint | Description |
 |---------|-------------|
 | `/hosts/` | List of all hosts along with videos. |
+| `/hosts/?search=al` | Search for hosts with name "AL..." |
 | `/hosts/:id` | Detail of the host. |
