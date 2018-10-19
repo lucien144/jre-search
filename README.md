@@ -22,7 +22,7 @@ MONGO_DBNAME=jre-search
 | `node cli/sync.js` | Downloads all JRE videos from YouTube. |
 | `node cli/parse.js` | Parse the downloaded videos and saves hosts & keywords. |
 | `npm run server` | Run the API server. |
-| `npm run test` | Run tests. |
+| `npm test` | Run tests. |
 
 ## API
 
