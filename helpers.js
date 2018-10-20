@@ -5,7 +5,7 @@ exports.parseTitle = title => {
 	if (matches) {
 		return {
 			episode: Number(matches.groups.episode),
-			hosts: matches.groups.hosts.split(/[,&]+|\sand\s/).map(el => S(el).trim().s),
+			hosts: matches.groups.hosts.split(/[,&]+|\sand\s/).map(el => S(el).trim().s), // eslint-disable-line new-cap
 			part: matches.groups.part
 		};
 	}
@@ -15,19 +15,21 @@ exports.parseTitle = title => {
 /**
  * Really simple webalize function.
  *
- * @param {String} title
+ * @param {string} title - Title of the video
+ * @returns {string} - Webalized title string
  */
 exports.getId = title => {
-	const id = S(title).trim().s.toLowerCase();
+	const id = S(title).trim().s.toLowerCase(); // eslint-disable-line new-cap
 	return id.replace(/[^\w]/gi, '');
 };
 
 /**
  * Saves keyword in a dictionary.
  *
- * @param {String} keyword
- * @param {Object} dict
- * @param {Object} video
+ * @param {string} keyword - Keyword to save.
+ * @param {object} dict - Dictionary to save the keyword to to.
+ * @param {object} video - Reference video.
+ * @returns {undefined}
  */
 exports.saveKeyword = (keyword, dict, video) => {
 	const id = exports.getId(keyword);
@@ -39,17 +41,18 @@ exports.saveKeyword = (keyword, dict, video) => {
 		};
 	} else {
 		dict[id].count++;
-		dict[id].videos.push(video)
+		dict[id].videos.push(video);
 	}
 };
 
 /**
  * Parse "this is a quote" quotes from a description text.
- * @param {string} description Copy of text.
- * @param {object} dictionary A dictionary to save found quotes to.
+ * @param {string} description - Copy of text.
+ * @param {object} dictionary - A dictionary to save found quotes to.
+ * @returns {string} - Updated description without parsed keywords.
  */
 exports.parseQuotes = (description, dictionary) => {
-	const regex = new RegExp('("(?<title>.+?)")|((?=[^\w]|\A)\'(?<title2>.+?)\'(?=[^s]))', 'gms');
+	const regex = new RegExp('("(?<title>.+?)")|((?=[^\w]|\A)\'(?<title2>.+?)\'(?=[^s]))', 'gms'); // eslint-disable-line no-useless-escape
 	let match;
 	const matches = [];
 	while ((match = regex.exec(description)) !== null) {
