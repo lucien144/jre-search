@@ -33,7 +33,7 @@ module.exports = function (app, db) {
 	});
 
 	app.get('/hosts/:id', (req, res) => {
-		const id = req.params.id;
+		const {id} = req.params;
 		const details = {_id: new ObjectID(id)};
 		db.collection('hosts').findOne(details, (err, hosts) => {
 			if (err) {

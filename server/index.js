@@ -1,6 +1,6 @@
 require('dotenv').config();
 const express = require('express');
-const MongoClient = require('mongodb').MongoClient;
+const {MongoClient} = require('mongodb');
 
 const client = new MongoClient(process.env.MONGO_DSN, {useNewUrlParser: true});
 
