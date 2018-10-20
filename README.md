@@ -2,6 +2,7 @@
 Advanced search for Joe Rogan Experience podcast.
 
 [![Build Status: Linux](https://travis-ci.org/lucien144/jre-search.svg?branch=master)](https://travis-ci.org/lucien144/jre-search)
+[![Coverage Status](https://coveralls.io/repos/github/lucien144/jre-search/badge.svg?branch=master)](https://coveralls.io/github/lucien144/jre-search?branch=master)
 [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/xojs/xo)
 
 ## Installation
