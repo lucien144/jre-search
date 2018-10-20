@@ -13,11 +13,12 @@
   },
   "devDependencies": {
     "ava": "1.0.0-beta.8",
+    "nyc": "^13.1.0",
     "xo": "^0.22.0"
   },
   "scripts": {
     "server": "nodemon server",
-    "test": "npm run lint && ava --verbose",
+    "test": "npm run lint && nyc --reporter=html --reporter=text --timeout=3000 ava --verbose",
     "lint": "xo"
   }
 }
