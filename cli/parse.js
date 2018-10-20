@@ -13,19 +13,6 @@ const hosts = {};
 const tags = {};
 const titles = [];
 
-const parseEntities = (description, video) => {
-	const anal = compendium.analyse(description);
-	try {
-		anal[0].entities.forEach(entity => {
-			helpers.saveKeyword(entity.raw, keywords, video);
-			description = description.replace(entity.raw, '');
-		});
-	} catch (error) {
-		// Console.warn(error);
-	}
-	return description;
-};
-
 const parse = video => {
 	let {title, description} = video;
 	title = helpers.parseTitle(title);
@@ -40,7 +27,7 @@ const parse = video => {
 		});
 
 		description = helpers.parseQuotes(description, keywords);
-		description = parseEntities(description, video);
+		description = helpers.parseEntities(description, video, keywords);
 
 		let noun = '';
 		compendium.analyse(description).forEach(anal => {

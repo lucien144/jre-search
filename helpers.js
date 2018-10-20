@@ -1,4 +1,5 @@
 const S = require('string');
+const compendium = require('compendium-js');
 
 exports.parseTitle = title => {
 	const matches = title.match(/^Joe Rogan Experience #(?<episode>\d*)(\s{0,}-{0,}\s{0,})(?<hosts>.*?)(?<part>\s?\(part\s(\d+|\w+)\))?$/i);
@@ -65,5 +66,25 @@ exports.parseQuotes = (description, dictionary) => {
 		description = description.replace(desc, '');
 	});
 
+	return description;
+};
+
+/**
+ * Analyse entities/keywords from the video description and saves them in the dictionary.
+ * @param {string} description - Description text.
+ * @param {object} video - YT video object.
+ * @param {object} dictionary - Dictionary to save entities/keywords.
+ * @returns {string} - YT description stripped of entities/keywords for further analyse.
+ */
+exports.parseEntities = (description, video, dictionary) => {
+	const anal = compendium.analyse(description);
+	try {
+		anal[0].entities.forEach(entity => {
+			exports.saveKeyword(entity.raw, dictionary, video);
+			description = description.replace(entity.raw, '');
+		});
+	} catch (error) {
+		// Console.warn(error);
+	}
 	return description;
 };
