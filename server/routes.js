@@ -1,4 +1,4 @@
-const ObjectID = require('mongodb').ObjectID;
+const {ObjectID} = require('mongodb');
 
 module.exports = function (app, db) {
 	const response = (err, res, hosts, shrunk = true) => {

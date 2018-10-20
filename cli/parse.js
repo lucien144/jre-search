@@ -1,9 +1,8 @@
 console.time('execution');
 require('dotenv').config();
 
-const l = console.log;
+const {MongoClient} = require('mongodb');
 
-const MongoClient = require('mongodb').MongoClient;
 const client = new MongoClient(process.env.MONGO_DSN, {useNewUrlParser: true});
 
 const compendium = require('compendium-js');
@@ -66,7 +65,9 @@ const parse = video => {
 	const db = client.db(process.env.MONGO_DBNAME);
 	const videos = db.collection('videos').find({});
 	try {
-		while(await videos.hasNext()) {
+		// eslint-disable-next-line no-await-in-loop
+		while (await videos.hasNext()) {
+			// eslint-disable-next-line no-await-in-loop
 			const video = await videos.next();
 			parse(video);
 		}
@@ -74,16 +75,19 @@ const parse = video => {
 		// Mongo: Save all dictionaries to collections
 		const collections = {hosts, tags, keywords};
 		for (const collection in collections) {
-			if (!collections.hasOwnProperty(collection)) continue;
+			if (!Object.prototype.hasOwnProperty.call(collections, collection)) {
+				continue;
+			}
 			db.collection(collection).deleteMany({});
 
 			for (const id in collections[collection]) {
-				if (!collections[collection].hasOwnProperty(id)) continue;
+				if (!Object.prototype.hasOwnProperty.call(collections[collection], id)) {
+					continue;
+				}
 				const host = collections[collection][id];
 				db.collection(collection).insertOne(host);
 			}
 		}
-
 	} finally {
 		client.close();
 	}
