@@ -1,6 +1,10 @@
 import test from 'ava';
 import {parseTitle} from '../helpers';
 
+test('should be false', t => {
+	t.false(parseTitle('Another Podcast Title'));
+});
+
 test('single host', t => {
 	const title = parseTitle('Joe Rogan Experience #144 Jon Jones (part 1)');
 	t.is(title.episode, 144);
