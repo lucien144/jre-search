@@ -88,3 +88,20 @@ exports.parseEntities = (description, video, dictionary) => {
 	}
 	return description;
 };
+
+exports.findNouns = (description, dictionary, video) => {
+	let noun = '';
+	compendium.analyse(description).forEach(anal => {
+		anal.tokens.forEach(token => {
+			let found = false;
+			if (['NN', 'NNS', 'JJ'].indexOf(token.pos) > -1) {
+				noun += ' ' + token.raw;
+				found = true;
+			}
+			if (noun !== '' && !found) {
+				exports.saveKeyword(noun, dictionary, video);
+				noun = '';
+			}
+		});
+	});
+};

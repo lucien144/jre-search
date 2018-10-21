@@ -5,7 +5,6 @@ const {MongoClient} = require('mongodb');
 
 const client = new MongoClient(process.env.MONGO_DSN, {useNewUrlParser: true});
 
-const compendium = require('compendium-js');
 const helpers = require('../helpers');
 
 const keywords = {};
@@ -28,22 +27,8 @@ const parse = video => {
 
 		description = helpers.parseQuotes(description, keywords);
 		description = helpers.parseEntities(description, video, keywords);
-
-		let noun = '';
-		compendium.analyse(description).forEach(anal => {
-			anal.tokens.forEach(token => {
-				let found = false;
-				if (['NN', 'NNS', 'JJ'].indexOf(token.pos) > -1) {
-					noun += ' ' + token.raw;
-					found = true;
-				}
-				if (noun !== '' && !found) {
-					helpers.saveKeyword(noun, keywords, video);
-					helpers.saveKeyword(noun, tags, video);
-					noun = '';
-				}
-			});
-		});
+		helpers.findNouns(description, keywords, video);
+		helpers.findNouns(description, tags, video);
 	}
 };
 
