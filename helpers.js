@@ -36,7 +36,7 @@ exports.saveKeyword = (keyword, dict, video) => {
 	const id = exports.getId(keyword);
 	if (dict[id] === undefined) {
 		dict[id] = {
-			original: keyword,
+			original: S(keyword).trim().s,
 			count: 1,
 			videos: [video]
 		};

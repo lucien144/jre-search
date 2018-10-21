@@ -18,3 +18,10 @@ test('saving keyword', t => {
 	t.is(dict.joerogan.count, 3);
 	t.is(dict.joerogan.videos.length, 3);
 });
+
+
+test('should be trimmed', t => {
+	const dict = {};
+	saveKeyword(' Joe Rogan ', dict, {});
+	t.is(dict.joerogan.original, 'Joe Rogan');
+});
