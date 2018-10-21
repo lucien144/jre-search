@@ -36,7 +36,7 @@ exports.saveKeyword = (keyword, dict, video) => {
 	const id = exports.getId(keyword);
 	if (dict[id] === undefined) {
 		dict[id] = {
-			original: S(keyword).trim().s,
+			original: S(keyword).trim().s, // eslint-disable-line new-cap
 			count: 1,
 			videos: [video]
 		};

@@ -24,7 +24,8 @@ MONGO_DBNAME=jre-search
 | `node cli/parse.js` | Parse the downloaded videos and saves hosts & keywords. |
 | `npm run server` | Run the API server. |
 | `npm run coverage` | Upload coverage to Coveralls.io (needs `.coveralls.yml` for local run). |
-| `npm test` | Run tests. |
+| `npm run ava` | Run tests only with ava. |
+| `npm test` | Run tests with XO lint and code coverage. |
 
 ## API
 
