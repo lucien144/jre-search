@@ -19,7 +19,8 @@ module.exports = function (app, db) {
 	};
 
 	app.get('/hosts', (req, res) => {
-		const {search} = req.query;
+		const {search, page = 1} = req.query;
+		const limit = 5;
 		if (search) {
 			const reg = new RegExp(`^${search}`, 'i');
 			db.collection('hosts').find({original: reg}).toArray((err, hosts) => {
@@ -27,7 +28,7 @@ module.exports = function (app, db) {
 			});
 			return;
 		}
-		db.collection('hosts').find().toArray((err, hosts) => {
+		db.collection('hosts').find().skip(limit * (page - 1)).limit(limit).toArray((err, hosts) => {
 			response(err, res, hosts);
 		});
 	});

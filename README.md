@@ -31,6 +31,6 @@ MONGO_DBNAME=jre-search
 
 | Endpoint | Description |
 |---------|-------------|
-| `/hosts/` | List of all hosts along with videos. |
-| `/hosts/?search=al` | Search for hosts with name "AL..." |
+| `/hosts?page=N` | List of all hosts along with videos with pagination. |
+| `/hosts?search=al` | Search for hosts with name "AL..." |
 | `/hosts/:id` | Detail of the host. |
