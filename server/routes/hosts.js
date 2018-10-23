@@ -1,47 +1,34 @@
 const {ObjectID} = require('mongodb');
 
-module.exports = function (app, db) {
-	const response = (err, res, hosts, shrunk = true) => {
-		hosts.sort((a, b) => {
-			return a.original < b.original ? -1 : (a.original > b.original ? 1 : 0);
-		});
-		if (shrunk) {
-			hosts.map(a => {
-				a.videos = [];
-				return a;
-			});
-		}
-		if (err) {
-			res.send({error: 'An error has occurred'});
-		} else {
-			res.json(hosts);
-		}
-	};
+const {sendJson, searchCollection} = require('../helpers.js');
 
+const limit = 20;
+
+module.exports = function (app, db) {
 	app.get('/hosts', (req, res) => {
 		const {search, page = 1} = req.query;
-		const limit = 5;
+
 		if (search) {
-			const reg = new RegExp(`^${search}`, 'i');
-			db.collection('hosts').find({original: reg}).toArray((err, hosts) => {
-				response(err, res, hosts, false);
-			});
+			searchCollection(db.collection('hosts'), res, {search, page, limit});
 			return;
 		}
-		db.collection('hosts').find().skip(limit * (page - 1)).limit(limit).toArray((err, hosts) => {
-			response(err, res, hosts);
-		});
+
+		db.collection('hosts')
+			.find()
+			.sort({original: 1})
+			.skip(limit * (page - 1))
+			.limit(limit)
+			.toArray(async (err, hosts) => {
+				const count = await db.collection('hosts').countDocuments();
+				sendJson({data: hosts, count, limit, res, err});
+			});
 	});
 
 	app.get('/hosts/:id', (req, res) => {
 		const {id} = req.params;
 		const details = {_id: new ObjectID(id)};
-		db.collection('hosts').findOne(details, (err, hosts) => {
-			if (err) {
-				res.send({error: 'An error has occurred'});
-			} else {
-				res.json(hosts);
-			}
+		db.collection('hosts').findOne(details, (err, host) => {
+			sendJson({data: host, limit, res, err});
 		});
 	});
 };

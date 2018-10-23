@@ -1,17 +1,16 @@
+const {searchCollection} = require('../helpers.js');
+
+const limit = 20;
+
 module.exports = function (app, db) {
 	app.get('/tags', (req, res) => {
-		const {search} = req.query;
+		const {search, page = 1} = req.query;
+
 		if (search) {
-			const reg = new RegExp(`^${search}`, 'i');
-			db.collection('tags').find({original: reg}).toArray((err, tags) => {
-				if (err) {
-					res.send({error: 'An error has occurred'});
-				} else {
-					res.json(tags);
-				}
-			});
+			searchCollection(db.collection('tags'), res, {search, page, limit});
 			return;
 		}
+
 		db.collection('tags').find().toArray((err, tags) => {
 			if (err) {
 				res.send({error: 'An error has occurred'});
