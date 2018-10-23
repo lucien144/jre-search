@@ -1,5 +1,5 @@
 import test from 'ava';
-import {findNouns} from '../helpers';
+import {findNouns} from '../../cli/helpers';
 
 test('finding adjective with noun', t => {
 	const description = 'Dr. Bruce Damer is a polymath scientist.';

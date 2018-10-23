@@ -1,5 +1,5 @@
 import test from 'ava';
-import {parseEntities} from '../helpers';
+import {parseEntities} from '../../cli/helpers';
 
 test('should remove entities from description', t => {
 	const description = 'Tulsi Gabbard is an American politician of the Democratic Party serving as the U.S. Representative for Hawaii\'s 2nd congressional district since 2013.';

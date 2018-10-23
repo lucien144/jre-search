@@ -5,7 +5,7 @@ const {MongoClient} = require('mongodb');
 
 const client = new MongoClient(process.env.MONGO_DSN, {useNewUrlParser: true});
 
-const helpers = require('../helpers');
+const helpers = require('./helpers');
 
 const keywords = {};
 const hosts = {};

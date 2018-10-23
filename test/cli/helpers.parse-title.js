@@ -1,5 +1,5 @@
 import test from 'ava';
-import {parseTitle} from '../helpers';
+import {parseTitle} from '../../cli/helpers';
 
 test('should be false', t => {
 	t.false(parseTitle('Another Podcast Title'));

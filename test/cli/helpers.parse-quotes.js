@@ -1,5 +1,5 @@
 import test from 'ava';
-import {parseQuotes} from '../helpers';
+import {parseQuotes} from '../../cli/helpers';
 
 test('parsing double quotes', t => {
 	const dictionary = {};

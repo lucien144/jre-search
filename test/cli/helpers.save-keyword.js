@@ -1,5 +1,5 @@
 import test from 'ava';
-import {saveKeyword} from '../helpers';
+import {saveKeyword} from '../../cli/helpers';
 
 test('saving keyword', t => {
 	const dict = {};
