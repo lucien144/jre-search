@@ -1,4 +1,4 @@
-exports.searchCollection = (collection, res, {search = '', page = 1, limit = 20}) => {
+exports.searchCollection = (collection, res, {search = '', page = 1, limit = 20, shrunk = true}) => {
 	const reg = new RegExp(`${search}`, 'i');
 	collection
 		.find({original: reg})
@@ -7,7 +7,18 @@ exports.searchCollection = (collection, res, {search = '', page = 1, limit = 20}
 		.limit(limit)
 		.toArray(async (err, data) => {
 			const count = await collection.find({original: reg}).count();
-			const shrunk = false;
+			exports.sendJson({data, count, limit, shrunk, res, err});
+		});
+};
+
+exports.fetchCollection = (collection, res, {page = 1, limit = 20, shrunk = true}) => {
+	collection
+		.find()
+		.sort({original: 1})
+		.skip(limit * (page - 1))
+		.limit(limit)
+		.toArray(async (err, data) => {
+			const count = await collection.countDocuments();
 			exports.sendJson({data, count, limit, shrunk, res, err});
 		});
 };

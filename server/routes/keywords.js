@@ -1,4 +1,6 @@
-const {searchCollection} = require('../helpers.js');
+const {ObjectID} = require('mongodb');
+
+const {sendJson, searchCollection, fetchCollection} = require('../helpers.js');
 
 const limit = 20;
 
@@ -11,12 +13,14 @@ module.exports = function (app, db) {
 			return;
 		}
 
-		db.collection('keywords').find().toArray((err, keywords) => {
-			if (err) {
-				res.send({error: 'An error has occurred'});
-			} else {
-				res.json(keywords);
-			}
+		fetchCollection(db.collection('keywords'), res, {page, limit});
+	});
+
+	app.get('/keywords/:id', (req, res) => {
+		const {id} = req.params;
+		const details = {_id: new ObjectID(id)};
+		db.collection('keywords').findOne(details, (err, data) => {
+			sendJson({data, limit, res, err});
 		});
 	});
 };
