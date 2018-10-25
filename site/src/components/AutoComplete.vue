@@ -1,38 +1,40 @@
 <template>
-    <div class="autocomplete">
-        <input
-            type="text"
-            placeholder="Elon Musk"
-            v-model="keyword"
-            @keyup="search" />
-        <ul class="results">
-            <li v-for="result in data" :key="result._id">{{ result.original }} <span>{{ result.count }}</span></li>
-        </ul>
-    </div>
+	<div class="autocomplete">
+		<input
+			v-model="keyword"
+			type="text"
+			placeholder="Elon Musk"
+			@keyup="search" >
+		<ul class="results">
+			<li
+				v-for="result in data"
+				:key="result._id">{{ result.original }} <span>{{ result.count }}</span></li>
+		</ul>
+	</div>
 </template>
 
 <script>
 import axios from 'axios';
 
 export default {
-    data () {
-        return {
-            keyword: '',
-            data: {}
-        };
-    },
-    methods: {
-        async search () {
-            if (this.keyword === 0) {
-                this.data = {};
-                return;
-            }
+	data() {
+		return {
+			keyword: '',
+			data: {}
+		};
+	},
+	methods: {
+		async search() {
+			if (this.keyword === 0) {
+				this.data = {};
+				return;
+			}
 
-            const {data} = await axios.get(`http://localhost:8000/hosts?search=${this.keyword}`);
-            this.data = data.data;
-        }
-    }
-}
+			const {data} = await axios.get(`http://localhost:8000/hosts?search=${this.keyword}`);
+			this.data = data.data;
+		}
+	}
+};
 </script>
 
 <style scoped lang=less>

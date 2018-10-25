@@ -1,15 +1,15 @@
 <template>
-  <div class="home">
-    <auto-complete class="autocomplete"/>
-  </div>
+	<div class="home">
+		<auto-complete class="autocomplete"/>
+	</div>
 </template>
 
 <script>
 import AutoComplete from '@/components/AutoComplete.vue';
 
 export default {
-  components: { AutoComplete }
-}
+	components: {AutoComplete}
+};
 </script>
 
 <style lang="less" scoped>
