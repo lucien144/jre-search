@@ -23,5 +23,10 @@
     "ava": "ava --verbose",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "lint": "xo"
+  },
+  "xo": {
+    "rules": {
+      "import/no-unresolved": [2, { "ignore": ["vue$"] }]
+    }
   }
 }

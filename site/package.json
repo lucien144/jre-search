@@ -17,8 +17,27 @@
     "@vue/cli-plugin-babel": "^3.0.5",
     "@vue/cli-plugin-eslint": "^3.0.5",
     "@vue/cli-service": "^3.0.5",
+    "eslint-plugin-vue": "^4.7.1",
     "less": "^3.0.4",
     "less-loader": "^4.1.0",
-    "vue-template-compiler": "^2.5.17"
+    "vue-template-compiler": "^2.5.17",
+    "xo": "^0.23.0"
+  },
+  "xo": {
+    "extensions": [
+      "vue"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "extends": [
+      "plugin:vue/recommended"
+    ],
+    "rules": {
+      "vue/html-indent": ["error", "tab"],
+      "import/extensions": ["error", "never", { "vue": "always" }],
+      "import/no-unresolved": [2, { "ignore": ["vue$"] }],
+      "unicorn/filename-case": 0
+    }
   }
 }
