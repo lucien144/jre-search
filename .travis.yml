@@ -1,5 +1,9 @@
 language: node_js
 node_js:
   - "10"
+cache:
+  directories:
+    - "node_modules"
+script: npm test && cd site/ && npm i && xo
 after_success:
 - npm run coverage
