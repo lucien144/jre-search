@@ -34,9 +34,25 @@
       "plugin:vue/recommended"
     ],
     "rules": {
-      "vue/html-indent": ["error", "tab"],
-      "import/extensions": ["error", "never", { "vue": "always" }],
-      "import/no-unresolved": [2, { "ignore": ["vue$"] }],
+      "vue/html-indent": [
+        "error",
+        "tab"
+      ],
+      "import/extensions": [
+        "error",
+        "never",
+        {
+          "vue": "always"
+        }
+      ],
+      "import/no-unresolved": [
+        2,
+        {
+          "ignore": [
+            "vue$"
+          ]
+        }
+      ],
       "unicorn/filename-case": 0
     }
   }
