@@ -4,6 +4,6 @@ node_js:
 cache:
   directories:
     - "node_modules"
-script: npm test && cd site/ && npm i && xo
+script: npm test && cd site/ && npm i && npm lint
 after_success:
 - npm run coverage
