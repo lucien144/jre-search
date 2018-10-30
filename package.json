@@ -22,7 +22,7 @@
     "test": "npm run lint && nyc --reporter=html --reporter=text --timeout=3000 ava --verbose",
     "ava": "ava --verbose",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "lint": "xo && cd site/ && xo"
+    "lint": "xo && cd site/ && npm i && xo"
   },
   "xo": {
     "rules": {
