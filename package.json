@@ -26,7 +26,7 @@
   },
   "xo": {
     "rules": {
-      "import/no-unresolved": [2, { "ignore": ["vue$"] }]
+      "import/no-unresolved": "off"
     }
   }
 }
