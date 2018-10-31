@@ -25,8 +25,8 @@
     "lint": "xo && cd site/ && npm i && xo"
   },
   "xo": {
-    "rules": {
-      "import/no-unresolved": "off"
-    }
+    "ignores": [
+      "site"
+    ]
   }
 }
