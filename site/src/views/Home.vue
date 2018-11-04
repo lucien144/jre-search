@@ -23,8 +23,22 @@
 							item-value="_id"
 							label="Find a host"
 							placeholder="Elon Musk"
-							prepend-icon="mdi-database-search"
-						/>
+							prepend-icon="mdi-database-search">
+							<template
+								slot="item"
+								slot-scope="{ item, tile }"
+							>
+								<v-list-tile-content>
+									<v-list-tile-title v-text="item.original"/>
+								</v-list-tile-content>
+								<v-list-tile-action>
+									<v-chip
+										small
+										color="primary"
+										text-color="white">{{ item.count }}</v-chip>
+								</v-list-tile-action>
+							</template>
+						</v-autocomplete>
 					</v-card-text>
 				</v-flex>
 				<v-flex xs6>
@@ -35,10 +49,24 @@
 							:items="videos"
 							item-text="original"
 							item-value="_id"
-							label="Find a topic"
-							placeholder="actor"
-							prepend-icon="mdi-database-search"
-						/>
+							label="Search for a topic or keyword"
+							placeholder="neuroscientist"
+							prepend-icon="mdi-database-search">
+							<template
+								slot="item"
+								slot-scope="{ item, tile }"
+							>
+								<v-list-tile-content>
+									<v-list-tile-title v-text="item.original"/>
+								</v-list-tile-content>
+								<v-list-tile-action>
+									<v-chip
+										small
+										color="primary"
+										text-color="white">{{ item.count }}</v-chip>
+								</v-list-tile-action>
+							</template>
+						</v-autocomplete>
 					</v-card-text>
 				</v-flex>
 			</v-layout>
