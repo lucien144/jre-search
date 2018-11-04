@@ -16,8 +16,8 @@
 				<v-flex xs6>
 					<v-card-text>
 						<v-autocomplete
-							v-model="model"
-							:search-input.sync="keyword"
+							v-model="selectedHost"
+							:search-input.sync="host"
 							:items="videos"
 							item-text="original"
 							item-value="_id"
@@ -30,7 +30,7 @@
 				<v-flex xs6>
 					<v-card-text>
 						<v-autocomplete
-							v-model="model"
+							v-model="selectedKeyword"
 							:search-input.sync="keyword"
 							:items="videos"
 							item-text="original"
@@ -83,26 +83,34 @@ export default {
 	components: {VideoCard},
 	data() {
 		return {
-			model: null,
 			videos: [],
-			keyword: ''
+			host: '',
+			selectedHost: null,
+			keyword: '',
+			selectedKeyword: null
 		};
 	},
 	watch: {
-		keyword(val) {
-			return val && this.loadVideos(val);
+		host(val) {
+			return val && this.loadVideos(val, 'hosts');
 		},
-		model(val) {
-			return val && this.loadDetail(val);
+		selectedHost(val) {
+			return val && this.loadDetail(val, 'hosts');
+		},
+		keyword(val) {
+			return val && this.loadVideos(val, 'keywords');
+		},
+		selectedKeyword(val) {
+			return val && this.loadDetail(val, 'keywords');
 		}
 	},
 	methods: {
-		async loadVideos(keyword) {
-			const {data} = await axios.get(`${this.$store.getters.API}/hosts?search=${keyword}`);
+		async loadVideos(keyword, type) {
+			const {data} = await axios.get(`${this.$store.getters.API}/${type}?search=${keyword}`);
 			this.videos = data.data;
 		},
-		async loadDetail(id) {
-			const {data} = await axios.get(`${this.$store.getters.API}/hosts/${id}`);
+		async loadDetail(id, type) {
+			const {data} = await axios.get(`${this.$store.getters.API}/${type}/${id}`);
 			this.$store.commit('videos', data.data.videos);
 		}
 	}
