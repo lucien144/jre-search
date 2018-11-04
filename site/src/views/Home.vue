@@ -59,6 +59,19 @@
 				</v-flex>
 			</v-layout>
 		</v-container>
+		<v-dialog
+			v-if="$store.state.video"
+			v-model="$store.state.video"
+			@input="v => v || $store.commit('video', null)">
+			<v-card>
+				<iframe
+					:src="`https://www.youtube.com/embed/${$store.state.video.id}?autoplay=1`"
+					type="text/html"
+					width="100%"
+					height="360"
+					frameborder="0"/>
+			</v-card>
+		</v-dialog>
 	</div>
 </template>
 
@@ -97,5 +110,4 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  .autocomplete { width: 80vw; }
 </style>

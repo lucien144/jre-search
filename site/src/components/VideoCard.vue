@@ -3,12 +3,13 @@
 		<v-card
 			slot-scope="{ hover }"
 			:class="`elevation-${hover ? 12 : 2}`"
-			height="100%">
+			height="100%"
+			@click.native="$store.commit('video', video)">
 			<v-img
 				:src="video.thumbnails.high.url"
 				height="200"/>
-			<v-card-title>
-				<div class="title">#{{ parseTitle(video.title).episode }} - {{ parseTitle(video.title).hosts.join(', ') }}</div>
+			<v-card-title class="title">
+				#{{ parseTitle(video.title).episode }} - {{ parseTitle(video.title).hosts.join(', ') }}
 			</v-card-title>
 			<v-card-text class="pt-0 pb-0">
 				<p class="caption">{{ video.description }}</p>

@@ -5,11 +5,18 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
 	state: {
-		videos: []
+		// List of videos to display
+		videos: [],
+
+		// Active video to play
+		video: null
 	},
 	mutations: {
 		videos(state, videos) {
 			state.videos = videos;
+		},
+		video(state, video) {
+			state.video = video;
 		}
 	},
 	actions: {
