@@ -5,12 +5,6 @@ const {sendJson, searchCollection, fetchCollection} = require('../helpers.js');
 const limit = 20;
 
 module.exports = function (app, db) {
-	app.use((req, res, next) => {
-		res.header('Access-Control-Allow-Origin', 'http://localhost:8080');
-		res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-		next();
-	});
-
 	app.get('/hosts', (req, res) => {
 		const {search, page = 1} = req.query;
 

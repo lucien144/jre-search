@@ -11,6 +11,7 @@ Advanced search for Joe Rogan Experience podcast.
 
 ### Create `.env` file in the project's root folder
 ```
+ENVIRONMENT=development
 API_KEY=123YourApiKey
 MONGO_DSN=mongodb://localhost:27017/
 MONGO_DBNAME=jre-search
