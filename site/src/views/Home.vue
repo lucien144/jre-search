@@ -79,7 +79,7 @@
 				row
 				wrap>
 				<v-flex
-					v-for="video in $store.state.videos"
+					v-for="video in $store.getters.orderedVideos"
 					:key="video.id"
 					xs12
 					md3>

@@ -25,6 +25,11 @@ export default new Vuex.Store({
 	getters: {
 		API: _ => {
 			return 'http://localhost:8000';
+		},
+		orderedVideos(state) {
+			return state.videos.sort((a, b) => {
+				return a.title.episode < b.title.episode ? 1 : (a.title.episode > b.title.episode ? -1 : 0);
+			});
 		}
 	}
 });

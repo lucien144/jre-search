@@ -19,6 +19,7 @@ const parse = video => {
 	// Titles.filter(val => val.episode === title.episode).length === 0
 	// 👉 Some episodes are doubled in the list of videos, therefore we need to filter them out.
 	if (title && titles.filter(val => val.episode === title.episode).length === 0) {
+		video.title = title;
 		titles.push(title);
 		title.hosts.forEach(host => {
 			helpers.saveKeyword(host, hosts, video);
