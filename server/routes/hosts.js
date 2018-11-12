@@ -16,6 +16,10 @@ module.exports = function (app, db) {
 		fetchCollection(db.collection('hosts'), res, {page, limit});
 	});
 
+	app.get('/hosts/top', (req, res) => {
+		fetchCollection(db.collection('hosts'), res, {sort: {count: -1}});
+	});
+
 	app.get('/hosts/:id', (req, res) => {
 		const {id} = req.params;
 		const details = {_id: new ObjectID(id)};

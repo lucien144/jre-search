@@ -16,6 +16,10 @@ module.exports = function (app, db) {
 		fetchCollection(db.collection('keywords'), res, {page, limit});
 	});
 
+	app.get('/keywords/top', (req, res) => {
+		fetchCollection(db.collection('keywords'), res, {limit: 30, sort: {count: -1}});
+	});
+
 	app.get('/keywords/:id', (req, res) => {
 		const {id} = req.params;
 		const details = {_id: new ObjectID(id)};

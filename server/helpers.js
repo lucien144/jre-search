@@ -11,10 +11,10 @@ exports.searchCollection = (collection, res, {search = '', page = 1, limit = 20,
 		});
 };
 
-exports.fetchCollection = (collection, res, {page = 1, limit = 20, shrunk = true}) => {
+exports.fetchCollection = (collection, res, {page = 1, limit = 20, shrunk = true, sort = {original: 1}}) => {
 	collection
 		.find()
-		.sort({original: 1})
+		.sort(sort)
 		.skip(limit * (page - 1))
 		.limit(limit)
 		.toArray(async (err, data) => {
