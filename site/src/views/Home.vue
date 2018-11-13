@@ -4,7 +4,7 @@
 		<v-card>
 			<v-card-title class="display-1 white font-weight-black">
 				<v-layout row nowrap align-center>
-					<v-flex xs9>Joe Rogan Experience podcast on 🚀 🍄</v-flex>
+					<v-flex xs9>Joe Rogan Experience on Steroids 💊</v-flex>
 					<v-flex xs3>
 						<v-layout row justify-end>
 							<v-btn to="/statistics">Statistics</v-btn>
