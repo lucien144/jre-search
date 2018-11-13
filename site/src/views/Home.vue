@@ -1,10 +1,8 @@
 <template>
 	<div
 		class="home">
-		<v-card
-			color="red darken-3"
-			dark>
-			<v-card-title class="headline red darken-1">
+		<v-card>
+			<v-card-title class="display-1 white font-weight-black">
 				<v-layout row nowrap align-center>
 					<v-flex xs9>Joe Rogan Experience podcast on 🚀 🍄</v-flex>
 					<v-flex xs3>
