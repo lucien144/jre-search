@@ -1,11 +1,9 @@
 <template>
-	<div
-		id="app"
-		data-app>
+	<v-app>
 		<v-container fluid>
 			<router-view/>
 		</v-container>
-	</div>
+	</v-app>
 </template>
 
 <style lang="less">
