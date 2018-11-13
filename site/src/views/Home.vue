@@ -5,7 +5,11 @@
 			color="red darken-3"
 			dark>
 			<v-card-title class="headline red darken-1">
-				Joe Rogan Experience podcast on 🚀 🍄
+				<v-layout row nowrap>
+					<v-flex xs10>Joe Rogan Experience podcast on 🚀 🍄</v-flex>
+					<v-flex xs1><v-btn small>Normal</v-btn></v-flex>
+					<v-flex xs1><v-btn small>Normal</v-btn></v-flex>
+				</v-layout>
 			</v-card-title>
 			<v-card-text>
 				Explore videos by entering host or either keyword/topic.
