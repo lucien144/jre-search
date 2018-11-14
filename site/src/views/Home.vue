@@ -9,6 +9,7 @@
 						<v-layout row justify-end>
 							<v-btn to="/statistics">Statistics</v-btn>
 							<v-btn to="/about">About</v-btn>
+							<v-btn @click.native="auth()">Sign In/Up</v-btn>
 						</v-layout>
 					</v-flex>
 				</v-layout>
@@ -146,6 +147,11 @@ export default {
 		async loadDetail(id, type) {
 			const {data} = await axios.get(`${this.$store.getters.API}/${type}/${id}`);
 			this.$store.commit('videos', data.data.videos);
+		},
+		auth() {
+			const netlifyIdentity = require('netlify-identity-widget');
+			netlifyIdentity.init();
+			netlifyIdentity.open();
 		}
 	}
 };
