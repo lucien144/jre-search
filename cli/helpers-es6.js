@@ -2,7 +2,7 @@ const S = require('string');
 const compendium = require('compendium-js');
 
 export const parseTitle = title => {
-	const matches = title.original.match(/^Joe Rogan Experience #(?<episode>\d*)(\s{0,}-{0,}\s{0,})(?<hosts>.*?)(?<part>\s?\(part\s(\d+|\w+)\))?$/i);
+	const matches = title.match(/^Joe Rogan Experience #(?<episode>\d*)(\s{0,}-{0,}\s{0,})(?<hosts>.*?)(?<part>\s?\(part\s(\d+|\w+)\))?$/i);
 	if (matches) {
 		return {
 			original: title,

@@ -9,7 +9,7 @@
 				:src="video.thumbnails.high.url"
 				height="200"/>
 			<v-card-title class="title">
-				#{{ parseTitle(video.title).episode }} - {{ parseTitle(video.title).hosts.join(', ') }}
+				#{{ video.title.episode }} - {{ video.title.hosts.join(', ') }}
 			</v-card-title>
 			<v-card-text class="pt-0 pb-0">
 				<p class="caption">{{ video.description }}</p>
@@ -31,18 +31,11 @@
 </template>
 
 <script>
-import {parseTitle} from '../../../cli/helpers-es6';
-
 export default {
 	props: {
 		video: {
 			type: Object,
 			required: true
-		}
-	},
-	methods: {
-		parseTitle(video) {
-			return parseTitle(video);
 		}
 	}
 };
