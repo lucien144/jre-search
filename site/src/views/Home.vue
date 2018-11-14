@@ -3,10 +3,15 @@
 		class="home">
 		<v-card>
 			<v-card-title class="display-1 white font-weight-black">
-				<v-layout row nowrap align-center>
+				<v-layout
+					row
+					nowrap
+					align-center>
 					<v-flex xs9>Joe Rogan Experience on Steroids 💊</v-flex>
 					<v-flex xs3>
-						<v-layout row justify-end>
+						<v-layout
+							row
+							justify-end>
 							<v-btn to="/statistics">Statistics</v-btn>
 							<v-btn to="/about">About</v-btn>
 							<v-btn @click.native="auth()">Sign In/Up</v-btn>
