@@ -9,7 +9,10 @@ export default new Vuex.Store({
 		videos: [],
 
 		// Active video to play
-		video: null
+		video: null,
+
+		// Logged user
+		user: null
 	},
 	mutations: {
 		videos(state, videos) {
@@ -17,6 +20,9 @@ export default new Vuex.Store({
 		},
 		video(state, video) {
 			state.video = video;
+		},
+		user(state, user) {
+			state.user = user;
 		}
 	},
 	actions: {

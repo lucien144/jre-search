@@ -6,6 +6,17 @@
 	</v-app>
 </template>
 
+<script>
+const netlifyIdentity = require('netlify-identity-widget');
+
+export default {
+	mounted() {
+		netlifyIdentity.init();
+		this.$store.commit('user', netlifyIdentity.currentUser());
+	}
+};
+</script>
+
 <style lang="less">
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html {

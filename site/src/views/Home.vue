@@ -14,7 +14,12 @@
 							justify-end>
 							<v-btn to="/statistics">Statistics</v-btn>
 							<v-btn to="/about">About</v-btn>
-							<v-btn @click.native="auth()">Sign In/Up</v-btn>
+							<v-btn
+								v-if="$store.state.user"
+								@click.native="logout()">Logout</v-btn>
+							<v-btn
+								v-else
+								@click.native="auth()">Sign In/Up</v-btn>
 						</v-layout>
 					</v-flex>
 				</v-layout>
@@ -119,6 +124,8 @@
 import axios from 'axios';
 import VideoCard from '../components/VideoCard.vue';
 
+const netlifyIdentity = require('netlify-identity-widget');
+
 export default {
 	components: {VideoCard},
 	data() {
@@ -154,9 +161,15 @@ export default {
 			this.$store.commit('videos', data.data.videos);
 		},
 		auth() {
-			const netlifyIdentity = require('netlify-identity-widget');
-			netlifyIdentity.init();
-			netlifyIdentity.open();
+			if (!this.$store.state.user) {
+				netlifyIdentity.open();
+				// NetlifyIdentity.on('login', user => console.log('login', user));
+			}
+		},
+		logout() {
+			netlifyIdentity.logout();
+			// NetlifyIdentity.on('logout', user => console.log('login', user));
+			// this.$store.commit('user', null);
 		}
 	}
 };
