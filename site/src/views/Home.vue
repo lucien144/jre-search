@@ -16,9 +16,13 @@
 							<v-btn to="/about">About</v-btn>
 							<v-btn
 								v-if="$store.state.user"
+								:loading="isLoadingAuth"
+								:disabled="isLoadingAuth"
 								@click.native="logout()">Logout</v-btn>
 							<v-btn
 								v-else
+								:loading="isLoadingAuth"
+								:disabled="isLoadingAuth"
 								@click.native="auth()">Sign In/Up</v-btn>
 						</v-layout>
 					</v-flex>
@@ -134,7 +138,10 @@ export default {
 			host: '',
 			selectedHost: null,
 			keyword: '',
-			selectedKeyword: null
+			selectedKeyword: null,
+
+			// Toggle. True if authorization process is running atm.
+			isLoadingAuth: false
 		};
 	},
 	watch: {
@@ -161,15 +168,23 @@ export default {
 			this.$store.commit('videos', data.data.videos);
 		},
 		auth() {
+			const self = this;
 			if (!this.$store.state.user) {
+				netlifyIdentity.on('login', user => {
+					self.$store.commit('user', user);
+					netlifyIdentity.close();
+				});
 				netlifyIdentity.open();
-				// NetlifyIdentity.on('login', user => console.log('login', user));
 			}
 		},
 		logout() {
+			const self = this;
+			netlifyIdentity.on('logout', user => {
+				self.$store.commit('user', user);
+				self.isLoadingAuth = false;
+			});
+			self.isLoadingAuth = true;
 			netlifyIdentity.logout();
-			// NetlifyIdentity.on('logout', user => console.log('login', user));
-			// this.$store.commit('user', null);
 		}
 	}
 };
