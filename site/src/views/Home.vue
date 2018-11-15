@@ -44,7 +44,7 @@
 							item-value="_id"
 							label="Find a host"
 							placeholder="Elon Musk"
-							prepend-icon="mdi-database-search">
+							prepend-icon="face">
 							<template
 								slot="item"
 								slot-scope="{ item, tile }"
@@ -72,7 +72,7 @@
 							item-value="_id"
 							label="Search for a topic or keyword"
 							placeholder="neuroscientist"
-							prepend-icon="mdi-database-search">
+							prepend-icon="wb_incandescent">
 							<template
 								slot="item"
 								slot-scope="{ item, tile }"
