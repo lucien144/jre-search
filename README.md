@@ -36,3 +36,5 @@ MONGO_DBNAME=jre-search
 | `/hosts?page=N` | List of all hosts along with videos with pagination. |
 | `/hosts?search=al` | Search for hosts with name "AL..." |
 | `/hosts/:id` | Detail of the host. |
+| `/hosts/top` | List of hosts ordered by count. |
+| `/stats` | Statistics. |

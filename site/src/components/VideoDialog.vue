@@ -4,7 +4,11 @@
 		v-model="$store.state.video"
 		@input="v => v || $store.commit('video', null)">
 		<v-card>
-			<v-progress-circular :size="50" color="primary" indeterminate class="loader"></v-progress-circular>
+			<v-progress-circular
+				:size="50"
+				color="primary"
+				indeterminate
+				class="loader"/>
 			<iframe
 				:src="`https://www.youtube.com/embed/${$store.state.video.id}?autoplay=1`"
 				type="text/html"
@@ -16,7 +20,7 @@
 <script>
 export default {
 
-}
+};
 </script>
 
 <style scoped lang="less">

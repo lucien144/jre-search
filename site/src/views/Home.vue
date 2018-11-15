@@ -95,14 +95,14 @@ import VideoCard from '../components/VideoCard.vue';
 import VideoDialog from '../components/VideoDialog.vue';
 
 export default {
-	components: { AppHeader, VideoCard, VideoDialog },
+	components: {AppHeader, VideoCard, VideoDialog},
 	data() {
 		return {
 			videos: [],
 			host: '',
 			selectedHost: null,
 			keyword: '',
-			selectedKeyword: null,
+			selectedKeyword: null
 		};
 	},
 	watch: {
