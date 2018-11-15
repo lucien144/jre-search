@@ -109,30 +109,19 @@
 				</v-flex>
 			</v-layout>
 		</v-container>
-		<v-dialog
-			v-if="$store.state.video"
-			v-model="$store.state.video"
-			@input="v => v || $store.commit('video', null)">
-			<v-card>
-				<iframe
-					:src="`https://www.youtube.com/embed/${$store.state.video.id}?autoplay=1`"
-					type="text/html"
-					width="100%"
-					height="360"
-					frameborder="0"/>
-			</v-card>
-		</v-dialog>
+		<video-dialog/>
 	</div>
 </template>
 
 <script>
 import axios from 'axios';
 import VideoCard from '../components/VideoCard.vue';
+import VideoDialog from '../components/VideoDialog.vue';
 
 const netlifyIdentity = require('netlify-identity-widget');
 
 export default {
-	components: {VideoCard},
+	components: { VideoCard, VideoDialog },
 	data() {
 		return {
 			videos: [],
