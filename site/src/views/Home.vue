@@ -91,6 +91,7 @@
 					</v-card-text>
 				</v-flex>
 			</v-layout>
+			<v-progress-linear :indeterminate="isLoadingVideos"/>
 		</v-card>
 
 		<v-container
@@ -141,7 +142,10 @@ export default {
 			selectedKeyword: null,
 
 			// Toggle. True if authorization process is running atm.
-			isLoadingAuth: false
+			isLoadingAuth: false,
+
+			// Toggle. True if list of videos being loaded.
+			isLoadingVideos: false
 		};
 	},
 	watch: {
@@ -160,8 +164,10 @@ export default {
 	},
 
 	async created() {
+		this.isLoadingVideos = true;
 		const {data} = await axios.get(`${this.$store.getters.API}/videos`);
 		this.$store.commit('videos', data.data);
+		this.isLoadingVideos = false;
 	},
 
 	methods: {
@@ -170,8 +176,10 @@ export default {
 			this.videos = data.data;
 		},
 		async loadDetail(id, type) {
+			this.isLoadingVideos = true;
 			const {data} = await axios.get(`${this.$store.getters.API}/${type}/${id}`);
 			this.$store.commit('videos', data.data.videos);
+			this.isLoadingVideos = false;
 		},
 
 		// Sign in/up
