@@ -2,32 +2,7 @@
 	<div
 		class="home">
 		<v-card>
-			<v-card-title class="display-1 white font-weight-black">
-				<v-layout
-					row
-					nowrap
-					align-center>
-					<v-flex xs9>Joe Rogan Experience on Steroids 💊</v-flex>
-					<v-flex xs3>
-						<v-layout
-							row
-							justify-end>
-							<v-btn to="/statistics">Statistics</v-btn>
-							<v-btn to="/about">About</v-btn>
-							<v-btn
-								v-if="$store.state.user"
-								:loading="isLoadingAuth"
-								:disabled="isLoadingAuth"
-								@click.native="logout()">Logout</v-btn>
-							<v-btn
-								v-else
-								:loading="isLoadingAuth"
-								:disabled="isLoadingAuth"
-								@click.native="auth()">Sign In/Up</v-btn>
-						</v-layout>
-					</v-flex>
-				</v-layout>
-			</v-card-title>
+			<app-header/>
 			<v-card-text>
 				Explore videos by entering host or either keyword/topic.
 			</v-card-text>
@@ -115,13 +90,12 @@
 
 <script>
 import axios from 'axios';
+import AppHeader from '../components/AppHeader.vue';
 import VideoCard from '../components/VideoCard.vue';
 import VideoDialog from '../components/VideoDialog.vue';
 
-const netlifyIdentity = require('netlify-identity-widget');
-
 export default {
-	components: { VideoCard, VideoDialog },
+	components: { AppHeader, VideoCard, VideoDialog },
 	data() {
 		return {
 			videos: [],
@@ -129,12 +103,6 @@ export default {
 			selectedHost: null,
 			keyword: '',
 			selectedKeyword: null,
-
-			// Toggle. True if authorization process is running atm.
-			isLoadingAuth: false,
-
-			// Toggle. True if list of videos being loaded.
-			isLoadingVideos: false
 		};
 	},
 	watch: {
@@ -169,29 +137,6 @@ export default {
 			const {data} = await axios.get(`${this.$store.getters.API}/${type}/${id}`);
 			this.$store.commit('videos', data.data.videos);
 			this.isLoadingVideos = false;
-		},
-
-		// Sign in/up
-		auth() {
-			const self = this;
-			if (!this.$store.state.user) {
-				netlifyIdentity.on('login', user => {
-					self.$store.commit('user', user);
-					netlifyIdentity.close();
-				});
-				netlifyIdentity.open();
-			}
-		},
-
-		// Logout
-		logout() {
-			const self = this;
-			netlifyIdentity.on('logout', user => {
-				self.$store.commit('user', user);
-				self.isLoadingAuth = false;
-			});
-			self.isLoadingAuth = true;
-			netlifyIdentity.logout();
 		}
 	}
 };
