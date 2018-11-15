@@ -12,27 +12,6 @@ const hosts = {};
 const tags = {};
 const titles = [];
 
-const parse = video => {
-	let {title, description} = video;
-	title = helpers.parseTitle(title.original);
-
-	// Titles.filter(val => val.episode === title.episode).length === 0
-	// 👉 Some episodes are doubled in the list of videos, therefore we need to filter them out.
-	if (title && titles.filter(val => val.episode === title.episode).length === 0) {
-		video.title = title;
-		titles.push(title);
-		title.hosts.forEach(host => {
-			helpers.saveKeyword(host, hosts, video);
-			description = description.replace(host, '');
-		});
-
-		description = helpers.parseQuotes(description, keywords);
-		description = helpers.parseEntities(description, video, keywords);
-		helpers.findNouns(description, keywords, video);
-		helpers.findNouns(description, tags, video);
-	}
-};
-
 (async () => {
 	await client.connect();
 	const db = client.db(process.env.MONGO_DBNAME);
@@ -42,7 +21,12 @@ const parse = video => {
 		while (await videos.hasNext()) {
 			// eslint-disable-next-line no-await-in-loop
 			const video = await videos.next();
-			parse(video);
+
+			// 👉 Some episodes are doubled in the list of videos, therefore we need to filter them out.
+			if (video.title && titles.filter(val => val.episode === video.title.episode).length === 0) {
+				titles.push(video.title.original);
+				helpers.parseVideo(video, hosts, keywords, tags);
+			}
 		}
 
 		// Mongo: Save all dictionaries to collections
