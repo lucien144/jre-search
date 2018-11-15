@@ -14,7 +14,7 @@ const titles = [];
 
 const parse = video => {
 	let {title, description} = video;
-	title = helpers.parseTitle(title);
+	title = helpers.parseTitle(title.original);
 
 	// Titles.filter(val => val.episode === title.episode).length === 0
 	// 👉 Some episodes are doubled in the list of videos, therefore we need to filter them out.
