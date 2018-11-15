@@ -158,6 +158,12 @@ export default {
 			return val && this.loadDetail(val, 'keywords');
 		}
 	},
+
+	async created() {
+		const {data} = await axios.get(`${this.$store.getters.API}/videos`);
+		this.$store.commit('videos', data.data);
+	},
+
 	methods: {
 		async loadVideos(keyword, type) {
 			const {data} = await axios.get(`${this.$store.getters.API}/${type}?search=${keyword}`);
@@ -167,6 +173,8 @@ export default {
 			const {data} = await axios.get(`${this.$store.getters.API}/${type}/${id}`);
 			this.$store.commit('videos', data.data.videos);
 		},
+
+		// Sign in/up
 		auth() {
 			const self = this;
 			if (!this.$store.state.user) {
@@ -177,6 +185,8 @@ export default {
 				netlifyIdentity.open();
 			}
 		},
+
+		// Logout
 		logout() {
 			const self = this;
 			netlifyIdentity.on('logout', user => {

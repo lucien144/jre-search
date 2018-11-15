@@ -8,6 +8,8 @@ const {MongoClient} = require('mongodb');
 
 const client = new MongoClient(process.env.MONGO_DSN, {useNewUrlParser: true});
 
+const helpers = require('./helpers');
+
 const syncData = async () => {
 	console.time('execution');
 	await client.connect();
@@ -33,7 +35,12 @@ const syncData = async () => {
 		results.forEach(video => {
 			if (video.title === undefined) {
 				results = false;
-			} else { // If (/^Joe Rogan Experience #(\d*)(\s?[-]{0,}\s?)(.*)$/i.test(video.title)) {
+			} else {
+				const title = helpers.parseTitle(video.title);
+				if (title === false) {
+					return;
+				}
+				video.title = title;
 				db.collection('videos').insertOne(video);
 				console.log(video.title);
 				console.log(video.publishedAt);
