@@ -24,6 +24,7 @@ MONGO_DBNAME=jre-search
 | `node cli/download.js` | Downloads all JRE videos from YouTube. |
 | `node cli/analyse.js` | Analyse the downloaded videos and saves hosts & keywords. |
 | `npm run server` | Run the API server. |
+| `npm run site` | Run the API server. |
 | `npm run coverage` | Upload coverage to Coveralls.io (needs `.coveralls.yml` for local run). |
 | `npm run ava` | Run tests only with ava. |
 | `npm test` | Run tests with XO lint and code coverage. |
