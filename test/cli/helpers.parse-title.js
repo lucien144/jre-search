@@ -32,3 +32,11 @@ test('dashes, parts as word and multiple spaces', t => {
 	t.is(title.hosts.length, 1);
 	t.is(title.hosts[0], 'Bruce Lipton PHD');
 });
+
+test('mma show', t => {
+	const title = parseTitle('JRE MMA Show #41 with TJ Dillashaw & Duane Ludwig');
+	t.is(title.episode, 'MMA41');
+	t.is(title.hosts.length, 2);
+	t.is(title.hosts[0], 'TJ Dillashaw');
+	t.is(title.hosts[1], 'Duane Ludwig');
+});

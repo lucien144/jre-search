@@ -31,7 +31,7 @@ export const parseVideo = (video, hosts, keywords, tags) => {
  * @returns {false} If the analyse fails.
  */
 export const parseTitle = title => {
-	const matches = title.match(/^Joe Rogan Experience #(?<episode>\d*)(\s{0,}-{0,}\s{0,})(?<hosts>.*?)(?<part>\s?\(part\s(\d+|\w+)\))?$/i);
+	let matches = title.match(/^Joe Rogan Experience #(?<episode>\d*)(\s{0,}-{0,}\s{0,})(?<hosts>.*?)(?<part>\s?\(part\s(\d+|\w+)\))?$/i);
 	if (matches) {
 		return {
 			original: title,
@@ -40,6 +40,17 @@ export const parseTitle = title => {
 			part: matches.groups.part
 		};
 	}
+
+	matches = title.match(/^JRE MMA Show #(?<episode>\d*)(\s{0,}(-|with){0,}\s{0,})(?<hosts>.*?)$/i);
+	if (matches) {
+		return {
+			original: title,
+			episode: `MMA${matches.groups.episode}`,
+			hosts: matches.groups.hosts.split(/[,&]+|\sand\s/).map(el => S(el).trim().s), // eslint-disable-line new-cap
+			part: null
+		};
+	}
+
 	return false;
 };
 
