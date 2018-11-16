@@ -10,7 +10,9 @@
 					<v-layout
 						row
 						justify-end>
-						<v-btn @click.native="openStats = !openStats">Statistics</v-btn>
+						<v-btn
+							:loading="stats === null"
+							@click.native="openStats = !openStats">Statistics</v-btn>
 						<v-btn to="/about">About</v-btn>
 						<v-btn
 							v-if="$store.state.user"
@@ -27,12 +29,59 @@
 			</v-layout>
 		</v-card-title>
 		<v-dialog
+			v-if="stats"
 			v-model="openStats"
-			@input="v => v || (openStats = false)">>
+			@input="v => v || (openStats = false)">
 			<v-card>
-				<h2>Statistics</h2>
-				<p>Total hosts: {{ stats.hosts }}</p>
-				<p>Total keywords: {{ stats.keywords }}</p>
+				<v-card-title class="headline">Statistics</v-card-title>
+				<v-card-text>
+					<v-container grid-list-md>
+						<v-layout>
+							<v-flex xs4>
+								<v-card>
+									<v-card-title><h4>Top hosts ({{ stats.hosts.count }} total)</h4></v-card-title>
+									<v-divider/>
+									<v-list dense>
+										<v-list-tile
+											v-for="(item, index) in stats.hosts.top"
+											:key="index">
+											<v-list-tile-content>{{ item.count }}</v-list-tile-content>
+											<v-list-tile-content>{{ item.original }}</v-list-tile-content>
+										</v-list-tile>
+									</v-list>
+								</v-card>
+							</v-flex>
+							<v-flex xs4>
+								<v-card>
+									<v-card-title><h4>Top keywords ({{ stats.keywords.count }} total)</h4></v-card-title>
+									<v-divider/>
+									<v-list dense>
+										<v-list-tile
+											v-for="(item, index) in stats.keywords.top"
+											:key="index">
+											<v-list-tile-content>{{ item.count }}</v-list-tile-content>
+											<v-list-tile-content>{{ item.original }}</v-list-tile-content>
+										</v-list-tile>
+									</v-list>
+								</v-card>
+							</v-flex>
+							<v-flex xs4>
+								<v-card>
+									<v-card-title><h4>Top video ({{ stats.keywords.count }} total)</h4></v-card-title>
+									<v-divider/>
+									<v-list dense>
+										<v-list-tile
+											v-for="(item, index) in stats.hosts.top"
+											:key="index">
+											<v-list-tile-content>{{ item.count }}</v-list-tile-content>
+											<v-list-tile-content>{{ item.original }}</v-list-tile-content>
+										</v-list-tile>
+									</v-list>
+								</v-card>
+							</v-flex>
+						</v-layout>
+					</v-container>
+				</v-card-text>
 			</v-card>
 		</v-dialog>
 	</div>
@@ -56,7 +105,7 @@ export default {
 			isLoadingVideos: false,
 
 			// Statistics information
-			stats: {}
+			stats: null
 		};
 	},
 	async created() {
