@@ -35,7 +35,9 @@
 			<v-card>
 				<v-card-title class="headline">Statistics</v-card-title>
 				<v-card-text>
-					<v-container grid-list-md>
+					<v-container
+						fluid
+						grid-list-lg>
 						<v-layout>
 							<v-flex xs4>
 								<v-card>
@@ -44,9 +46,9 @@
 									<v-list dense>
 										<v-list-tile
 											v-for="(item, index) in stats.hosts.top"
-											:key="index">
-											<v-list-tile-content>{{ item.count }}</v-list-tile-content>
-											<v-list-tile-content>{{ item.original }}</v-list-tile-content>
+											:key="index"
+											dark>
+											<v-list-tile-content>{{ item.original }} ({{ item.count }}&times;)</v-list-tile-content>
 										</v-list-tile>
 									</v-list>
 								</v-card>
@@ -59,22 +61,26 @@
 										<v-list-tile
 											v-for="(item, index) in stats.keywords.top"
 											:key="index">
-											<v-list-tile-content>{{ item.count }}</v-list-tile-content>
-											<v-list-tile-content>{{ item.original }}</v-list-tile-content>
+											<v-list-tile-content>{{ item.original }} ({{ item.count }}&times;)</v-list-tile-content>
 										</v-list-tile>
 									</v-list>
 								</v-card>
 							</v-flex>
 							<v-flex xs4>
 								<v-card>
-									<v-card-title><h4>Top video ({{ stats.keywords.count }} total)</h4></v-card-title>
+									<v-card-title><h4>Top videos ({{ stats.videos.count }} total)</h4></v-card-title>
 									<v-divider/>
 									<v-list dense>
 										<v-list-tile
-											v-for="(item, index) in stats.hosts.top"
+											v-for="(item, index) in stats.videos.top"
 											:key="index">
-											<v-list-tile-content>{{ item.count }}</v-list-tile-content>
-											<v-list-tile-content>{{ item.original }}</v-list-tile-content>
+
+											<v-list-tile-content>
+												#{{ item.title.episode }} - {{ item.title.hosts.join(', ') }}
+											</v-list-tile-content>
+											<v-list-tile-content class="align-end">
+												{{ item.statistics.viewCount }}
+											</v-list-tile-content>
 										</v-list-tile>
 									</v-list>
 								</v-card>
