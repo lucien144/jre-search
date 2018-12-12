@@ -1,6 +1,7 @@
 {
   "private": true,
   "dependencies": {
+    "body-parser": "^1.18.3",
     "compendium-js": "^0.0.31",
     "dotenv": "^6.0.0",
     "esm": "^3.0.84",

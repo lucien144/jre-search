@@ -16,13 +16,13 @@
 			</v-card-text>
 			<v-card-actions>
 				<v-spacer/>
-				<v-btn icon>
-					<v-icon>favorite</v-icon>
+				<v-btn icon @click.stop="favorite">
+					<v-icon disabled>favorite</v-icon>
 				</v-btn>
-				<v-btn icon>
-					<v-icon>bookmark</v-icon>
+				<v-btn icon @click.stop="watch">
+					<v-icon :disabled="!isWatched">visibility</v-icon>
 				</v-btn>
-				<v-btn icon>
+				<v-btn icon @click.stop="share">
 					<v-icon>share</v-icon>
 				</v-btn>
 			</v-card-actions>
@@ -36,6 +36,22 @@ export default {
 		video: {
 			type: Object,
 			required: true
+		}
+	},
+	computed: {
+		isWatched() {
+			return this.$store.state.user.watched.indexOf(this.video.id) > -1;
+		}
+	},
+	methods: {
+		favorite() {
+			this.$store.dispatch('favorite');
+		},
+		watch() {
+			this.$store.dispatch('watch', this.video);
+		},
+		share() {
+			console.log('share');
 		}
 	}
 };

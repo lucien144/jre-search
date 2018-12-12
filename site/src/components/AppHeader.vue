@@ -15,7 +15,7 @@
 							@click.native="openStats = !openStats">Statistics</v-btn>
 						<v-btn to="/about">About</v-btn>
 						<v-btn
-							v-if="$store.state.user"
+							v-if="$store.state.user.identity"
 							:loading="isLoadingAuth"
 							:disabled="isLoadingAuth"
 							@click.native="logout()">Logout</v-btn>
@@ -48,7 +48,7 @@
 											v-for="(item, index) in stats.hosts.top"
 											:key="index"
 											dark>
-											<v-list-tile-content>{{ item.original }} ({{ item.count }}&times;)</v-list-tile-content>
+											<v-list-tile-content><a href="#">{{ item.original }} ({{ item.count }}&times;)</a></v-list-tile-content>
 										</v-list-tile>
 									</v-list>
 								</v-card>
@@ -122,7 +122,7 @@ export default {
 		// Sign in/up
 		auth() {
 			const self = this;
-			if (!this.$store.state.user) {
+			if (!this.$store.state.user.identity) {
 				netlifyIdentity.on('login', user => {
 					self.$store.commit('user', user);
 					netlifyIdentity.close();

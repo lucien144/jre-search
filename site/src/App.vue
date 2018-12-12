@@ -12,7 +12,7 @@ const netlifyIdentity = require('netlify-identity-widget');
 export default {
 	mounted() {
 		netlifyIdentity.init();
-		this.$store.commit('user', netlifyIdentity.currentUser());
+		this.$store.dispatch('updateUser', netlifyIdentity.currentUser());
 	}
 };
 </script>
