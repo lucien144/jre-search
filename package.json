@@ -7,7 +7,7 @@
     "esm": "^3.0.84",
     "express": "^4.16.4",
     "mongodb": "^3.1.6",
-    "nodemon": "^1.18.4",
+    "nodemon": "^1.18.8",
     "pos": "^0.4.2",
     "simple-youtube-api": "^5.0.2",
     "string": "^3.3.3",
