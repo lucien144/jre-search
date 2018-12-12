@@ -35,10 +35,10 @@ export default new Vuex.Store({
 		}
 	},
 	actions: {
-		async updateUser({state, commit, getters}, user) {
+		async updateUser({commit, getters}, user) {
 			commit('user', user);
 			if (user) {
-				const { data } = await axios.get(`${getters.API}/users/${user.id}`);
+				const {data} = await axios.get(`${getters.API}/users/${user.id}`);
 				commit('SET_USER_WATCHED', data.data.watched);
 			}
 		},
@@ -51,9 +51,9 @@ export default new Vuex.Store({
 				netlifyIdentity.open();
 			}
 		},
-		async watch({ state, dispatch, getters, commit }, video) {
+		async watch({state, dispatch, getters, commit}, video) {
 			if (state.user.identity) {
-				const { data } = await axios.post(`${getters.API}/users/watch`, {
+				const {data} = await axios.post(`${getters.API}/users/watch`, {
 					user: state.user.identity.id,
 					video: video.id
 				});

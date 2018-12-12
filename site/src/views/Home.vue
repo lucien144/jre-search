@@ -84,6 +84,7 @@
 				</v-flex>
 			</v-layout>
 		</v-container>
+		<v-btn>Load More</v-btn>
 		<video-dialog/>
 	</div>
 </template>

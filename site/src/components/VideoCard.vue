@@ -16,13 +16,19 @@
 			</v-card-text>
 			<v-card-actions>
 				<v-spacer/>
-				<v-btn icon @click.stop="favorite">
+				<v-btn
+					icon
+					@click.stop="favorite">
 					<v-icon disabled>favorite</v-icon>
 				</v-btn>
-				<v-btn icon @click.stop="watch">
+				<v-btn
+					icon
+					@click.stop="watch">
 					<v-icon :disabled="!isWatched">visibility</v-icon>
 				</v-btn>
-				<v-btn icon @click.stop="share">
+				<v-btn
+					icon
+					@click.stop="share">
 					<v-icon>share</v-icon>
 				</v-btn>
 			</v-card-actions>
