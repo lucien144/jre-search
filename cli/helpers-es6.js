@@ -10,7 +10,7 @@ const compendium = require('compendium-js');
  * @param {object} tags Dictionary with tags.
  */
 export const parseVideo = (video, hosts, keywords, tags) => {
-	let {title, description} = video;
+	let { title, description } = video;
 
 	title.hosts.forEach(host => {
 		exports.saveKeyword(host, hosts, video);
@@ -31,22 +31,30 @@ export const parseVideo = (video, hosts, keywords, tags) => {
  * @returns {false} If the analyse fails.
  */
 export const parseTitle = title => {
-	let matches = title.match(/^Joe Rogan Experience #(?<episode>\d*)(\s{0,}-{0,}\s{0,})(?<hosts>.*?)(?<part>\s?\(part\s(\d+|\w+)\))?$/i);
+	let matches = title.match(
+		/^Joe Rogan Experience #(?<episode>\d*)(\s{0,}-{0,}\s{0,})(?<hosts>.*?)(?<part>\s?\(part\s(\d+|\w+)\))?$/i
+	);
 	if (matches) {
 		return {
 			original: title,
 			episode: Number(matches.groups.episode),
-			hosts: matches.groups.hosts.split(/[,&]+|\sand\s/).map(el => S(el).trim().s), // eslint-disable-line new-cap
+			hosts: matches.groups.hosts
+				.split(/[,&]+|\sand\s/)
+				.map(el => S(el).trim().s), // eslint-disable-line new-cap
 			part: matches.groups.part
 		};
 	}
 
-	matches = title.match(/^JRE MMA Show #(?<episode>\d*)(\s{0,}(-|with){0,}\s{0,})(?<hosts>.*?)$/i);
+	matches = title.match(
+		/^JRE MMA Show #(?<episode>\d*)(\s{0,}(-|with){0,}\s{0,})(?<hosts>.*?)$/i
+	);
 	if (matches) {
 		return {
 			original: title,
 			episode: `MMA${matches.groups.episode}`,
-			hosts: matches.groups.hosts.split(/[,&]+|\sand\s/).map(el => S(el).trim().s), // eslint-disable-line new-cap
+			hosts: matches.groups.hosts
+				.split(/[,&]+|\sand\s/)
+				.map(el => S(el).trim().s), // eslint-disable-line new-cap
 			part: null
 		};
 	}
@@ -61,7 +69,9 @@ export const parseTitle = title => {
  * @returns {string} Webalized title string
  */
 export const getId = title => {
-	const id = S(title).trim().s.toLowerCase(); // eslint-disable-line new-cap
+	const id = S(title)
+		.trim()
+		.s.toLowerCase(); // eslint-disable-line new-cap
 	return id.replace(/[^\w]/gi, '');
 };
 
@@ -94,7 +104,10 @@ export const saveKeyword = (keyword, dict, video) => {
  * @returns {string} Updated description without parsed keywords.
  */
 export const parseQuotes = (description, dictionary) => {
-	const regex = new RegExp('("(?<title>.+?)")|((?=[^\w]|\A)\'(?<title2>.+?)\'(?=[^s]))', 'gms'); // eslint-disable-line no-useless-escape
+	const regex = new RegExp(
+		'("(?<title>.+?)")|((?=[^w]|A)\'(?<title2>.+?)\'(?=[^s]))',
+		'gms'
+	); // eslint-disable-line no-useless-escape
 	let match;
 	const matches = [];
 	while ((match = regex.exec(description)) !== null) {

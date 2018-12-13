@@ -1,30 +1,38 @@
-const {ObjectID} = require('mongodb');
+const { ObjectID } = require('mongodb');
 
-const {sendJson, searchCollection, fetchCollection} = require('../helpers.js');
+const {
+	sendJson,
+	searchCollection,
+	fetchCollection
+} = require('../helpers.js');
 
 const limit = 20;
 
-module.exports = function (app, db) {
+module.exports = function(app, db) {
 	app.get('/hosts', (req, res) => {
-		const {search, page = 1} = req.query;
+		const { search, page = 1 } = req.query;
 
 		if (search) {
-			searchCollection(db.collection('hosts'), res, {search, page, limit});
+			searchCollection(db.collection('hosts'), res, {
+				search,
+				page,
+				limit
+			});
 			return;
 		}
 
-		fetchCollection(db.collection('hosts'), res, {page, limit});
+		fetchCollection(db.collection('hosts'), res, { page, limit });
 	});
 
 	app.get('/hosts/top', (req, res) => {
-		fetchCollection(db.collection('hosts'), res, {sort: {count: -1}});
+		fetchCollection(db.collection('hosts'), res, { sort: { count: -1 } });
 	});
 
 	app.get('/hosts/:id', (req, res) => {
-		const {id} = req.params;
-		const details = {_id: new ObjectID(id)};
+		const { id } = req.params;
+		const details = { _id: new ObjectID(id) };
 		db.collection('hosts').findOne(details, (err, data) => {
-			sendJson({data, limit, res, err});
+			sendJson({ data, limit, res, err });
 		});
 	});
 };

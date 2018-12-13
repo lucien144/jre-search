@@ -1,7 +1,7 @@
 <template>
-	<v-app>
-		<v-container fluid>
-			<nuxt />
-		</v-container>
-	</v-app>
+	<VApp>
+		<VContainer fluid>
+			<Nuxt />
+		</VContainer>
+	</VApp>
 </template>

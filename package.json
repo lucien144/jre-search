@@ -34,6 +34,8 @@
   "devDependencies": {
     "ava": "^0.25.0",
     "coveralls": "^3.0.2",
+    "eslint": "^5.10.0",
+    "eslint-plugin-vue": "^5.0.0",
     "nodemon": "^1.11.0",
     "nyc": "^13.1.0",
     "stylus": "^0.54.5",
@@ -44,9 +46,6 @@
     "extensions": [
       "vue"
     ],
-    "parserOptions": {
-      "parser": "babel-eslint"
-    },
     "extends": [
       "plugin:vue/recommended",
       "plugin:prettier/recommended",
@@ -55,6 +54,7 @@
     ],
     "settings": {
       "import/core-modules": [
+		"vue",
         "vuex"
       ]
     },

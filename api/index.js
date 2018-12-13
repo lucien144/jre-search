@@ -1,12 +1,14 @@
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
-const {MongoClient} = require('mongodb');
+const { MongoClient } = require('mongodb');
 
-const client = new MongoClient(process.env.MONGO_DSN, {useNewUrlParser: true});
+const client = new MongoClient(process.env.MONGO_DSN, {
+	useNewUrlParser: true
+});
 
 const app = express();
-module.exports = { path: '/api', handler: app }
+module.exports = { path: '/api', handler: app };
 
 client.connect((err, client) => {
 	const db = client.db(process.env.MONGO_DBNAME);
@@ -14,7 +16,10 @@ client.connect((err, client) => {
 	if (process.env.ENVIRONMENT === 'development') {
 		app.use((req, res, next) => {
 			res.header('Access-Control-Allow-Origin', 'http://localhost:8080');
-			res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+			res.header(
+				'Access-Control-Allow-Headers',
+				'Origin, X-Requested-With, Content-Type, Accept'
+			);
 			next();
 		});
 	}

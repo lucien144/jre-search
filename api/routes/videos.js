@@ -1,7 +1,9 @@
-const {fetchCollection} = require('../helpers.js');
+const { fetchCollection } = require('../helpers.js');
 
-module.exports = function (app, db) {
+module.exports = function(app, db) {
 	app.get('/videos', (req, res) => {
-		fetchCollection(db.collection('videos'), res, {sort: {publishedAt: -1}});
+		fetchCollection(db.collection('videos'), res, {
+			sort: { publishedAt: -1 }
+		});
 	});
 };

@@ -4,9 +4,11 @@ const YouTube = require('simple-youtube-api');
 
 const API = new YouTube(process.env.API_KEY);
 
-const {MongoClient} = require('mongodb');
+const { MongoClient } = require('mongodb');
 
-const client = new MongoClient(process.env.MONGO_DSN, {useNewUrlParser: true});
+const client = new MongoClient(process.env.MONGO_DSN, {
+	useNewUrlParser: true
+});
 
 const helpers = require('./helpers');
 
@@ -55,13 +57,18 @@ const syncData = async () => {
 
 				// Skip duplicates
 				const id = helpers.getId(title.original);
-				if (episodes.indexOf(title.episode) > -1 || titles.indexOf(id) > -1) {
+				if (
+					episodes.indexOf(title.episode) > -1 ||
+					titles.indexOf(id) > -1
+				) {
 					return;
 				}
 				titles.push(title.original);
 				episodes.push(title.episode);
 
-				const {raw} = await API.getVideoByID(video.id, {part: 'statistics'});
+				const { raw } = await API.getVideoByID(video.id, {
+					part: 'statistics'
+				});
 				video.statistics = {
 					viewCount: parseInt(raw.statistics.viewCount, 10),
 					likeCount: parseInt(raw.statistics.likeCount, 10),

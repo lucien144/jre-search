@@ -1,95 +1,120 @@
 <template>
 	<div>
-		<v-card-title class="display-1 white font-weight-black">
-			<v-layout
+		<VCardTitle class="display-1 white font-weight-black">
+			<VLayout
 				row
 				nowrap
-				align-center>
-				<v-flex xs9>Joe Rogan Experience on steroids 💊</v-flex>
-				<v-flex xs3>
-					<v-layout
+				align-center
+			>
+				<VFlex xs9>
+					Joe Rogan Experience on steroids 💊
+				</VFlex>
+				<VFlex xs3>
+					<VLayout
 						row
-						justify-end>
-						<v-btn
+						justify-end
+					>
+						<VBtn
 							:loading="stats === null"
-							@click.native="openStats = !openStats">Statistics</v-btn>
-						<v-btn to="/about">About</v-btn>
-						<v-btn
+							@click.native="openStats = !openStats"
+						>
+							Statistics
+						</VBtn>
+						<VBtn to="/about">
+							About
+						</VBtn>
+						<VBtn
 							v-if="$store.state.user.identity"
 							:loading="isLoadingAuth"
 							:disabled="isLoadingAuth"
-							@click.native="logout()">Logout</v-btn>
-						<v-btn
+							@click.native="logout()"
+						>
+							Logout
+						</VBtn>
+						<VBtn
 							v-else
 							:loading="isLoadingAuth"
 							:disabled="isLoadingAuth"
-							@click.native="auth()">Sign In/Up</v-btn>
-					</v-layout>
-				</v-flex>
-			</v-layout>
-		</v-card-title>
-		<v-dialog
+							@click.native="auth()"
+						>
+							Sign In/Up
+						</VBtn>
+					</VLayout>
+				</VFlex>
+			</VLayout>
+		</VCardTitle>
+		<VDialog
 			v-if="stats"
 			v-model="openStats"
-			@input="v => v || (openStats = false)">
-			<v-card>
-				<v-card-title class="headline">Statistics</v-card-title>
-				<v-card-text>
-					<v-container
+			@input="v => v || (openStats = false)"
+		>
+			<VCard>
+				<VCardTitle class="headline">
+					Statistics
+				</VCardTitle>
+				<VCardText>
+					<VContainer
 						fluid
-						grid-list-lg>
-						<v-layout>
-							<v-flex xs4>
-								<v-card>
-									<v-card-title><h4>Top hosts ({{ stats.hosts.count }} total)</h4></v-card-title>
-									<v-divider/>
-									<v-list dense>
-										<v-list-tile
+						grid-list-lg
+					>
+						<VLayout>
+							<VFlex xs4>
+								<VCard>
+									<VCardTitle><h4>Top hosts ({{ stats.hosts.count }} total)</h4></VCardTitle>
+									<VDivider />
+									<VList dense>
+										<VListTile
 											v-for="(item, index) in stats.hosts.top"
 											:key="index"
-											dark>
-											<v-list-tile-content><a href="#">{{ item.original }} ({{ item.count }}&times;)</a></v-list-tile-content>
-										</v-list-tile>
-									</v-list>
-								</v-card>
-							</v-flex>
-							<v-flex xs4>
-								<v-card>
-									<v-card-title><h4>Top keywords ({{ stats.keywords.count }} total)</h4></v-card-title>
-									<v-divider/>
-									<v-list dense>
-										<v-list-tile
+											dark
+										>
+											<VListTileContent>
+												<a href="#">
+													{{ item.original }} ({{ item.count }}&times;)
+												</a>
+											</VListTileContent>
+										</VListTile>
+									</VList>
+								</VCard>
+							</VFlex>
+							<VFlex xs4>
+								<VCard>
+									<VCardTitle><h4>Top keywords ({{ stats.keywords.count }} total)</h4></VCardTitle>
+									<VDivider />
+									<VList dense>
+										<VListTile
 											v-for="(item, index) in stats.keywords.top"
-											:key="index">
-											<v-list-tile-content>{{ item.original }} ({{ item.count }}&times;)</v-list-tile-content>
-										</v-list-tile>
-									</v-list>
-								</v-card>
-							</v-flex>
-							<v-flex xs4>
-								<v-card>
-									<v-card-title><h4>Top videos ({{ stats.videos.count }} total)</h4></v-card-title>
-									<v-divider/>
-									<v-list dense>
-										<v-list-tile
+											:key="index"
+										>
+											<VListTileContent>{{ item.original }} ({{ item.count }}&times;)</VListTileContent>
+										</VListTile>
+									</VList>
+								</VCard>
+							</VFlex>
+							<VFlex xs4>
+								<VCard>
+									<VCardTitle><h4>Top videos ({{ stats.videos.count }} total)</h4></VCardTitle>
+									<VDivider />
+									<VList dense>
+										<VListTile
 											v-for="(item, index) in stats.videos.top"
-											:key="index">
-
-											<v-list-tile-content>
+											:key="index"
+										>
+											<VListTileContent>
 												#{{ item.title.episode }} - {{ item.title.hosts.join(', ') }}
-											</v-list-tile-content>
-											<v-list-tile-content class="align-end">
+											</VListTileContent>
+											<VListTileContent class="align-end">
 												{{ item.statistics.viewCount }}
-											</v-list-tile-content>
-										</v-list-tile>
-									</v-list>
-								</v-card>
-							</v-flex>
-						</v-layout>
-					</v-container>
-				</v-card-text>
-			</v-card>
-		</v-dialog>
+											</VListTileContent>
+										</VListTile>
+									</VList>
+								</VCard>
+							</VFlex>
+						</VLayout>
+					</VContainer>
+				</VCardText>
+			</VCard>
+		</VDialog>
 	</div>
 </template>
 
@@ -113,7 +138,9 @@ export default {
 		};
 	},
 	async created() {
-		const {data} = await this.$axios.$get(`${this.$store.getters.API}/stats`);
+		const { data } = await this.$axios.$get(
+			`${this.$store.getters.API}/stats`
+		);
 		this.stats = data;
 	},
 	methods: {
@@ -144,5 +171,4 @@ export default {
 </script>
 
 <style>
-
 </style>

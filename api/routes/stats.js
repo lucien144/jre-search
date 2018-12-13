@@ -1,6 +1,6 @@
-const {sendJson} = require('../helpers.js');
+const { sendJson } = require('../helpers.js');
 
-module.exports = function (app, db) {
+module.exports = function(app, db) {
 	app.get('/stats', async (req, res) => {
 		const data = {
 			videos: {
@@ -27,9 +27,24 @@ module.exports = function (app, db) {
 			db.collection('videos').countDocuments(),
 			db.collection('hosts').countDocuments(),
 			db.collection('keywords').countDocuments(),
-			db.collection('videos').find().sort({'statistics.viewCount': -1}).limit(20).toArray(),
-			db.collection('hosts').find().sort({count: -1}).limit(20).toArray(),
-			db.collection('keywords').find().sort({count: -1}).limit(20).toArray()
+			db
+				.collection('videos')
+				.find()
+				.sort({ 'statistics.viewCount': -1 })
+				.limit(20)
+				.toArray(),
+			db
+				.collection('hosts')
+				.find()
+				.sort({ count: -1 })
+				.limit(20)
+				.toArray(),
+			db
+				.collection('keywords')
+				.find()
+				.sort({ count: -1 })
+				.limit(20)
+				.toArray()
 		]);
 		data.videos.top.map(a => {
 			a.raw = null;
@@ -45,6 +60,6 @@ module.exports = function (app, db) {
 			a.videos = [];
 			return a;
 		});
-		sendJson({data, res, err: false});
+		sendJson({ data, res, err: false });
 	});
 };
