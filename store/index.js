@@ -1,13 +1,6 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-import axios from 'axios';
-
 const netlifyIdentity = require('netlify-identity-widget');
 
-Vue.use(Vuex);
-
-export default new Vuex.Store({
-	state: {
+export const state = () => ({
 		// List of videos to display
 		videos: [],
 
@@ -19,8 +12,9 @@ export default new Vuex.Store({
 			identity: null,
 			watched: []
 		}
-	},
-	mutations: {
+	});
+
+export const mutations = {
 		videos(state, videos) {
 			state.videos = videos;
 		},
@@ -33,13 +27,13 @@ export default new Vuex.Store({
 		SET_USER_WATCHED(state, watched) {
 			state.user.watched = watched;
 		}
-	},
-	actions: {
+	}
+export const actions = {
 		async updateUser({commit, getters}, user) {
 			commit('user', user);
 			if (user) {
-				const {data} = await axios.get(`${getters.API}/users/${user.id}`);
-				commit('SET_USER_WATCHED', data.data.watched);
+				const {data} = await this.$axios.$get(`${getters.API}/users/${user.id}`);
+				commit('SET_USER_WATCHED', data.watched);
 			}
 		},
 		auth({state, dispatch}) {
@@ -53,23 +47,24 @@ export default new Vuex.Store({
 		},
 		async watch({state, dispatch, getters, commit}, video) {
 			if (state.user.identity) {
-				const {data} = await axios.post(`${getters.API}/users/watch`, {
+				const {data} = await this.$axios.$post(`${getters.API}/users/watch`, {
 					user: state.user.identity.id,
 					video: video.id
 				});
-				commit('SET_USER_WATCHED', data.data.watched);
+				commit('SET_USER_WATCHED', data.watched);
 			}
 			dispatch('auth');
 		}
+	};
+
+export const getters = {
+	API: _ => {
+		return 'http://127.0.0.1:3000/api';
 	},
-	getters: {
-		API: _ => {
-			return 'http://localhost:8000';
-		},
-		orderedVideos(state) {
-			return state.videos.sort((a, b) => {
-				return a.title.episode < b.title.episode ? 1 : (a.title.episode > b.title.episode ? -1 : 0);
-			});
-		}
+	orderedVideos(state) {
+		const shallow = [...state.videos];
+		return shallow.sort((a, b) => {
+			return a.title.episode < b.title.episode ? 1 : (a.title.episode > b.title.episode ? -1 : 0);
+		});
 	}
-});
+}

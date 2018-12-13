@@ -94,8 +94,6 @@
 </template>
 
 <script>
-import axios from 'axios';
-
 const netlifyIdentity = require('netlify-identity-widget');
 
 export default {
@@ -115,8 +113,8 @@ export default {
 		};
 	},
 	async created() {
-		const {data} = await axios.get(`${this.$store.getters.API}/stats`);
-		this.stats = data.data;
+		const {data} = await this.$axios.$get(`${this.$store.getters.API}/stats`);
+		this.stats = data;
 	},
 	methods: {
 		// Sign in/up

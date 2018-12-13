@@ -23,7 +23,7 @@ export default {
 };
 </script>
 
-<style scoped lang="less">
+<style scoped lang="scss">
 	.loader {
 		position: absolute;
 		top: 50%;

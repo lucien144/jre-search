@@ -90,10 +90,9 @@
 </template>
 
 <script>
-import axios from 'axios';
-import AppHeader from '../components/AppHeader.vue';
-import VideoCard from '../components/VideoCard.vue';
-import VideoDialog from '../components/VideoDialog.vue';
+import AppHeader from '~/components/AppHeader.vue';
+import VideoCard from '~/components/VideoCard.vue';
+import VideoDialog from '~/components/VideoDialog.vue';
 
 export default {
 	components: {AppHeader, VideoCard, VideoDialog},
@@ -123,25 +122,36 @@ export default {
 
 	async created() {
 		this.isLoadingVideos = true;
-		const {data} = await axios.get(`${this.$store.getters.API}/videos`);
-		this.$store.commit('videos', data.data);
+		const {data} = await this.$axios.$get(`${this.$store.getters.API}/videos`);
+		this.$store.commit('videos', data);
 		this.isLoadingVideos = false;
 	},
 
 	methods: {
 		async loadVideos(keyword, type) {
-			const {data} = await axios.get(`${this.$store.getters.API}/${type}?search=${keyword}`);
-			this.videos = data.data;
+			const {data} = await this.$axios.$get(`${this.$store.getters.API}/${type}?search=${keyword}`);
+			this.videos = data;
 		},
 		async loadDetail(id, type) {
 			this.isLoadingVideos = true;
-			const {data} = await axios.get(`${this.$store.getters.API}/${type}/${id}`);
-			this.$store.commit('videos', data.data.videos);
+			const {data} = await this.$axios.$get(`${this.$store.getters.API}/${type}/${id}`);
+			this.$store.commit('videos', data.videos);
 			this.isLoadingVideos = false;
 		}
 	}
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="scss">
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html {
+  font-size: 16px;
+}
+body {
+  font-family: 'Catamaran', sans-serif;
+  font-weight: 500;
+  -webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+#app { background: #f7f7f7 url(~@/assets/pattern.svg); }
 </style>
