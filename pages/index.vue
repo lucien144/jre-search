@@ -11,7 +11,7 @@
 				row
 				wrap
 			>
-				<VFlex xs6>
+				<VFlex xs12 md6>
 					<VCardText>
 						<VAutocomplete
 							v-model="selectedHost"
@@ -43,7 +43,7 @@
 						</VAutocomplete>
 					</VCardText>
 				</VFlex>
-				<VFlex xs6>
+				<VFlex xs12 md6>
 					<VCardText>
 						<VAutocomplete
 							v-model="selectedKeyword"
