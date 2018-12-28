@@ -20,7 +20,7 @@
 									dark
 								>
 									<VListTileContent>
-										<a href="#">
+										<a href="#" @click.prevent="$emit('selectHost', item)">
 											{{ item.original }} ({{ item.count }}&times;)
 										</a>
 									</VListTileContent>

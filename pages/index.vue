@@ -3,7 +3,7 @@
 		class="home"
 	>
 		<VCard>
-			<AppHeader />
+			<AppHeader @selectHost="item => { selectedHost = item._id; host = item.original }" />
 			<VCardText>
 				Explore videos by entering host or either keyword/topic.
 			</VCardText>

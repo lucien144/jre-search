@@ -48,7 +48,7 @@
 			v-model="openStats"
 			@input="v => v || (openStats = false)"
 		>
-			<AppStats/>
+			<AppStats @selectHost="host => { $emit('selectHost', host); openStats = false; }"/>
 		</VDialog>
 	</div>
 </template>
