@@ -7,6 +7,13 @@ export const state = () => ({
 	// Active video to play
 	video: null,
 
+	// Current pagination information
+	pagination: {
+		page: 1,
+		pages: 1,
+		count: null
+	},
+
 	// Logged user
 	user: {
 		identity: null,
@@ -18,6 +25,9 @@ export const mutations = {
 	videos(state, videos) {
 		state.videos = videos;
 	},
+	VIDEOS_APPEND(state, videos) {
+		state.videos = [...state.videos, ...videos];
+	},
 	video(state, video) {
 		state.video = video;
 	},
@@ -26,6 +36,9 @@ export const mutations = {
 	},
 	SET_USER_WATCHED(state, watched) {
 		state.user.watched = watched;
+	},
+	SET_PAGINATION(state, pagination) {
+		state.pagination = pagination;
 	}
 };
 export const actions = {

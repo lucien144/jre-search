@@ -4,6 +4,8 @@ exports.searchCollection = (
 	{ search = '', page = 1, limit = 20, shrunk = true }
 ) => {
 	const reg = new RegExp(`${search}`, 'i');
+	page = parseInt(page);
+	limit = parseInt(limit);
 	collection
 		.find({ original: reg })
 		.sort({ count: -1 })
@@ -11,7 +13,7 @@ exports.searchCollection = (
 		.limit(limit)
 		.toArray(async (err, data) => {
 			const count = await collection.find({ original: reg }).count();
-			exports.sendJson({ data, count, limit, shrunk, res, err });
+			exports.sendJson({ data, count, limit, page, shrunk, res, err });
 		});
 };
 
@@ -20,6 +22,8 @@ exports.fetchCollection = (
 	res,
 	{ page = 1, limit = 20, shrunk = true, sort = { original: 1 } }
 ) => {
+	page = parseInt(page);
+	limit = parseInt(limit);
 	collection
 		.find()
 		.sort(sort)
@@ -27,7 +31,7 @@ exports.fetchCollection = (
 		.limit(limit)
 		.toArray(async (err, data) => {
 			const count = await collection.countDocuments();
-			exports.sendJson({ data, count, limit, shrunk, res, err });
+			exports.sendJson({ data, count, limit, page, shrunk, res, err });
 		});
 };
 
@@ -36,6 +40,7 @@ exports.sendJson = ({
 	limit = 20,
 	res,
 	err,
+	page = 1,
 	shrunk = true,
 	count = null
 }) => {
@@ -54,8 +59,11 @@ exports.sendJson = ({
 	}
 	res.json({
 		status: 'ok',
-		pages: Math.ceil(count / limit),
-		count,
+		pagination: {
+			page,
+			pages: Math.ceil(count / limit),
+			count
+		},
 		data
 	});
 };
