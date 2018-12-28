@@ -135,9 +135,12 @@ export default {
 	},
 
 	async fetch({ app, store }) {
-			const { data, pagination } = await app.$axios.$get(`${store.getters.API}/videos`);
-			store.commit('VIDEOS_SET', data);
-			store.commit('SET_PAGINATION', pagination);
+		const p1 = app.$axios.$get(`${store.getters.API}/videos`);
+		const p2 = app.$axios.$get(`${store.getters.API}/stats`);
+		const [videos, stats] = await Promise.all([p1, p2]);
+		store.commit('VIDEOS_SET', videos.data);
+		store.commit('SET_PAGINATION', videos.pagination);
+		store.commit('STATS_SET', stats.data);
 	},
 
 	methods: {

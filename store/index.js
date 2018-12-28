@@ -14,6 +14,9 @@ export const state = () => ({
 		count: null
 	},
 
+	// Statistics
+	stats: null,
+
 	// Logged user
 	user: {
 		identity: null,
@@ -39,6 +42,9 @@ export const mutations = {
 	},
 	SET_PAGINATION(state, pagination) {
 		state.pagination = pagination;
+	},
+	STATS_SET(state, stats) {
+		state.stats = stats;
 	}
 };
 export const actions = {

@@ -15,10 +15,10 @@
 						justify-end
 					>
 						<VBtn
-							:loading="stats === null"
+							:loading="$store.state.stats === null"
 							@click.native="openStats = !openStats"
 						>
-							Statistics
+							Stats
 						</VBtn>
 						<VBtn to="/about">
 							About
@@ -44,7 +44,7 @@
 			</VLayout>
 		</VCardTitle>
 		<VDialog
-			v-if="stats"
+			v-if="$store.state.stats"
 			v-model="openStats"
 			@input="v => v || (openStats = false)"
 		>
@@ -60,11 +60,11 @@
 						<VLayout>
 							<VFlex xs4>
 								<VCard>
-									<VCardTitle><h4>Top hosts ({{ stats.hosts.count }} total)</h4></VCardTitle>
+									<VCardTitle><h4>Top hosts ({{ $store.state.stats.hosts.count }} total)</h4></VCardTitle>
 									<VDivider />
 									<VList dense>
 										<VListTile
-											v-for="(item, index) in stats.hosts.top"
+											v-for="(item, index) in $store.state.stats.hosts.top"
 											:key="index"
 											dark
 										>
@@ -79,11 +79,11 @@
 							</VFlex>
 							<VFlex xs4>
 								<VCard>
-									<VCardTitle><h4>Top keywords ({{ stats.keywords.count }} total)</h4></VCardTitle>
+									<VCardTitle><h4>Top keywords ({{ $store.state.stats.keywords.count }} total)</h4></VCardTitle>
 									<VDivider />
 									<VList dense>
 										<VListTile
-											v-for="(item, index) in stats.keywords.top"
+											v-for="(item, index) in $store.state.stats.keywords.top"
 											:key="index"
 										>
 											<VListTileContent>{{ item.original }} ({{ item.count }}&times;)</VListTileContent>
@@ -93,11 +93,11 @@
 							</VFlex>
 							<VFlex xs4>
 								<VCard>
-									<VCardTitle><h4>Top videos ({{ stats.videos.count }} total)</h4></VCardTitle>
+									<VCardTitle><h4>Top videos ({{ $store.state.stats.videos.count }} total)</h4></VCardTitle>
 									<VDivider />
 									<VList dense>
 										<VListTile
-											v-for="(item, index) in stats.videos.top"
+											v-for="(item, index) in $store.state.stats.videos.top"
 											:key="index"
 										>
 											<VListTileContent>
@@ -132,16 +132,7 @@ export default {
 
 			// Toggle. True if list of videos being loaded.
 			isLoadingVideos: false,
-
-			// Statistics information
-			stats: null
 		};
-	},
-	async created() {
-		const { data } = await this.$axios.$get(
-			`${this.$store.getters.API}/stats`
-		);
-		this.stats = data;
 	},
 	methods: {
 		// Sign in/up
