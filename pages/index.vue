@@ -136,7 +136,7 @@ export default {
 
 	async fetch({ app, store }) {
 			const { data, pagination } = await app.$axios.$get(`${store.getters.API}/videos`);
-			store.commit('videos', data);
+			store.commit('VIDEOS_SET', data);
 			store.commit('SET_PAGINATION', pagination);
 	},
 
@@ -153,7 +153,7 @@ export default {
 			const { data, pagination } = await this.$axios.$get(
 				`${this.$store.getters.API}/${type}/${id}`
 			);
-			this.$store.commit('videos', data.videos);
+			this.$store.commit('VIDEOS_SET', data.videos);
 			this.$store.commit('SET_PAGINATION', pagination);
 			this.isLoadingVideos = false;
 		},

@@ -22,7 +22,7 @@ export const state = () => ({
 });
 
 export const mutations = {
-	videos(state, videos) {
+	VIDEOS_SET(state, videos) {
 		state.videos = videos;
 	},
 	VIDEOS_APPEND(state, videos) {
