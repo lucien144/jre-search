@@ -17,7 +17,7 @@ export const parseVideo = (video, hosts, keywords, tags) => {
 		description = description.replace(host, '');
 	});
 
-	description = exports.parseQuotes(description, keywords);
+	description = exports.parseQuotes(description, video, keywords);
 	description = exports.parseEntities(description, video, keywords);
 	exports.findNouns(description, keywords, video);
 	exports.findNouns(description, tags, video);
@@ -100,10 +100,11 @@ export const saveKeyword = (keyword, dict, video) => {
 /**
  * Parse "this is a quote" quotes from a description text.
  * @param {string} description Copy of text.
+ * @param {object} video YT video object.
  * @param {object} dictionary A dictionary to save found quotes to.
  * @returns {string} Updated description without parsed keywords.
  */
-export const parseQuotes = (description, dictionary) => {
+export const parseQuotes = (description, video, dictionary) => {
 	const regex = new RegExp(
 		'("(?<title>.+?)")|((?=[^w]|A)\'(?<title2>.+?)\'(?=[^s]))',
 		'gms'
@@ -112,7 +113,7 @@ export const parseQuotes = (description, dictionary) => {
 	const matches = [];
 	while ((match = regex.exec(description)) !== null) {
 		const title = match.groups.title || match.groups.title2;
-		exports.saveKeyword(title, dictionary);
+		exports.saveKeyword(title, dictionary, video);
 		matches.push(match[0]);
 	}
 
