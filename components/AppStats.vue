@@ -37,7 +37,11 @@
 									v-for="(item, index) in $store.state.stats.keywords.top"
 									:key="index"
 								>
-									<VListTileContent>{{ item.original }} ({{ item.count }}&times;)</VListTileContent>
+									<VListTileContent>
+										<a href="#" @click.prevent="$emit('selectKeyword', item)">
+											{{ item.original }} ({{ item.count }}&times;)
+										</a>
+									</VListTileContent>
 								</VListTile>
 							</VList>
 						</VCard>

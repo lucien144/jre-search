@@ -48,7 +48,10 @@
 			v-model="openStats"
 			@input="v => v || (openStats = false)"
 		>
-			<AppStats @selectHost="host => { $emit('selectHost', host); openStats = false; }"/>
+			<AppStats
+				@selectHost="host => { $emit('selectHost', host); openStats = false; }"
+				@selectKeyword="keyword => { $emit('selectKeyword', keyword); openStats = false; }"
+			/>
 		</VDialog>
 	</div>
 </template>
