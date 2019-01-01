@@ -39,8 +39,9 @@
 								>
 									<VListTileContent>
 										<a href="#" @click.prevent="$emit('selectKeyword', item)">
-											{{ item.original }} ({{ item.count }}&times;)
+											{{ item.original }}
 										</a>
+										 ({{ item.count }}&times;)
 									</VListTileContent>
 								</VListTile>
 							</VList>
@@ -52,14 +53,14 @@
 							<VDivider />
 							<VList dense>
 								<VListTile
-									v-for="(item, index) in $store.state.stats.videos.top"
+									v-for="(video, index) in $store.state.stats.videos.top"
 									:key="index"
 								>
 									<VListTileContent>
-										#{{ item.title.episode }} - {{ item.title.hosts.join(', ') }}
+										<a href="#" @click.prevent="$emit('selectVideo', video)">#{{ video.title.episode }} - {{ video.title.hosts.join(', ') }}</a>
 									</VListTileContent>
 									<VListTileContent class="align-end">
-										{{ item.statistics.viewCount }}
+										{{ video.statistics.viewCount }}
 									</VListTileContent>
 								</VListTile>
 							</VList>

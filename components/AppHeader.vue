@@ -51,6 +51,7 @@
 			<AppStats
 				@selectHost="host => { $emit('selectHost', host); openStats = false; }"
 				@selectKeyword="keyword => { $emit('selectKeyword', keyword); openStats = false; }"
+				@selectVideo="video => { $store.commit('video', video); openStats = false; }"
 			/>
 		</VDialog>
 	</div>
