@@ -21,8 +21,9 @@
 								>
 									<VListTileContent>
 										<a href="#" @click.prevent="$emit('selectHost', item)">
-											{{ item.original }} ({{ item.count }}&times;)
+											{{ item.original }}
 										</a>
+										 ({{ item.count }}&times;)
 									</VListTileContent>
 								</VListTile>
 							</VList>
