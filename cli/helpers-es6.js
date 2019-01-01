@@ -133,12 +133,14 @@ export const parseQuotes = (description, dictionary) => {
 export const parseEntities = (description, video, dictionary) => {
 	const anal = compendium.analyse(description);
 	try {
-		anal[0].entities.forEach(entity => {
-			exports.saveKeyword(entity.raw, dictionary, video);
-			description = description.replace(entity.raw, '');
-		});
+		if (anal.length > 0) {
+			anal[0].entities.forEach(entity => {
+				exports.saveKeyword(entity.raw, dictionary, video);
+				description = description.replace(entity.raw, '');
+			});
+		}
 	} catch (error) {
-		// Console.warn(error);
+		console.warn(error);
 	}
 	return description;
 };
