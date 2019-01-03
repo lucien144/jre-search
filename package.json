@@ -29,6 +29,7 @@
     "sass-loader": "^7.1.0",
     "simple-youtube-api": "^5.1.1",
     "string": "^3.3.3",
+    "vue-filter-number-format": "^1.0.3",
     "vuetify": "^1.2.4"
   },
   "devDependencies": {

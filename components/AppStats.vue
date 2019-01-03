@@ -11,7 +11,9 @@
 				<VLayout>
 					<VFlex xs4>
 						<VCard>
-							<VCardTitle><h4>Top hosts ({{ $store.state.stats.hosts.count }} total)</h4></VCardTitle>
+							<VCardTitle>
+								<h4>Top 20 hosts ({{ $store.state.stats.hosts.count }} total)</h4>
+							</VCardTitle>
 							<VDivider />
 							<VList dense>
 								<VListTile
@@ -23,15 +25,20 @@
 										<a href="#" @click.prevent="$emit('selectHost', item)">
 											{{ item.original }}
 										</a>
-										 ({{ item.count }}&times;)
 									</VListTileContent>
+									<VListTileAction>
+										{{ item.count }}&times;
+									</VListTileAction>
 								</VListTile>
 							</VList>
+							<VCardActions>
+								<VBtn to="/hosts">View all {{ $store.state.stats.hosts.count }} hosts</VBtn>
+							</VCardActions>
 						</VCard>
 					</VFlex>
 					<VFlex xs4>
 						<VCard>
-							<VCardTitle><h4>Top keywords ({{ $store.state.stats.keywords.count }} total)</h4></VCardTitle>
+							<VCardTitle><h4>Top 20 keywords ({{ $store.state.stats.keywords.count }} total)</h4></VCardTitle>
 							<VDivider />
 							<VList dense>
 								<VListTile
@@ -42,15 +49,20 @@
 										<a href="#" @click.prevent="$emit('selectKeyword', item)">
 											{{ item.original }}
 										</a>
-										 ({{ item.count }}&times;)
 									</VListTileContent>
+									<VListTileAction>
+										{{ item.count }}&times;
+									</VListTileAction>
 								</VListTile>
 							</VList>
+							<VCardActions>
+								<VBtn to="/keywords">View all {{ $store.state.stats.keywords.count }} keywords</VBtn>
+							</VCardActions>
 						</VCard>
 					</VFlex>
 					<VFlex xs4>
 						<VCard>
-							<VCardTitle><h4>Top videos ({{ $store.state.stats.videos.count }} total)</h4></VCardTitle>
+							<VCardTitle><h4>Top 20 videos ({{ $store.state.stats.videos.count }} total)</h4></VCardTitle>
 							<VDivider />
 							<VList dense>
 								<VListTile
@@ -60,11 +72,19 @@
 									<VListTileContent>
 										<a href="#" @click.prevent="$emit('selectVideo', video)">#{{ video.title.episode }} - {{ video.title.hosts.join(', ') }}</a>
 									</VListTileContent>
-									<VListTileContent class="align-end">
-										{{ video.statistics.viewCount }}
-									</VListTileContent>
+									<VListTileAction>
+										<span>
+											<VIcon :size="16">
+												visibility
+											</VIcon>
+											{{ video.statistics.viewCount | format }}
+										</span>
+									</VListTileAction>
 								</VListTile>
 							</VList>
+							<VCardActions>
+								<VBtn to="/videos">View all {{ $store.state.stats.videos.count }} videos</VBtn>
+							</VCardActions>
 						</VCard>
 					</VFlex>
 				</VLayout>
