@@ -1,3 +1,4 @@
+require('dotenv').config();
 const pkg = require('./package');
 
 module.exports = {
@@ -41,19 +42,29 @@ module.exports = {
 	css: ['~/assets/style/app.styl'],
 
 	/*
-  ** Plugins to load before mounting the App
-  */
+	** Plugins to load before mounting the App
+	*/
 	plugins: [
 		'@/plugins/vuetify',
 		'@/plugins/filters'
 	],
+
+	auth: {
+		strategies: {
+			auth0: {
+				domain: process.env.AUTH_DOMAIN,
+				client_id: process.env.AUTH_CLIENT_ID // eslint-disable-line camelcase
+			}
+		}
+	},
 
 	/*
   ** Nuxt.js modules
   */
 	modules: [
 		// Doc: https://github.com/nuxt-community/axios-module#usage
-		'@nuxtjs/axios'
+		'@nuxtjs/axios',
+		'@nuxtjs/auth'
 	],
 	/*
   ** Axios module configuration

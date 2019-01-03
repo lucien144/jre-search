@@ -15,7 +15,8 @@
     "lint": "xo"
   },
   "dependencies": {
-    "@nuxtjs/axios": "^5.0.0",
+    "@nuxtjs/auth": "^4.5.3",
+    "@nuxtjs/axios": "^5.3.6",
     "body-parser": "^1.18.3",
     "compendium-js": "0.0.31",
     "cross-env": "^5.2.0",
@@ -23,7 +24,6 @@
     "esm": "^3.0.84",
     "express": "^4.16.4",
     "mongodb": "^3.1.10",
-    "netlify-identity-widget": "^1.5.2",
     "node-sass": "^4.11.0",
     "nuxt": "^2.0.0",
     "sass-loader": "^7.1.0",
@@ -55,7 +55,7 @@
     ],
     "settings": {
       "import/core-modules": [
-		"vue",
+        "vue",
         "vuex"
       ]
     },

@@ -1,5 +1,3 @@
-const netlifyIdentity = require('netlify-identity-widget');
-
 export const state = () => ({
 	// List of videos to display
 	videos: [],
@@ -34,9 +32,6 @@ export const mutations = {
 	video(state, video) {
 		state.video = video;
 	},
-	user(state, user) {
-		state.user.identity = user;
-	},
 	SET_USER_WATCHED(state, watched) {
 		state.user.watched = watched;
 	},
@@ -48,36 +43,23 @@ export const mutations = {
 	}
 };
 export const actions = {
-	async updateUser({ commit, getters }, user) {
-		commit('user', user);
-		if (user) {
-			const { data } = await this.$axios.$get(
-				`${getters.API}/users/${user.id}`
-			);
-			commit('SET_USER_WATCHED', data.watched);
-		}
-	},
-	auth({ state, dispatch }) {
-		if (!state.user.identity) {
-			netlifyIdentity.on('login', user => {
-				dispatch('updateUser', user);
-				netlifyIdentity.close();
-			});
-			netlifyIdentity.open();
-		}
+	async updateUser({ commit, getters }) {
+		const { data } = await this.$axios.$get(
+			`${getters.API}/users/${getters.userId}`
+		);
+		commit('SET_USER_WATCHED', data.watched);
 	},
 	async watch({ state, dispatch, getters, commit }, video) {
-		if (state.user.identity) {
+		if (state.auth.user) {
 			const { data } = await this.$axios.$post(
 				`${getters.API}/users/watch`,
 				{
-					user: state.user.identity.id,
+					user: getters.userId,
 					video: video.id
 				}
 			);
 			commit('SET_USER_WATCHED', data.watched);
 		}
-		dispatch('auth');
 	}
 };
 
@@ -94,5 +76,11 @@ export const getters = {
 					? -1
 					: 0;
 		});
+	},
+	userId(state) {
+		if (state.auth.user) {
+			return state.auth.user.sub.replace(/google-oauth2\|/, '');
+		}
+		return null;
 	}
 };

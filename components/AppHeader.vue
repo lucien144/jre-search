@@ -24,7 +24,7 @@
 							About
 						</VBtn>
 						<VBtn
-							v-if="$store.state.user.identity"
+							v-if="$auth.loggedIn"
 							:loading="isLoadingAuth"
 							:disabled="isLoadingAuth"
 							@click.native="logout()"
@@ -60,10 +60,14 @@
 <script>
 import AppStats from '~/components/AppStats.vue';
 
-const netlifyIdentity = require('netlify-identity-widget');
-
 export default {
 	components: { AppStats },
+	mounted() {
+		console.log(this.$auth.loggedIn);
+		if (this.$auth.loggedIn) {
+			this.$store.dispatch('updateUser');
+		}
+	},
 	data() {
 		return {
 			// Toggle. True if we want to open statistics dialog.
@@ -78,26 +82,20 @@ export default {
 	},
 	methods: {
 		// Sign in/up
-		auth() {
-			const self = this;
-			if (!this.$store.state.user.identity) {
-				netlifyIdentity.on('login', user => {
-					self.$store.commit('user', user);
-					netlifyIdentity.close();
-				});
-				netlifyIdentity.open();
+		async auth() {
+			this.isLoadingAuth = true;
+			if (!this.$auth.loggedIn) {
+				await this.$auth.loginWith('auth0');
 			}
+			this.$store.dispatch('updateUser');
+			this.isLoadingAuth = false;
 		},
 
 		// Logout
-		logout() {
-			const self = this;
-			netlifyIdentity.on('logout', user => {
-				self.$store.commit('user', user);
-				self.isLoadingAuth = false;
-			});
-			self.isLoadingAuth = true;
-			netlifyIdentity.logout();
+		async logout() {
+			this.isLoadingAuth = true;
+			await this.$auth.logout();
+			this.isLoadingAuth = false;
 		}
 	}
 };
