@@ -1,5 +1,6 @@
 <template>
-	<div>
+	<div class="AppHeader">
+		<img class="logo" src="https://yt3.ggpht.com/a-/AAuE7mDIygpHO-9UrB4lq2nzzUNScl6r4Tr3WB6dPw=s176-c-k-c0x00ffffff-no-rj-mo"/>
 		<VCardTitle class="display-1 white font-weight-black">
 			<VLayout
 				row
@@ -7,7 +8,7 @@
 				align-center
 			>
 				<VFlex xs9>
-					Joe Rogan Experience on steroids 💊
+					JRE on steroids 💊
 				</VFlex>
 				<VFlex xs3>
 					<VLayout
@@ -101,5 +102,15 @@ export default {
 };
 </script>
 
-<style>
+<style scoped lang="scss">
+.AppHeader { margin-top: 3rem; }
+.logo {
+	position: absolute;
+	top: 0%;
+	left: 50%;
+	width: 8rem;
+	transform: translate(-50%, -50%);
+	border-radius: 50%;
+	box-shadow: 0 3px 4px rgba(0, 0, 0, .35);
+}
 </style>
