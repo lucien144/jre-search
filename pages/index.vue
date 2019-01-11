@@ -2,88 +2,6 @@
 	<div
 		class="home"
 	>
-		<VCard>
-			<AppHeader
-				@selectHost="item => { selectedHost = item._id; host = item.original }"
-				@selectKeyword="item => { selectedKeyword = item._id; keyword = item.original }"
-			/>
-			<VCardText>
-				Explore videos by entering host or either keyword/topic.
-			</VCardText>
-			<VLayout
-				row
-				wrap
-			>
-				<VFlex xs12 md6>
-					<VCardText>
-						<VAutocomplete
-							v-model="selectedHost"
-							:search-input.sync="host"
-							:items="videos"
-							item-text="original"
-							item-value="_id"
-							label="Find a host"
-							placeholder="Elon Musk"
-							prepend-icon="fas fa-user-circle"
-							append-icon="fas fa-caret-down"
-						>
-							<template
-								slot="item"
-								slot-scope="{ item, tile }"
-							>
-								<VListTileContent>
-									<VListTileTitle v-text="item.original" />
-								</VListTileContent>
-								<VListTileAction>
-									<VChip
-										small
-										color="primary"
-										text-color="white"
-									>
-										{{ item.count }}
-									</VChip>
-								</VListTileAction>
-							</template>
-						</VAutocomplete>
-					</VCardText>
-				</VFlex>
-				<VFlex xs12 md6>
-					<VCardText>
-						<VAutocomplete
-							v-model="selectedKeyword"
-							:search-input.sync="keyword"
-							:items="videos"
-							item-text="original"
-							item-value="_id"
-							label="Search for a topic or keyword"
-							placeholder="neuroscientist"
-							prepend-icon="fas fa-lightbulb"
-							append-icon="fas fa-caret-down"
-						>
-							<template
-								slot="item"
-								slot-scope="{ item, tile }"
-							>
-								<VListTileContent>
-									<VListTileTitle v-text="item.original" />
-								</VListTileContent>
-								<VListTileAction>
-									<VChip
-										small
-										color="primary"
-										text-color="white"
-									>
-										{{ item.count }}
-									</VChip>
-								</VListTileAction>
-							</template>
-						</VAutocomplete>
-					</VCardText>
-				</VFlex>
-			</VLayout>
-			<VProgressLinear :indeterminate="isLoadingVideos" />
-		</VCard>
-
 		<VContainer
 			fluid
 			grid-list-lg
@@ -107,12 +25,10 @@
 </template>
 
 <script>
-import AppHeader from '~/components/AppHeader.vue';
 import VideoCard from '~/components/VideoCard.vue';
-import VideoDialog from '~/components/VideoDialog.vue';
 
 export default {
-	components: { AppHeader, VideoCard, VideoDialog },
+	components: { VideoCard },
 	data() {
 		return {
 			videos: [],
