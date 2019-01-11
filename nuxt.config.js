@@ -26,7 +26,12 @@ module.exports = {
 			{
 				rel: 'stylesheet',
 				href:
-					'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons'
+					'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700'
+			},
+			{
+				rel: 'stylesheet',
+				href:
+					'https://use.fontawesome.com/releases/v5.6.3/css/all.css'
 			}
 		]
 	},
@@ -50,6 +55,12 @@ module.exports = {
 	],
 
 	auth: {
+		redirect: {
+			login: '/',
+			logout: '/',
+			callback: '/',
+			home: '/'
+		},
 		strategies: {
 			auth0: {
 				domain: process.env.AUTH_DOMAIN,

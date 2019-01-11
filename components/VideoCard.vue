@@ -8,8 +8,19 @@
 		>
 			<VImg
 				:src="video.thumbnails.high.url"
+				:lazy-src="video.thumbnails.default.url"
 				height="200"
-			/>
+			>
+				<v-layout
+					slot="placeholder"
+					fill-height
+					align-center
+					justify-center
+					ma-0
+				>
+					<v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+				</v-layout>
+			</VImg>
 			<VCardTitle class="title">
 				#{{ video.title.episode }} - {{ video.title.hosts.join(', ') }}
 			</VCardTitle>
@@ -20,28 +31,41 @@
 			</VCardText>
 			<VCardActions>
 				<VSpacer />
-				<VBtn
-					icon
-					@click.stop="favorite"
-				>
-					<VIcon disabled>
-						favorite
-					</VIcon>
-				</VBtn>
-				<VBtn
-					icon
-					@click.stop="watch"
-				>
-					<VIcon :disabled="!isWatched">
-						visibility
-					</VIcon>
-				</VBtn>
-				<VBtn
-					icon
-					@click.stop="share"
-				>
-					<VIcon>share</VIcon>
-				</VBtn>
+				<div class="text-xs-center">
+					<VTooltip top :disabled="$auth.loggedIn">
+						<VBtn
+							slot="activator"
+							icon
+							@click.stop="favorite"
+						>
+							<VIcon :disabled="!$auth.loggedIn">
+								far fa-heart
+							</VIcon>
+						</VBtn>
+						<span>You need to sign in to save the video into favourites.</span>
+					</VTooltip>
+					<VTooltip top :disabled="$auth.loggedIn">
+						<VBtn
+							slot="activator"
+							icon
+							@click.stop="watch"
+						>
+							<VIcon v-if="isWatched">
+								fas fa-eye
+							</VIcon>
+							<VIcon v-else :disabled="!$auth.loggedIn">
+								far fa-eye
+							</VIcon>
+						</VBtn>
+						<span>You need to sign in to save the video into watched.</span>
+					</VTooltip>
+					<VBtn
+						icon
+						@click.stop="share"
+					>
+						<VIcon>fas fa-share-alt</VIcon>
+					</VBtn>
+				</div>
 			</VCardActions>
 		</VCard>
 	</VHover>

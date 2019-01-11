@@ -24,7 +24,8 @@
 							item-value="_id"
 							label="Find a host"
 							placeholder="Elon Musk"
-							prepend-icon="face"
+							prepend-icon="fas fa-user-circle"
+							append-icon="fas fa-caret-down"
 						>
 							<template
 								slot="item"
@@ -56,7 +57,8 @@
 							item-value="_id"
 							label="Search for a topic or keyword"
 							placeholder="neuroscientist"
-							prepend-icon="wb_incandescent"
+							prepend-icon="fas fa-lightbulb"
+							append-icon="fas fa-caret-down"
 						>
 							<template
 								slot="item"
