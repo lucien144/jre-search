@@ -18,7 +18,8 @@ export const state = () => ({
 	// Logged user
 	user: {
 		identity: null,
-		watched: []
+		watched: [],
+		favourites: []
 	}
 });
 
@@ -35,6 +36,9 @@ export const mutations = {
 	SET_USER_WATCHED(state, watched) {
 		state.user.watched = watched;
 	},
+	SET_USER_FAVOURITES(state, favourites) {
+		state.user.favourites = favourites;
+	},
 	SET_PAGINATION(state, pagination) {
 		state.pagination = pagination;
 	},
@@ -49,7 +53,7 @@ export const actions = {
 		);
 		commit('SET_USER_WATCHED', data.watched);
 	},
-	async watch({ state, dispatch, getters, commit }, video) {
+	async watch({ state, getters, commit }, video) {
 		if (state.auth.user) {
 			const { data } = await this.$axios.$post(
 				`${getters.API}/users/watch`,
@@ -59,6 +63,18 @@ export const actions = {
 				}
 			);
 			commit('SET_USER_WATCHED', data.watched);
+		}
+	},
+	async favourite({ state, getters, commit }, video) {
+		if (state.auth.user) {
+			const { data } = await this.$axios.$post(
+				`${getters.API}/users/favourite`,
+				{
+					user: getters.userId,
+					video: video.id
+				}
+			);
+			commit('SET_USER_FAVOURITES', data.favourites);
 		}
 	}
 };

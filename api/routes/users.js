@@ -7,13 +7,13 @@ module.exports = function(app, db) {
 		sendJson({ data, res, err: false });
 	});
 
-	app.post('/users/watch', async (req, res) => {
+	const usersList = async (req, res, list) => {
 		try {
 			const { user, video } = req.body;
 
 			const count = await db
 				.collection('users')
-				.find({ watched: video })
+				.find({ [list]: video })
 				.count();
 
 			if (count) {
@@ -21,14 +21,14 @@ module.exports = function(app, db) {
 					.collection('users')
 					.findOneAndUpdate(
 						{ id: user },
-						{ $pull: { watched: video } }
+						{ $pull: { [list]: video } }
 					);
 			} else {
 				await db
 					.collection('users')
 					.findOneAndUpdate(
 						{ id: user },
-						{ $addToSet: { watched: video } },
+						{ $addToSet: { [list]: video } },
 						{ upsert: true, returnNewDocument: true }
 					);
 			}
@@ -38,5 +38,13 @@ module.exports = function(app, db) {
 		} catch (error) {
 			sendJson({ data: null, res, err: error });
 		}
+	};
+
+	app.post('/users/watch', async (req, res) => {
+		usersList(req, res, 'watched');
+	});
+
+	app.post('/users/favourite', async (req, res) => {
+		usersList(req, res, 'favourites');
 	});
 };

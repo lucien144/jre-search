@@ -38,7 +38,10 @@
 							icon
 							@click.stop="favorite"
 						>
-							<VIcon :disabled="!$auth.loggedIn">
+							<VIcon v-if="isFavourite">
+								fas fa-heart
+							</VIcon>
+							<VIcon v-else :disabled="!$auth.loggedIn">
 								far fa-heart
 							</VIcon>
 						</VBtn>
@@ -82,11 +85,14 @@ export default {
 	computed: {
 		isWatched() {
 			return this.$store.state.user.watched.indexOf(this.video.id) > -1;
+		},
+		isFavourite() {
+			return this.$store.state.user.favourites.indexOf(this.video.id) > -1;
 		}
 	},
 	methods: {
 		favorite() {
-			this.$store.dispatch('favorite');
+			this.$store.dispatch('favourite', this.video);
 		},
 		watch() {
 			this.$store.dispatch('watch', this.video);
