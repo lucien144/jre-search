@@ -2,9 +2,6 @@ export const state = () => ({
 	// List of videos to display
 	videos: [],
 
-	// Active video to play
-	video: null,
-
 	// Current pagination information
 	pagination: {
 		page: 1,
@@ -29,9 +26,6 @@ export const mutations = {
 	},
 	VIDEOS_APPEND(state, videos) {
 		state.videos = [...state.videos, ...videos];
-	},
-	video(state, video) {
-		state.video = video;
 	},
 	SET_USER_WATCHED(state, watched) {
 		state.user.watched = watched;

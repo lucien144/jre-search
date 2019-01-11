@@ -2,9 +2,9 @@
 	<VHover>
 		<VCard
 			slot-scope="{ hover }"
-			:class="`elevation-${hover ? 12 : 2}`"
 			height="100%"
-			@click.native="$store.commit('video', video)"
+			:to="`video/${video.id}`"
+			:class="`elevation-${hover ? 12 : 2}`"
 		>
 			<VImg
 				:src="video.thumbnails.high.url"
