@@ -31,7 +31,17 @@ const titles = [];
 					.length === 0
 			) {
 				titles.push(video.title.original);
-				helpers.parseVideo(video, hosts, keywords, tags);
+				const dicts = helpers.parseVideo(video, hosts, keywords, tags);
+				db.collection('videos').update(
+					{ _id: video._id },
+					{
+						$set: {
+							keywords: Object.values(dicts.keywords).map(item => item.original),
+							tags: Object.values(dicts.tags).map(item => item.original),
+							hosts: Object.values(dicts.hosts).map(item => item.original),
+						}
+					}
+				);
 			}
 		}
 

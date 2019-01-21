@@ -25,6 +25,14 @@
 					</VFlex>
 					<VFlex xs12 md4>
 						<p>{{ $store.state.video.description }}</p>
+						<div>
+							<v-chip
+								v-for="(keyword, index) in $store.state.video.keywords"
+								:key="index">{{ keyword }}</v-chip>
+							<v-chip
+								v-for="(hosts, index) in $store.state.video.hosts"
+								:key="index">{{ hosts }}</v-chip>
+						</div>
 					</VFlex>
 				</VLayout>
 			</VContainer>

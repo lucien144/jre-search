@@ -12,15 +12,33 @@ const compendium = require('compendium-js');
 export const parseVideo = (video, hosts, keywords, tags) => {
 	let { title, description } = video;
 
+	const _keywords = {};
+	const _hosts = {};
+	const _tags = {};
+
 	title.hosts.forEach(host => {
 		exports.saveKeyword(host, hosts, video);
+		exports.saveKeyword(host, _hosts, video);
 		description = description.replace(host, '');
 	});
 
+	exports.parseQuotes(description, video, _keywords);
 	description = exports.parseQuotes(description, video, keywords);
+
+	exports.parseEntities(description, video, _keywords);
 	description = exports.parseEntities(description, video, keywords);
+
+	exports.findNouns(description, _keywords, video);
 	exports.findNouns(description, keywords, video);
+
 	exports.findNouns(description, tags, video);
+	exports.findNouns(description, _tags, video);
+
+	return {
+		hosts: _hosts,
+		keywords: _keywords,
+		tags: _tags
+	};
 };
 
 /**
