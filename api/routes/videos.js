@@ -1,4 +1,4 @@
-const { fetchCollection } = require('../helpers.js');
+const { fetchCollection, sendJson } = require('../helpers.js');
 
 module.exports = function(app, db) {
 	app.get('/videos', (req, res) => {
@@ -7,5 +7,11 @@ module.exports = function(app, db) {
 			sort: { publishedAt: -1 },
 			page
 		});
+	});
+
+	app.get('/videos/:id', async (req, res) => {
+		const { id } = req.params;
+		const data = await db.collection('videos').findOne({ id });
+		sendJson({ data, res, err: false });
 	});
 };

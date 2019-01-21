@@ -2,6 +2,9 @@ export const state = () => ({
 	// List of videos to display
 	videos: [],
 
+	// Currently watched video
+	video: null,
+
 	// Current pagination information
 	pagination: {
 		page: 1,
@@ -23,6 +26,9 @@ export const state = () => ({
 export const mutations = {
 	VIDEOS_SET(state, videos) {
 		state.videos = videos;
+	},
+	VIDEO_SET(state, video) {
+		state.video = video;
 	},
 	VIDEOS_APPEND(state, videos) {
 		state.videos = [...state.videos, ...videos];
