@@ -3,7 +3,7 @@
 		<VCard
 			slot-scope="{ hover }"
 			height="100%"
-			:to="`video/${video.id}`"
+			:to="`video/${video.id}/#video`"
 			:class="`elevation-${hover ? 12 : 2}`"
 		>
 			<VImg

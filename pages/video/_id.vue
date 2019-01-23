@@ -1,6 +1,7 @@
 <template>
 	<div
 		class="video"
+		id="video"
 	>
 		<VCard>
 			<VToolbar color="white" flat>
