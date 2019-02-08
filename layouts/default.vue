@@ -136,6 +136,8 @@ export default {
 			this.isLoadingVideos = false;
 		},
 		async getKeywordVideos(id, type) {
+			this.$router.push('/');
+
 			this.isLoadingVideos = true;
 			const { data, pagination } = await this.$axios.$get(
 				`${this.$store.getters.API}/${type}/${id}`
