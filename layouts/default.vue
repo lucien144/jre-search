@@ -119,8 +119,8 @@ export default {
 	},
 
 	async fetch({ app, store }) {
-		const p1 = app.$axios.$get(`${store.getters.API}/videos`);
-		const p2 = app.$axios.$get(`${store.getters.API}/stats`);
+		const p1 = app.$axios.$get(`/videos`);
+		const p2 = app.$axios.$get(`/stats`);
 		const [videos, stats] = await Promise.all([p1, p2]);
 		store.commit('VIDEOS_SET', videos.data);
 		store.commit('SET_PAGINATION', videos.pagination);
@@ -130,7 +130,7 @@ export default {
 	methods: {
 		async findKeywords(keyword, type) {
 			this.isLoadingVideos = true;
-			const { data, pagination } = await this.$axios.$get(`${this.$store.getters.API}/${type}?search=${keyword}`);
+			const { data, pagination } = await this.$axios.$get(`/${type}?search=${keyword}`);
 			this.videos = data;
 			this.$store.commit('SET_PAGINATION', pagination);
 			this.isLoadingVideos = false;
@@ -140,7 +140,7 @@ export default {
 
 			this.isLoadingVideos = true;
 			const { data, pagination } = await this.$axios.$get(
-				`${this.$store.getters.API}/${type}/${id}`
+				`/${type}/${id}`
 			);
 			this.$store.commit('VIDEOS_SET', data.videos);
 			this.$store.commit('SET_PAGINATION', pagination);
@@ -148,7 +148,7 @@ export default {
 		},
 		async loadVideos() {
 			this.isLoadingVideos = true;
-			const { data, pagination } = await this.$axios.$get(`${this.$store.getters.API}/videos`, {
+			const { data, pagination } = await this.$axios.$get(`/videos`, {
 				params: {
 					page: this.$store.state.pagination.page + 1
 				}

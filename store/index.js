@@ -49,14 +49,14 @@ export const mutations = {
 export const actions = {
 	async updateUser({ commit, getters }) {
 		const { data } = await this.$axios.$get(
-			`${getters.API}/users/${getters.userId}`
+			`/users/${getters.userId}`
 		);
 		commit('SET_USER_WATCHED', data.watched);
 	},
 	async watch({ state, getters, commit }, video) {
 		if (state.auth.user) {
 			const { data } = await this.$axios.$post(
-				`${getters.API}/users/watch`,
+				`/users/watch`,
 				{
 					user: getters.userId,
 					video: video.id
@@ -68,7 +68,7 @@ export const actions = {
 	async favourite({ state, getters, commit }, video) {
 		if (state.auth.user) {
 			const { data } = await this.$axios.$post(
-				`${getters.API}/users/favourite`,
+				`/users/favourite`,
 				{
 					user: getters.userId,
 					video: video.id
@@ -80,9 +80,6 @@ export const actions = {
 };
 
 export const getters = {
-	API: _ => {
-		return 'http://127.0.0.1:3000/api';
-	},
 	orderedVideos(state) {
 		const shallow = [...state.videos];
 		return shallow.sort((a, b) => {

@@ -65,8 +65,8 @@
 <script>
 export default {
 	async fetch({ app, store, params }) {
-		console.log(`${store.getters.API}/videos/${params.id}`);
-		const { data } = await app.$axios.$get(`${store.getters.API}/videos/${params.id}`);
+		console.log(`/videos/${params.id}`);
+		const { data } = await app.$axios.$get(`/videos/${params.id}`);
 		store.commit('VIDEO_SET', data);
 	}
 }
