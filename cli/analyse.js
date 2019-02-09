@@ -18,11 +18,15 @@ const titles = [];
 	await client.connect();
 	const db = client.db(process.env.MONGO_DBNAME);
 	const videos = db.collection('videos').find({});
+	let counter = 0;
+	const promiseUpdates = [];
+	const promiseInserts = [];
 	try {
 		// eslint-disable-next-line no-await-in-loop
 		while (await videos.hasNext()) {
 			// eslint-disable-next-line no-await-in-loop
 			const video = await videos.next();
+			counter++;
 
 			// 👉 Some episodes are doubled in the list of videos, therefore we need to filter them out.
 			if (
@@ -32,7 +36,7 @@ const titles = [];
 			) {
 				titles.push(video.title.original);
 				const dicts = helpers.parseVideo(video, hosts, keywords, tags);
-				db.collection('videos').update(
+				promiseUpdates.push(db.collection('videos').update(
 					{ _id: video._id },
 					{
 						$set: {
@@ -41,7 +45,7 @@ const titles = [];
 							hosts: Object.values(dicts.hosts).map(item => item.original),
 						}
 					}
-				);
+				));
 			}
 		}
 
@@ -53,7 +57,7 @@ const titles = [];
 			) {
 				continue;
 			}
-			db.collection(collection).deleteMany({});
+			await db.collection(collection).deleteMany({});
 
 			for (const id in collections[collection]) {
 				if (
@@ -65,12 +69,16 @@ const titles = [];
 					continue;
 				}
 				const host = collections[collection][id];
-				db.collection(collection).insertOne(host);
+				promiseInserts.push(db.collection(collection).insertOne(host));
 			}
 		}
+		Promise.all(promiseUpdates);
+		Promise.all(promiseInserts);
+	} catch (err) {
+		console.error(err);
 	} finally {
 		client.close();
+		console.log(counter);
+		console.timeEnd('execution');
 	}
 })().catch(err => console.error(err));
-
-console.timeEnd('execution');
