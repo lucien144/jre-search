@@ -11,6 +11,10 @@ const app = express();
 module.exports = { path: '/api', handler: app };
 
 client.connect((err, client) => {
+	if (err) {
+		console.log(err);
+	}
+
 	const db = client.db(process.env.MONGO_DBNAME);
 
 	if (process.env.ENVIRONMENT === 'development') {
