@@ -1,15 +1,10 @@
 {
 	"name": "jre-search",
 	"buildpacks": [
-	  {
-		"url": "https://github.com/heroku/heroku-buildpack-nodejs"
-	  }
+		{
+			"url": "https://github.com/heroku/heroku-buildpack-nodejs"
+		}
 	],
-	"env": {
-		"NPM_CONFIG_PRODUCTION": false,
-		"HOST": "0.0.0.0",
-		"NODE_ENV": "production"
-	},
 	"scripts": {
 		"dokku": {
 			"predeploy": "npm run build"
