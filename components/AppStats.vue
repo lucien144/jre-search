@@ -74,9 +74,7 @@
 									</VListTileContent>
 									<VListTileAction>
 										<span>
-											<VIcon :size="16">
-												visibility
-											</VIcon>
+											<VIcon :size="16" left>fas fa-eye</VIcon>
 											{{ video.statistics.viewCount | format }}
 										</span>
 									</VListTileAction>
