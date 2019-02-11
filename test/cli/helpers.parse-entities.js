@@ -14,3 +14,9 @@ test('should remove entities from description', t => {
 	t.is(dictionary.democraticparty.original, 'Democratic Party');
 	t.is(dictionary.usrepresentative.original, 'U.S. Representative');
 });
+
+test('should avoid duplicated videos', t => {
+	const dictionary = {};
+	parseEntities('Bruce Banner is Hulk and we all know Hulk is green.', {video: 'test'}, dictionary);
+	t.is(dictionary.hulk.videos.length, 1);
+});

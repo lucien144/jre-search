@@ -151,10 +151,14 @@ export const parseQuotes = (description, video, dictionary) => {
  */
 export const parseEntities = (description, video, dictionary) => {
 	const anal = compendium.analyse(description);
+	const entities = [];
 	try {
 		if (anal.length > 0) {
 			anal[0].entities.forEach(entity => {
-				exports.saveKeyword(entity.raw, dictionary, video);
+				if (entities.indexOf(entity.raw) === -1) {
+					exports.saveKeyword(entity.raw, dictionary, video);
+					entities.push(entity.raw);
+				}
 				description = description.replace(entity.raw, '');
 			});
 		}
