@@ -1,6 +1,8 @@
 <template>
 	<div class="AppHeader">
-		<img class="logo" src="https://yt3.ggpht.com/a-/AAuE7mDIygpHO-9UrB4lq2nzzUNScl6r4Tr3WB6dPw=s176-c-k-c0x00ffffff-no-rj-mo"/>
+		<a href="/">
+			<img class="logo" src="https://yt3.ggpht.com/a-/AAuE7mDIygpHO-9UrB4lq2nzzUNScl6r4Tr3WB6dPw=s176-c-k-c0x00ffffff-no-rj-mo"/>
+		</a>
 		<VCardTitle class="display-1 white font-weight-black">
 			<VLayout
 				row
