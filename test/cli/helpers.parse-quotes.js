@@ -5,6 +5,7 @@ test('parsing double quotes', t => {
 	const dictionary = {};
 	const result = parseQuotes(
 		'This is a testing "double quotes".',
+		null,
 		dictionary
 	);
 	t.is(result, 'This is a testing .');
@@ -16,6 +17,7 @@ test('parsing single quotes', t => {
 	const dictionary = {};
 	const result = parseQuotes(
 		"This is a testing 'single quotes'.",
+		null,
 		dictionary
 	);
 	t.is(result, 'This is a testing .');
@@ -27,6 +29,7 @@ test('parsing mix quotes', t => {
 	const dictionary = {};
 	const result = parseQuotes(
 		'This is a test of "double and" \'single quotes\'.',
+		null,
 		dictionary
 	);
 	t.is(result, 'This is a test of  .');
