@@ -165,6 +165,7 @@ export const parseEntities = (description, video, dictionary) => {
 };
 
 export const findNouns = (description, dictionary, video) => {
+	const nouns = [];
 	let noun = '';
 	compendium.analyse(description).forEach(anal => {
 		anal.tokens.forEach(token => {
@@ -174,8 +175,12 @@ export const findNouns = (description, dictionary, video) => {
 				found = true;
 			}
 			if (noun !== '' && !found) {
-				exports.saveKeyword(noun, dictionary, video);
-				noun = '';
+				// Skip duplicated nouns.
+				if (nouns.indexOf(noun) === -1) {
+					exports.saveKeyword(noun, dictionary, video);
+					nouns.push(noun);
+					noun = '';
+				}
 			}
 		});
 	});

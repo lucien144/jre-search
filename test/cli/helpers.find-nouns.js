@@ -36,3 +36,11 @@ test('should avoid entities', t => {
 	t.true(dictionary.nasa === undefined);
 	t.true(dictionary.digibarn === undefined);
 });
+
+test('should avoid duplicated nouns', t => {
+	const description =
+		'Dr. Bruce Damer is a comedian and his friend Bruce Banner is also comedian.';
+	const dictionary = {};
+	findNouns(description, dictionary, { video: 'test' });
+	t.is(dictionary.comedian.videos.length, 1);
+});
