@@ -32,7 +32,7 @@
 								</VListTile>
 							</VList>
 							<VCardActions>
-								<VBtn to="/hosts">View all {{ $store.state.stats.hosts.count }} hosts</VBtn>
+								<!--VBtn to="/hosts">View all {{ $store.state.stats.hosts.count }} hosts</VBtn//-->
 							</VCardActions>
 						</VCard>
 					</VFlex>
@@ -56,7 +56,7 @@
 								</VListTile>
 							</VList>
 							<VCardActions>
-								<VBtn to="/keywords">View all {{ $store.state.stats.keywords.count }} keywords</VBtn>
+								<!--VBtn to="/keywords">View all {{ $store.state.stats.keywords.count }} keywords</VBtn//-->
 							</VCardActions>
 						</VCard>
 					</VFlex>
@@ -81,7 +81,7 @@
 								</VListTile>
 							</VList>
 							<VCardActions>
-								<VBtn to="/videos">View all {{ $store.state.stats.videos.count }} videos</VBtn>
+								<!--VBtn to="/videos">View all {{ $store.state.stats.videos.count }} videos</VBtn//-->
 							</VCardActions>
 						</VCard>
 					</VFlex>
