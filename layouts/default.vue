@@ -25,6 +25,8 @@
 								placeholder="Elon Musk"
 								prepend-icon="fas fa-user-circle"
 								append-icon="fas fa-caret-down"
+								:clearable="true"
+								clear-icon="fas fa-times"
 							>
 								<template
 									slot="item"
@@ -58,6 +60,8 @@
 								placeholder="neuroscientist"
 								prepend-icon="fas fa-lightbulb"
 								append-icon="fas fa-caret-down"
+								:clearable="true"
+								clear-icon="fas fa-times"
 							>
 								<template
 									slot="item"
@@ -108,12 +112,22 @@ export default {
 			return val && this.findKeywords(val, 'hosts');
 		},
 		selectedHost(val) {
+			if (!val) {
+				this.loadVideos();
+				return;
+			}
+
 			return val && this.getKeywordVideos(val, 'hosts');
 		},
 		keyword(val) {
 			return val && this.findKeywords(val, 'keywords');
 		},
 		selectedKeyword(val) {
+			if (!val) {
+				this.loadVideos();
+				return;
+			}
+
 			return val && this.getKeywordVideos(val, 'keywords');
 		}
 	},
