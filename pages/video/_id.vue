@@ -66,7 +66,6 @@
 export default {
 	transition: 'transition',
 	async fetch({ app, store, params }) {
-		console.log(`/videos/${params.id}`);
 		const { data } = await app.$axios.$get(`/videos/${params.id}`);
 		store.commit('VIDEO_SET', data);
 	}
