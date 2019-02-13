@@ -8,6 +8,7 @@ const compendium = require('compendium-js');
  * @param {object} hosts Dictionary with hosts.
  * @param {object} keywords Dictionary with keywords.
  * @param {object} tags Dictionary with tags.
+ * @returns {object} Returns object with parsed hosts, keywords and descriptions.
  */
 export const parseVideo = (video, hosts, keywords, tags) => {
 	let { title, description } = video;
@@ -87,9 +88,10 @@ export const parseTitle = title => {
  * @returns {string} Webalized title string
  */
 export const getId = title => {
+	// eslint-disable-next-line new-cap
 	const id = S(title)
 		.trim()
-		.s.toLowerCase(); // eslint-disable-line new-cap
+		.s.toLowerCase();
 	return id.replace(/[^\w]/gi, '');
 };
 

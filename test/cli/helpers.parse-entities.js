@@ -17,6 +17,10 @@ test('should remove entities from description', t => {
 
 test('should avoid duplicated videos', t => {
 	const dictionary = {};
-	parseEntities('Bruce Banner is Hulk and we all know Hulk is green.', {video: 'test'}, dictionary);
+	parseEntities(
+		'Bruce Banner is Hulk and we all know Hulk is green.',
+		{ video: 'test' },
+		dictionary
+	);
 	t.is(dictionary.hulk.videos.length, 1);
 });

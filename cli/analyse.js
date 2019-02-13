@@ -19,6 +19,7 @@ const titles = [];
 	const db = client.db(process.env.MONGO_DBNAME);
 	const videos = db.collection('videos').find({});
 	let counter = 0;
+	const promiseDeletes = [];
 	const promiseUpdates = [];
 	const promiseInserts = [];
 	try {
@@ -34,16 +35,24 @@ const titles = [];
 			) {
 				titles.push(video.title.original);
 				const dicts = helpers.parseVideo(video, hosts, keywords, tags);
-				promiseUpdates.push(db.collection('videos').update(
-					{ _id: video._id },
-					{
-						$set: {
-							keywords: Object.values(dicts.keywords).map(item => item.original),
-							tags: Object.values(dicts.tags).map(item => item.original),
-							hosts: Object.values(dicts.hosts).map(item => item.original),
+				promiseUpdates.push(
+					db.collection('videos').update(
+						{ _id: video._id },
+						{
+							$set: {
+								keywords: Object.values(dicts.keywords).map(
+									item => item.original
+								),
+								tags: Object.values(dicts.tags).map(
+									item => item.original
+								),
+								hosts: Object.values(dicts.hosts).map(
+									item => item.original
+								)
+							}
 						}
-					}
-				));
+					)
+				);
 			}
 		});
 
@@ -55,7 +64,7 @@ const titles = [];
 			) {
 				continue;
 			}
-			await db.collection(collection).deleteMany({});
+			promiseDeletes.push(db.collection(collection).deleteMany({}));
 
 			for (const id in collections[collection]) {
 				if (
@@ -70,6 +79,7 @@ const titles = [];
 				promiseInserts.push(db.collection(collection).insertOne(doc));
 			}
 		}
+		Promise.all(promiseDeletes);
 		Promise.all(promiseUpdates);
 		Promise.all(promiseInserts);
 	} catch (err) {

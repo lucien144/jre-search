@@ -11,15 +11,15 @@
 				:lazy-src="video.thumbnails.default.url"
 				height="200"
 			>
-				<v-layout
+				<VLayout
 					slot="placeholder"
 					fill-height
 					align-center
 					justify-center
 					ma-0
 				>
-					<v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
-				</v-layout>
+					<VProgressCircular indeterminate color="grey lighten-5" />
+				</VLayout>
 			</VImg>
 			<VCardTitle class="title">
 				#{{ video.title.episode }} - {{ video.title.hosts.join(', ') }}
@@ -87,7 +87,9 @@ export default {
 			return this.$store.state.user.watched.indexOf(this.video.id) > -1;
 		},
 		isFavourite() {
-			return this.$store.state.user.favourites.indexOf(this.video.id) > -1;
+			return (
+				this.$store.state.user.favourites.indexOf(this.video.id) > -1
+			);
 		}
 	},
 	methods: {

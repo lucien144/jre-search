@@ -20,7 +20,9 @@
 				</VFlex>
 			</VLayout>
 		</VContainer>
-		<VBtn v-if="$store.state.pagination.page < $store.state.pagination.pages" @click="loadVideos">Load More</VBtn>
+		<VBtn v-if="$store.state.pagination.page < $store.state.pagination.pages" @click="loadVideos">
+			Load More
+		</VBtn>
 	</div>
 </template>
 

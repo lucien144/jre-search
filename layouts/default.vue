@@ -30,7 +30,7 @@
 							>
 								<template
 									slot="item"
-									slot-scope="{ item, tile }"
+									slot-scope="{ item }"
 								>
 									<VListTileContent>
 										<VListTileTitle v-text="item.original" />
@@ -65,7 +65,7 @@
 							>
 								<template
 									slot="item"
-									slot-scope="{ item, tile }"
+									slot-scope="{ item }"
 								>
 									<VListTileContent>
 										<VListTileTitle v-text="item.original" />
@@ -144,7 +144,9 @@ export default {
 	methods: {
 		async findKeywords(keyword, type) {
 			this.isLoadingVideos = true;
-			const { data, pagination } = await this.$axios.$get(`/${type}?search=${keyword}`);
+			const { data, pagination } = await this.$axios.$get(
+				`/${type}?search=${keyword}`
+			);
 			this.videos = data;
 			this.$store.commit('SET_PAGINATION', pagination);
 			this.isLoadingVideos = false;

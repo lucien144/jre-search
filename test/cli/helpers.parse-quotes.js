@@ -41,8 +41,8 @@ test('parsing mix quotes', t => {
 
 test('should avoid duplicated videos', t => {
 	const dictionary = {};
-	const result = parseQuotes(
-		'This is a test of "double and" \'single quotes\' and another \'single quotes\'.',
+	parseQuotes(
+		"This is a test of \"double and\" 'single quotes' and another 'single quotes'.",
 		{ video: 'test' },
 		dictionary
 	);

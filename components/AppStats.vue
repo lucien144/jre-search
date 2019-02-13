@@ -70,11 +70,15 @@
 									:key="index"
 								>
 									<VListTileContent>
-										<a href="#" @click.prevent="$emit('selectVideo', video)">#{{ video.title.episode }} - {{ video.title.hosts.join(', ') }}</a>
+										<a href="#" @click.prevent="$emit('selectVideo', video)">
+											#{{ video.title.episode }} - {{ video.title.hosts.join(', ') }}
+										</a>
 									</VListTileContent>
 									<VListTileAction>
 										<span>
-											<VIcon :size="16" left>fas fa-eye</VIcon>
+											<VIcon :size="16" left>
+												fas fa-eye
+											</VIcon>
 											{{ video.statistics.viewCount | format }}
 										</span>
 									</VListTileAction>
@@ -92,10 +96,8 @@
 </template>
 
 <script>
-export default {
-}
+export default {};
 </script>
 
 <style>
-
 </style>

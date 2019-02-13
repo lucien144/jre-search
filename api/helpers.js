@@ -4,8 +4,8 @@ exports.searchCollection = (
 	{ search = '', page = 1, limit = 20, shrunk = true }
 ) => {
 	const reg = new RegExp(`${search}`, 'i');
-	page = parseInt(page);
-	limit = parseInt(limit);
+	page = parseInt(page, 10);
+	limit = parseInt(limit, 10);
 	collection
 		.find({ original: reg })
 		.sort({ count: -1 })
@@ -22,8 +22,8 @@ exports.fetchCollection = (
 	res,
 	{ page = 1, limit = 20, shrunk = true, sort = { original: 1 } }
 ) => {
-	page = parseInt(page);
-	limit = parseInt(limit);
+	page = parseInt(page, 10);
+	limit = parseInt(limit, 10);
 	collection
 		.find()
 		.sort(sort)

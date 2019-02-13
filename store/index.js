@@ -48,32 +48,24 @@ export const mutations = {
 };
 export const actions = {
 	async updateUser({ commit, getters }) {
-		const { data } = await this.$axios.$get(
-			`/users/${getters.userId}`
-		);
+		const { data } = await this.$axios.$get(`/users/${getters.userId}`);
 		commit('SET_USER_WATCHED', data.watched);
 	},
 	async watch({ state, getters, commit }, video) {
 		if (state.auth.user) {
-			const { data } = await this.$axios.$post(
-				`/users/watch`,
-				{
-					user: getters.userId,
-					video: video.id
-				}
-			);
+			const { data } = await this.$axios.$post(`/users/watch`, {
+				user: getters.userId,
+				video: video.id
+			});
 			commit('SET_USER_WATCHED', data.watched);
 		}
 	},
 	async favourite({ state, getters, commit }, video) {
 		if (state.auth.user) {
-			const { data } = await this.$axios.$post(
-				`/users/favourite`,
-				{
-					user: getters.userId,
-					video: video.id
-				}
-			);
+			const { data } = await this.$axios.$post(`/users/favourite`, {
+				user: getters.userId,
+				video: video.id
+			});
 			commit('SET_USER_FAVOURITES', data.favourites);
 		}
 	}

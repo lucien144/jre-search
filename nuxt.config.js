@@ -30,8 +30,7 @@ module.exports = {
 			},
 			{
 				rel: 'stylesheet',
-				href:
-					'https://use.fontawesome.com/releases/v5.6.3/css/all.css'
+				href: 'https://use.fontawesome.com/releases/v5.6.3/css/all.css'
 			}
 		]
 	},
@@ -49,10 +48,7 @@ module.exports = {
 	/*
 	** Plugins to load before mounting the App
 	*/
-	plugins: [
-		'@/plugins/vuetify',
-		'@/plugins/filters'
-	],
+	plugins: ['@/plugins/vuetify', '@/plugins/filters'],
 
 	auth: {
 		redirect: {
@@ -93,6 +89,6 @@ module.exports = {
 		/*
     ** You can extend webpack config here
     */
-		extend(config, ctx) {}
+		extend(config, ctx) {} // eslint-disable-line no-unused-vars
 	}
 };

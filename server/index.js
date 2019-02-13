@@ -1,5 +1,5 @@
 const express = require('express');
-const consola = require('consola');
+const consola = require('consola'); // eslint-disable-line import/no-extraneous-dependencies
 const { Nuxt, Builder } = require('nuxt');
 
 const app = express();
