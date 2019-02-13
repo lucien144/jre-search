@@ -64,6 +64,7 @@
 
 <script>
 export default {
+	transition: 'transition',
 	async fetch({ app, store, params }) {
 		console.log(`/videos/${params.id}`);
 		const { data } = await app.$axios.$get(`/videos/${params.id}`);
@@ -71,4 +72,13 @@ export default {
 	}
 }
 </script>
+
+<style>
+	.transition-enter-active, .transition-leave-active {
+		transition: opacity .40s ease-out;
+	}
+	.transition-enter, .transition-leave-active {
+		opacity: 0;
+	}
+</style>
 
