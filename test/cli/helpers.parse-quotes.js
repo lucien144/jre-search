@@ -38,3 +38,13 @@ test('parsing mix quotes', t => {
 	t.is(dictionary.singlequotes.original, 'single quotes');
 	t.is(dictionary.singlequotes.count, 1);
 });
+
+test('should avoid duplicated videos', t => {
+	const dictionary = {};
+	const result = parseQuotes(
+		'This is a test of "double and" \'single quotes\' and another \'single quotes\'.',
+		{ video: 'test' },
+		dictionary
+	);
+	t.is(dictionary.singlequotes.videos.length, 1);
+});

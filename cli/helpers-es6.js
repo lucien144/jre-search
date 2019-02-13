@@ -128,10 +128,14 @@ export const parseQuotes = (description, video, dictionary) => {
 		'gms'
 	); // eslint-disable-line no-useless-escape
 	let match;
+	const quotes = [];
 	const matches = [];
 	while ((match = regex.exec(description)) !== null) {
 		const title = match.groups.title || match.groups.title2;
-		exports.saveKeyword(title, dictionary, video);
+		if (quotes.indexOf(title) === -1) {
+			exports.saveKeyword(title, dictionary, video);
+			quotes.push(title);
+		}
 		matches.push(match[0]);
 	}
 
