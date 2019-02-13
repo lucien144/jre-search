@@ -23,9 +23,7 @@ const titles = [];
 	const promiseInserts = [];
 	try {
 		// eslint-disable-next-line no-await-in-loop
-		while (await videos.hasNext()) {
-			// eslint-disable-next-line no-await-in-loop
-			const video = await videos.next();
+		videos.forEach(video => {
 			counter++;
 
 			// 👉 Some episodes are doubled in the list of videos, therefore we need to filter them out.
@@ -47,7 +45,7 @@ const titles = [];
 					}
 				));
 			}
-		}
+		});
 
 		// Mongo: Save all dictionaries to collections
 		const collections = { hosts, tags, keywords };
