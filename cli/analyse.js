@@ -66,8 +66,8 @@ const titles = [];
 				) {
 					continue;
 				}
-				const host = collections[collection][id];
-				promiseInserts.push(db.collection(collection).insertOne(host));
+				const doc = collections[collection][id];
+				promiseInserts.push(db.collection(collection).insertOne(doc));
 			}
 		}
 		Promise.all(promiseUpdates);
