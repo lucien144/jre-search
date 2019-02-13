@@ -24,6 +24,7 @@ test('should parse video', t => {
 
 	t.is(hosts.fredmorin.count, 1);
 	t.is(hosts.fredmorin.original, 'Fred Morin');
+	t.is(hosts.fredmorin.videos.length, 1);
 	t.is(hosts.fredmorin.videos[0], video);
 
 	t.is(hosts.davidmcmillan.count, 1);

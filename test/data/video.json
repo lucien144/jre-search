@@ -77,7 +77,7 @@
                 "publishedAt" : "2018-11-15T01:15:00.000Z",
                 "channelId" : "UCzQUP1qoWDoEbmsQxvdjxgQ",
                 "title" : "Joe Rogan Experience #1202 - Fred Morin & David McMillan",
-                "description" : "Fred Morin & David McMillan are James Beard Award–nominated culinary adventurists and proprietors of the beloved restaurant, Joe Beef in Montreal.",
+                "description" : "Fred Morin & David McMillan are James Beard Award–nominated culinary adventurists and proprietors of the beloved restaurant, Joe Beef in Montreal. We mention Fred Morin again just for unit tests purposes.",
                 "thumbnails" : {
                     "default" : {
                         "url" : "https://i.ytimg.com/vi/lzujdxJxLIQ/default.jpg",
