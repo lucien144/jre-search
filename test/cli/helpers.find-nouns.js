@@ -1,5 +1,5 @@
 import test from 'ava';
-import {findNouns} from '../../cli/helpers';
+import { findNouns } from '../../cli/helpers';
 
 test('finding adjective with noun', t => {
 	const description = 'Dr. Bruce Damer is a polymath scientist.';
@@ -9,7 +9,8 @@ test('finding adjective with noun', t => {
 });
 
 test('finding multiple nouns and adjective nouns', t => {
-	const description = 'Dr. Bruce Damer is a designer, author and general explorer of liminal realms.';
+	const description =
+		'Dr. Bruce Damer is a designer, author and general explorer of liminal realms.';
 	const dictionary = {};
 	findNouns(description, dictionary, {});
 	t.is(dictionary.designer.original, 'designer');
@@ -19,7 +20,8 @@ test('finding multiple nouns and adjective nouns', t => {
 });
 
 test('finding plural nouns', t => {
-	const description = 'He has worked for over a decade in simulation and design of space missions for NASA, develops biochemical models for the origin of life at UC Santa Cruz and collects vintage computers and their history in his DigiBarn computer museum.';
+	const description =
+		'He has worked for over a decade in simulation and design of space missions for NASA, develops biochemical models for the origin of life at UC Santa Cruz and collects vintage computers and their history in his DigiBarn computer museum.';
 	const dictionary = {};
 	findNouns(description, dictionary, {});
 	t.is(dictionary.spacemissions.original, 'space missions');
@@ -27,9 +29,18 @@ test('finding plural nouns', t => {
 });
 
 test('should avoid entities', t => {
-	const description = 'Dr. Bruce Damer worked for over a decade in simulation and design of space missions for NASA, develops biochemical models for the origin of life at UC Santa Cruz and collects vintage computers and their history in his DigiBarn computer museum.';
+	const description =
+		'Dr. Bruce Damer worked for over a decade in simulation and design of space missions for NASA, develops biochemical models for the origin of life at UC Santa Cruz and collects vintage computers and their history in his DigiBarn computer museum.';
 	const dictionary = {};
 	findNouns(description, dictionary, {});
 	t.true(dictionary.nasa === undefined);
 	t.true(dictionary.digibarn === undefined);
+});
+
+test('should avoid duplicated nouns', t => {
+	const description =
+		'Dr. Bruce Damer is a comedian and his friend Bruce Banner is also comedian.';
+	const dictionary = {};
+	findNouns(description, dictionary, { video: 'test' });
+	t.is(dictionary.comedian.videos.length, 1);
 });

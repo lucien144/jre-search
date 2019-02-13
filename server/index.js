@@ -1,30 +1,36 @@
-require('dotenv').config();
 const express = require('express');
-const bodyParser = require('body-parser');
-const {MongoClient} = require('mongodb');
-
-const client = new MongoClient(process.env.MONGO_DSN, {useNewUrlParser: true});
+const consola = require('consola'); // eslint-disable-line import/no-extraneous-dependencies
+const { Nuxt, Builder } = require('nuxt');
 
 const app = express();
+const host = process.env.HOST || '127.0.0.1';
+const port = process.env.PORT || 3000;
 
-(async () => {
-	await client.connect();
-	const db = client.db(process.env.MONGO_DBNAME);
+app.set('port', port);
 
-	if (process.env.ENVIRONMENT === 'development') {
-		app.use((req, res, next) => {
-			res.header('Access-Control-Allow-Origin', 'http://localhost:8080');
-			res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-			next();
-		});
+// Import and Set Nuxt.js options
+const config = require('../nuxt.config.js');
+
+config.dev = !(process.env.NODE_ENV === 'production');
+
+async function start() {
+	// Init Nuxt.js
+	const nuxt = new Nuxt(config);
+
+	// Build only in dev mode
+	if (config.dev) {
+		const builder = new Builder(nuxt);
+		await builder.build();
 	}
 
-	app.use(bodyParser());
+	// Give nuxt middleware to express
+	app.use(nuxt.render);
 
-	require('./routes.js')(app, db);
-
-	const port = 8000;
-	app.listen(port, () => {
-		console.log('We are live on ' + port);
+	// Listen the server
+	app.listen(port, host);
+	consola.ready({
+		message: `Server listening on http://${host}:${port}`,
+		badge: true
 	});
-})().catch(err => console.error(err));
+}
+start();

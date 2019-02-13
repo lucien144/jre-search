@@ -1,5 +1,5 @@
 import test from 'ava';
-import {parseVideo} from '../../cli/helpers';
+import { parseVideo } from '../../cli/helpers';
 
 const video = require('../data/video.json');
 
@@ -12,7 +12,10 @@ test('should parse video', t => {
 	t.true(Object.prototype.hasOwnProperty.call(hosts, 'fredmorin'));
 	t.true(Object.prototype.hasOwnProperty.call(hosts, 'davidmcmillan'));
 
-	t.is(video.title.original, 'Joe Rogan Experience #1202 - Fred Morin & David McMillan');
+	t.is(
+		video.title.original,
+		'Joe Rogan Experience #1202 - Fred Morin & David McMillan'
+	);
 	t.is(video.title.episode, 1202);
 	t.is(video.title.hosts.length, 2);
 	t.is(video.title.hosts[0], 'Fred Morin');
@@ -21,6 +24,7 @@ test('should parse video', t => {
 
 	t.is(hosts.fredmorin.count, 1);
 	t.is(hosts.fredmorin.original, 'Fred Morin');
+	t.is(hosts.fredmorin.videos.length, 1);
 	t.is(hosts.fredmorin.videos[0], video);
 
 	t.is(hosts.davidmcmillan.count, 1);

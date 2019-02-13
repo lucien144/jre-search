@@ -1,5 +1,5 @@
 import test from 'ava';
-import {parseTitle} from '../../cli/helpers';
+import { parseTitle } from '../../cli/helpers';
 
 test('should be false', t => {
 	t.false(parseTitle('Another Podcast Title'));
@@ -12,7 +12,9 @@ test('single host', t => {
 });
 
 test('multiple hosts', t => {
-	const title = parseTitle('Joe Rogan Experience #144 Jon Jones, Elon Musk & Niel deGrasse (part 1)');
+	const title = parseTitle(
+		'Joe Rogan Experience #144 Jon Jones, Elon Musk & Niel deGrasse (part 1)'
+	);
 	t.is(title.hosts.length, 3);
 	t.is(title.hosts[0], 'Jon Jones');
 	t.is(title.hosts[1], 'Elon Musk');
@@ -20,7 +22,9 @@ test('multiple hosts', t => {
 });
 
 test('multiple hosts without spaces', t => {
-	const title = parseTitle('Joe Rogan Experience #144 Jon Jones,Elon Musk &Niel deGrasse (part 1)');
+	const title = parseTitle(
+		'Joe Rogan Experience #144 Jon Jones,Elon Musk &Niel deGrasse (part 1)'
+	);
 	t.is(title.hosts.length, 3);
 	t.is(title.hosts[0], 'Jon Jones');
 	t.is(title.hosts[1], 'Elon Musk');
@@ -28,13 +32,17 @@ test('multiple hosts without spaces', t => {
 });
 
 test('dashes, parts as word and multiple spaces', t => {
-	const title = parseTitle('Joe Rogan Experience #165  - Bruce Lipton PHD (PART ONE)');
+	const title = parseTitle(
+		'Joe Rogan Experience #165  - Bruce Lipton PHD (PART ONE)'
+	);
 	t.is(title.hosts.length, 1);
 	t.is(title.hosts[0], 'Bruce Lipton PHD');
 });
 
 test('mma show', t => {
-	const title = parseTitle('JRE MMA Show #41 with TJ Dillashaw & Duane Ludwig');
+	const title = parseTitle(
+		'JRE MMA Show #41 with TJ Dillashaw & Duane Ludwig'
+	);
 	t.is(title.episode, 'MMA41');
 	t.is(title.hosts.length, 2);
 	t.is(title.hosts[0], 'TJ Dillashaw');

@@ -8,19 +8,38 @@ const compendium = require('compendium-js');
  * @param {object} hosts Dictionary with hosts.
  * @param {object} keywords Dictionary with keywords.
  * @param {object} tags Dictionary with tags.
+ * @returns {object} Returns object with parsed hosts, keywords and descriptions.
  */
 export const parseVideo = (video, hosts, keywords, tags) => {
-	let {title, description} = video;
+	let { title, description } = video;
+
+	const _keywords = {};
+	const _hosts = {};
+	const _tags = {};
 
 	title.hosts.forEach(host => {
 		exports.saveKeyword(host, hosts, video);
+		exports.saveKeyword(host, _hosts, video);
 		description = description.replace(host, '');
 	});
 
-	description = exports.parseQuotes(description, keywords);
+	exports.parseQuotes(description, video, _keywords);
+	description = exports.parseQuotes(description, video, keywords);
+
+	exports.parseEntities(description, video, _keywords);
 	description = exports.parseEntities(description, video, keywords);
+
+	exports.findNouns(description, _keywords, video);
 	exports.findNouns(description, keywords, video);
+
 	exports.findNouns(description, tags, video);
+	exports.findNouns(description, _tags, video);
+
+	return {
+		hosts: _hosts,
+		keywords: _keywords,
+		tags: _tags
+	};
 };
 
 /**
@@ -31,22 +50,30 @@ export const parseVideo = (video, hosts, keywords, tags) => {
  * @returns {false} If the analyse fails.
  */
 export const parseTitle = title => {
-	let matches = title.match(/^Joe Rogan Experience #(?<episode>\d*)(\s{0,}-{0,}\s{0,})(?<hosts>.*?)(?<part>\s?\(part\s(\d+|\w+)\))?$/i);
+	let matches = title.match(
+		/^Joe Rogan Experience #(?<episode>\d*)(\s{0,}-{0,}\s{0,})(?<hosts>.*?)(?<part>\s?\(part\s(\d+|\w+)\))?$/i
+	);
 	if (matches) {
 		return {
 			original: title,
 			episode: Number(matches.groups.episode),
-			hosts: matches.groups.hosts.split(/[,&]+|\sand\s/).map(el => S(el).trim().s), // eslint-disable-line new-cap
+			hosts: matches.groups.hosts
+				.split(/[,&]+|\sand\s/)
+				.map(el => S(el).trim().s), // eslint-disable-line new-cap
 			part: matches.groups.part
 		};
 	}
 
-	matches = title.match(/^JRE MMA Show #(?<episode>\d*)(\s{0,}(-|with){0,}\s{0,})(?<hosts>.*?)$/i);
+	matches = title.match(
+		/^JRE MMA Show #(?<episode>\d*)(\s{0,}(-|with){0,}\s{0,})(?<hosts>.*?)$/i
+	);
 	if (matches) {
 		return {
 			original: title,
 			episode: `MMA${matches.groups.episode}`,
-			hosts: matches.groups.hosts.split(/[,&]+|\sand\s/).map(el => S(el).trim().s), // eslint-disable-line new-cap
+			hosts: matches.groups.hosts
+				.split(/[,&]+|\sand\s/)
+				.map(el => S(el).trim().s), // eslint-disable-line new-cap
 			part: null
 		};
 	}
@@ -61,7 +88,10 @@ export const parseTitle = title => {
  * @returns {string} Webalized title string
  */
 export const getId = title => {
-	const id = S(title).trim().s.toLowerCase(); // eslint-disable-line new-cap
+	// eslint-disable-next-line new-cap
+	const id = S(title)
+		.trim()
+		.s.toLowerCase();
 	return id.replace(/[^\w]/gi, '');
 };
 
@@ -90,16 +120,24 @@ export const saveKeyword = (keyword, dict, video) => {
 /**
  * Parse "this is a quote" quotes from a description text.
  * @param {string} description Copy of text.
+ * @param {object} video YT video object.
  * @param {object} dictionary A dictionary to save found quotes to.
  * @returns {string} Updated description without parsed keywords.
  */
-export const parseQuotes = (description, dictionary) => {
-	const regex = new RegExp('("(?<title>.+?)")|((?=[^\w]|\A)\'(?<title2>.+?)\'(?=[^s]))', 'gms'); // eslint-disable-line no-useless-escape
+export const parseQuotes = (description, video, dictionary) => {
+	const regex = new RegExp(
+		'("(?<title>.+?)")|((?=[^w]|A)\'(?<title2>.+?)\'(?=[^s]))',
+		'gms'
+	); // eslint-disable-line no-useless-escape
 	let match;
+	const quotes = [];
 	const matches = [];
 	while ((match = regex.exec(description)) !== null) {
 		const title = match.groups.title || match.groups.title2;
-		exports.saveKeyword(title, dictionary);
+		if (quotes.indexOf(title) === -1) {
+			exports.saveKeyword(title, dictionary, video);
+			quotes.push(title);
+		}
 		matches.push(match[0]);
 	}
 
@@ -119,18 +157,25 @@ export const parseQuotes = (description, dictionary) => {
  */
 export const parseEntities = (description, video, dictionary) => {
 	const anal = compendium.analyse(description);
+	const entities = [];
 	try {
-		anal[0].entities.forEach(entity => {
-			exports.saveKeyword(entity.raw, dictionary, video);
-			description = description.replace(entity.raw, '');
-		});
+		if (anal.length > 0) {
+			anal[0].entities.forEach(entity => {
+				if (entities.indexOf(entity.raw) === -1) {
+					exports.saveKeyword(entity.raw, dictionary, video);
+					entities.push(entity.raw);
+				}
+				description = description.replace(entity.raw, '');
+			});
+		}
 	} catch (error) {
-		// Console.warn(error);
+		console.warn(error);
 	}
 	return description;
 };
 
 export const findNouns = (description, dictionary, video) => {
+	const nouns = [];
 	let noun = '';
 	compendium.analyse(description).forEach(anal => {
 		anal.tokens.forEach(token => {
@@ -140,8 +185,12 @@ export const findNouns = (description, dictionary, video) => {
 				found = true;
 			}
 			if (noun !== '' && !found) {
-				exports.saveKeyword(noun, dictionary, video);
-				noun = '';
+				// Skip duplicated nouns.
+				if (nouns.indexOf(noun) === -1) {
+					exports.saveKeyword(noun, dictionary, video);
+					nouns.push(noun);
+					noun = '';
+				}
 			}
 		});
 	});
