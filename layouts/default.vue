@@ -109,36 +109,35 @@ export default {
 	},
 	watch: {
 		host(val) {
+			if (val === '') {
+				this.loadVideos(1);
+				return;
+			}
 			return val && this.findKeywords(val, 'hosts');
 		},
 		selectedHost(val) {
 			if (!val) {
-				this.loadVideos();
+				this.loadVideos(1);
 				return;
 			}
 
 			return val && this.getKeywordVideos(val, 'hosts');
 		},
 		keyword(val) {
+			if (val === '') {
+				this.loadVideos(1);
+				return;
+			}
 			return val && this.findKeywords(val, 'keywords');
 		},
 		selectedKeyword(val) {
 			if (!val) {
-				this.loadVideos();
+				this.loadVideos(1);
 				return;
 			}
 
 			return val && this.getKeywordVideos(val, 'keywords');
 		}
-	},
-
-	async fetch({ app, store }) {
-		const p1 = app.$axios.$get(`/videos`);
-		const p2 = app.$axios.$get(`/stats`);
-		const [videos, stats] = await Promise.all([p1, p2]);
-		store.commit('VIDEOS_SET', videos.data);
-		store.commit('SET_PAGINATION', videos.pagination);
-		store.commit('STATS_SET', stats.data);
 	},
 
 	methods: {
@@ -162,14 +161,14 @@ export default {
 			this.$store.commit('SET_PAGINATION', pagination);
 			this.isLoadingVideos = false;
 		},
-		async loadVideos() {
+		async loadVideos(page = null) {
 			this.isLoadingVideos = true;
 			const { data, pagination } = await this.$axios.$get(`/videos`, {
 				params: {
-					page: this.$store.state.pagination.page + 1
+					page: page > 0 ? page : this.$store.state.pagination.page + 1
 				}
 			});
-			this.$store.commit('VIDEOS_APPEND', data);
+			this.$store.commit(page > 0 ? 'VIDEOS_SET' : 'VIDEOS_APPEND', data);
 			this.$store.commit('SET_PAGINATION', pagination);
 			this.isLoadingVideos = false;
 		}
