@@ -167,7 +167,8 @@ export default {
 			this.isLoadingVideos = true;
 			const { data, pagination } = await this.$axios.$get(`/videos`, {
 				params: {
-					page: page > 0 ? page : this.$store.state.pagination.page + 1
+					page:
+						page > 0 ? page : this.$store.state.pagination.page + 1
 				}
 			});
 			this.$store.commit(page > 0 ? 'VIDEOS_SET' : 'VIDEOS_APPEND', data);
