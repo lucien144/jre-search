@@ -32,6 +32,10 @@ import VideoCard from '~/components/VideoCard.vue';
 export default {
 	components: { VideoCard },
 	async fetch({ app, store }) {
+		if (store.state.videos.length > 0) {
+			return;
+		}
+
 		const p1 = app.$axios.$get(`/videos`);
 		const p2 = app.$axios.$get(`/stats`);
 		const [videos, stats] = await Promise.all([p1, p2]);
