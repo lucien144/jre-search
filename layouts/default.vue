@@ -25,6 +25,7 @@
 								placeholder="Elon Musk"
 								prepend-icon="fas fa-user-circle"
 								append-icon="fas fa-caret-down"
+								return-object
 								:clearable="true"
 								clear-icon="fas fa-times"
 							>
@@ -60,6 +61,7 @@
 								placeholder="neuroscientist"
 								prepend-icon="fas fa-lightbulb"
 								append-icon="fas fa-caret-down"
+								return-object
 								:clearable="true"
 								clear-icon="fas fa-times"
 							>
@@ -150,12 +152,12 @@ export default {
 			this.$store.commit('SET_PAGINATION', pagination);
 			this.isLoadingVideos = false;
 		},
-		async getKeywordVideos(id, type) {
+		async getKeywordVideos(keywordObj, type) {
 			this.$router.push('/');
 
 			this.isLoadingVideos = true;
 			const { data, pagination } = await this.$axios.$get(
-				`/${type}/${id}`
+				`/${type}/${keywordObj._id}`
 			);
 			this.$store.commit('VIDEOS_SET', data.videos);
 			this.$store.commit('SET_PAGINATION', pagination);
