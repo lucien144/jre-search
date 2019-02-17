@@ -19,7 +19,6 @@ const titles = [];
 	const db = client.db(process.env.MONGO_DBNAME);
 	const videos = db.collection('videos').find({});
 	let counter = 0;
-	const promiseDeletes = [];
 	const promiseUpdates = [];
 	const promiseInserts = [];
 	try {
@@ -38,7 +37,7 @@ const titles = [];
 				titles.push(video.title.original);
 				const dicts = helpers.parseVideo(video, hosts, keywords, tags);
 				promiseUpdates.push(
-					db.collection('videos').update(
+					db.collection('videos').updateOne(
 						{ _id: video._id },
 						{
 							$set: {
@@ -66,7 +65,7 @@ const titles = [];
 			) {
 				continue;
 			}
-			promiseDeletes.push(db.collection(collection).deleteMany({}));
+			await db.collection(collection).deleteMany({}); // eslint-disable-line no-await-in-loop
 
 			for (const id in collections[collection]) {
 				if (
@@ -81,14 +80,12 @@ const titles = [];
 				promiseInserts.push(db.collection(collection).insertOne(doc));
 			}
 		}
-		Promise.all(promiseDeletes);
-		Promise.all(promiseUpdates);
-		Promise.all(promiseInserts);
+		Promise.all([promiseUpdates, promiseInserts]);
 	} catch (err) {
 		console.error(err);
 	} finally {
 		client.close();
-		console.log(counter);
+		console.log(`Total videos: ${counter}`);
 		console.timeEnd('execution');
 	}
 })().catch(err => console.error(err));
