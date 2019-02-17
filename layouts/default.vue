@@ -18,7 +18,7 @@
 							<VAutocomplete
 								v-model="selectedHost"
 								:search-input.sync="host"
-								:items="videos"
+								:items="videos.hosts"
 								item-text="original"
 								item-value="_id"
 								label="Find a host"
@@ -54,7 +54,7 @@
 							<VAutocomplete
 								v-model="selectedKeyword"
 								:search-input.sync="keyword"
-								:items="videos"
+								:items="videos.keywords"
 								item-text="original"
 								item-value="_id"
 								label="Search for a topic or keyword"
@@ -101,7 +101,10 @@ export default {
 	components: { AppHeader },
 	data() {
 		return {
-			videos: [],
+			videos: {
+				hosts: [],
+				keywords: []
+			},
 			host: '',
 			selectedHost: null,
 			keyword: '',
@@ -148,7 +151,7 @@ export default {
 			const { data, pagination } = await this.$axios.$get(
 				`/${type}?search=${keyword}`
 			);
-			this.videos = data;
+			this.videos[type] = data;
 			this.$store.commit('SET_PAGINATION', pagination);
 			this.isLoadingVideos = false;
 		},
