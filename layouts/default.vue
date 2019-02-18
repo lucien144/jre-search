@@ -25,6 +25,7 @@
 								placeholder="Elon Musk"
 								prepend-icon="fas fa-user-circle"
 								append-icon="fas fa-caret-down"
+								no-data-text="Type in a host's name first."
 								return-object
 								:clearable="true"
 								clear-icon="fas fa-times"
@@ -61,6 +62,7 @@
 								placeholder="neuroscientist"
 								prepend-icon="fas fa-lightbulb"
 								append-icon="fas fa-caret-down"
+								no-data-text="Type in any keyword first."
 								return-object
 								:clearable="true"
 								clear-icon="fas fa-times"
