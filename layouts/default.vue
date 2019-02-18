@@ -116,11 +116,12 @@ export default {
 	},
 	watch: {
 		host(val) {
-			if (val === '') {
+			if (!val) {
+				this.videos.hosts = [];
 				this.loadVideos(1);
 				return;
 			}
-			return val && this.findKeywords(val, 'hosts');
+			return this.findKeywords(val, 'hosts');
 		},
 		selectedHost(val) {
 			if (!val) {
@@ -131,11 +132,12 @@ export default {
 			return val && this.getKeywordVideos(val, 'hosts');
 		},
 		keyword(val) {
-			if (val === '') {
+			if (!val) {
+				this.videos.keywords = [];
 				this.loadVideos(1);
 				return;
 			}
-			return val && this.findKeywords(val, 'keywords');
+			return this.findKeywords(val, 'keywords');
 		},
 		selectedKeyword(val) {
 			if (!val) {
