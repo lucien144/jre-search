@@ -12,13 +12,44 @@
 				<VFlex xs10 sm9>
 					JRE on ✨ 🍄
 				</VFlex>
-				<VFlex xs3>
+				<VFlex xs2 sm3 text-xs-right class="hidden-md-and-up">
+					<VMenu offset-x offset-y bottom left>
+						<VBtn
+							icon
+							slot="activator"
+						>
+							<VIcon>fas fa-bars</VIcon>
+						</VBtn>
+						<VList>
+							<VListTile @click.native="openStats = !openStats">
+								<VListTileTitle>Stats</VListTileTitle>
+							</VListTile>
+							<VListTile>
+								<VListTileTitle>About</VListTileTitle>
+							</VListTile>
+							<VListTile
+								v-if="$auth.loggedIn"
+								:disabled="isLoadingAuth"
+								@click.native="logout()"
+							>
+								<VListTileTitle>Logout</VListTileTitle>
+							</VListTile>
+							<VListTile
+								v-else
+								:disabled="isLoadingAuth"
+								@click.native="auth()"
+							>
+								<VListTileTitle>Sign In/Up</VListTileTitle>
+							</VListTile>
+						</VList>
+					</VMenu>
+				</VFlex>
+				<VFlex sm3 class="hidden-sm-and-down">
 					<VLayout
 						row
 						justify-end
 					>
 						<VBtn
-							:loading="$store.state.stats === null"
 							@click.native="openStats = !openStats"
 						>
 							Stats
