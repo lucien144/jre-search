@@ -9,8 +9,8 @@
 				nowrap
 				align-center
 			>
-				<VFlex xs9>
-					JRE on steroids 💊
+				<VFlex xs10 sm9>
+					JRE on ✨ 🍄
 				</VFlex>
 				<VFlex xs3>
 					<VLayout
