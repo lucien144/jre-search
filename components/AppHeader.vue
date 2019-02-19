@@ -15,8 +15,8 @@
 				<VFlex xs2 sm3 text-xs-right class="hidden-md-and-up">
 					<VMenu offset-x offset-y bottom left>
 						<VBtn
-							icon
 							slot="activator"
+							icon
 						>
 							<VIcon>fas fa-bars</VIcon>
 						</VBtn>

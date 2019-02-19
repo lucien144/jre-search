@@ -47,7 +47,7 @@ export const mutations = {
 	}
 };
 export const actions = {
-	async nuxtServerInit ({ commit }, { app }) {
+	async nuxtServerInit({ commit }, { app }) {
 		const stats = await app.$axios.$get(`/stats`);
 		commit('STATS_SET', stats.data);
 	},
