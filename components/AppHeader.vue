@@ -10,7 +10,7 @@
 				align-center
 			>
 				<VFlex xs10 sm9>
-					JRE on ✨ 🍄
+					<span class="hidden-xs-only">JRE on </span>✨ 🍄
 				</VFlex>
 				<VFlex xs2 sm3 text-xs-right class="hidden-md-and-up">
 					<VMenu offset-x offset-y bottom left>
@@ -142,7 +142,8 @@ export default {
 	position: absolute;
 	top: 0%;
 	left: 50%;
-	width: 8rem;
+	width: 22vw;
+	max-width: 128px;
 	transform: translate(-50%, -50%);
 	border-radius: 50%;
 	box-shadow: 0 3px 4px rgba(0, 0, 0, 0.35);
