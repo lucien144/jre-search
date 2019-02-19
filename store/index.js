@@ -47,6 +47,10 @@ export const mutations = {
 	}
 };
 export const actions = {
+	async nuxtServerInit ({ commit }, { app }) {
+		const stats = await app.$axios.$get(`/stats`);
+		commit('STATS_SET', stats.data);
+	},
 	async updateUser({ commit, getters }) {
 		const { data } = await this.$axios.$get(`/users/${getters.userId}`);
 		commit('SET_USER_WATCHED', data.watched);

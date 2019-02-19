@@ -36,12 +36,9 @@ export default {
 			return;
 		}
 
-		const p1 = app.$axios.$get(`/videos`);
-		const p2 = app.$axios.$get(`/stats`);
-		const [videos, stats] = await Promise.all([p1, p2]);
+		const videos = await app.$axios.$get(`/videos`);
 		store.commit('VIDEOS_SET', videos.data);
 		store.commit('SET_PAGINATION', videos.pagination);
-		store.commit('STATS_SET', stats.data);
 	},
 	methods: {
 		async loadVideos() {
