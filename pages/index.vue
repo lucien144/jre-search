@@ -19,10 +19,14 @@
 					<VideoCard :video="video" />
 				</VFlex>
 			</VLayout>
+			<VLayout>
+				<VFlex xs12 text-xs-center>
+					<VBtn v-if="$store.state.pagination.page < $store.state.pagination.pages" @click="loadVideos">
+						Load More
+					</VBtn>
+				</VFlex>
+			</VLayout>
 		</VContainer>
-		<VBtn v-if="$store.state.pagination.page < $store.state.pagination.pages" @click="loadVideos">
-			Load More
-		</VBtn>
 	</div>
 </template>
 
