@@ -97,3 +97,10 @@ export default {
 	opacity: 0;
 }
 </style>
+
+<style scoped lang="scss">
+iframe {
+	min-height: 50vh;
+}
+</style>
+
