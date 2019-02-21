@@ -81,11 +81,13 @@
 			v-if="$store.state.stats"
 			v-model="openStats"
 			@input="v => v || (openStats = false)"
+			@keydown.esc="openStats = false"
 		>
 			<AppStats
 				@selectHost="host => { $emit('selectHost', host); openStats = false; }"
 				@selectKeyword="keyword => { $emit('selectKeyword', keyword); openStats = false; }"
 				@selectVideo="video => { $store.commit('video', video); openStats = false; }"
+				@close="openStats = false"
 			/>
 		</VDialog>
 	</div>

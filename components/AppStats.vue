@@ -1,16 +1,26 @@
 <template>
-	<VCard>
-		<VCardTitle class="headline">
-			Statistics
-		</VCardTitle>
+	<VCard dark>
 		<VCardText>
 			<VContainer
 				fluid
 				grid-list-lg
 			>
-				<VLayout>
-					<VFlex xs4>
-						<VCard>
+				<VLayout row wrap align-center>
+					<VFlex xs8>
+						<h3 class="headline mb-0">Statistics</h3>
+					</VFlex>
+					<VFlex xs4 text-xs-right>
+						<VBtn
+							fab
+							small
+							light
+							@click="$emit('close')"
+						><VIcon>fas fa-times</VIcon></VBtn>
+					</VFlex>
+				</VLayout>
+				<VLayout row wrap>
+					<VFlex xs12 md4>
+						<VCard light>
 							<VCardTitle>
 								<h4>Top 20 hosts ({{ $store.state.stats.hosts.count }} total)</h4>
 							</VCardTitle>
@@ -19,7 +29,6 @@
 								<VListTile
 									v-for="(item, index) in $store.state.stats.hosts.top"
 									:key="index"
-									dark
 								>
 									<VListTileContent>
 										<a href="#" @click.prevent="$emit('selectHost', item)">
@@ -36,8 +45,8 @@
 							</VCardActions>
 						</VCard>
 					</VFlex>
-					<VFlex xs4>
-						<VCard>
+					<VFlex xs12 md4>
+						<VCard light>
 							<VCardTitle><h4>Top 20 keywords ({{ $store.state.stats.keywords.count }} total)</h4></VCardTitle>
 							<VDivider />
 							<VList dense>
@@ -60,8 +69,8 @@
 							</VCardActions>
 						</VCard>
 					</VFlex>
-					<VFlex xs4>
-						<VCard>
+					<VFlex xs12 md4>
+						<VCard light>
 							<VCardTitle><h4>Top 20 videos ({{ $store.state.stats.videos.count }} total)</h4></VCardTitle>
 							<VDivider />
 							<VList dense>
