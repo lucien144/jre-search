@@ -7,7 +7,9 @@
 			>
 				<VLayout row wrap align-center>
 					<VFlex xs8>
-						<h3 class="headline mb-0">Statistics</h3>
+						<h3 class="headline mb-0">
+							Statistics
+						</h3>
 					</VFlex>
 					<VFlex xs4 text-xs-right>
 						<VBtn
@@ -15,7 +17,9 @@
 							small
 							light
 							@click="$emit('close')"
-						><VIcon>fas fa-times</VIcon></VBtn>
+						>
+							<VIcon>fas fa-times</VIcon>
+						</VBtn>
 					</VFlex>
 				</VLayout>
 				<VLayout row wrap>

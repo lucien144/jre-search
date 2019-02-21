@@ -10,7 +10,9 @@
 				align-center
 			>
 				<VFlex xs10 sm9>
-					<span class="hidden-xs-only">JRE on </span>✨ 🍄
+					<span class="hidden-xs-only">
+						JRE on
+					</span>✨ 🍄
 				</VFlex>
 				<VFlex xs2 sm3 text-xs-right class="hidden-md-and-up">
 					<VMenu offset-x offset-y bottom left>
