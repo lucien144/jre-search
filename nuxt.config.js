@@ -54,7 +54,7 @@ module.exports = {
 		redirect: {
 			login: '/',
 			logout: '/',
-			callback: '/',
+			callback: '/login/success',
 			home: '/'
 		},
 		strategies: {
@@ -62,7 +62,8 @@ module.exports = {
 				domain: process.env.AUTH_DOMAIN,
 				client_id: process.env.AUTH_CLIENT_ID // eslint-disable-line camelcase
 			}
-		}
+		},
+		plugins: ['~/plugins/auth.js']
 	},
 
 	/*
