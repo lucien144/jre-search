@@ -30,15 +30,15 @@
 								<VListTileTitle>About</VListTileTitle>
 							</VListTile>
 							<VListTile
-								v-if="$auth.loggedIn"
-								:disabled="isLoadingAuth"
+								v-if="$lock.loggedIn"
+								:disabled="$lock.isLoadingAuth"
 								@click.native="logout()"
 							>
 								<VListTileTitle>Logout</VListTileTitle>
 							</VListTile>
 							<VListTile
 								v-else
-								:disabled="isLoadingAuth"
+								:disabled="$lock.isLoadingAuth"
 								@click.native="auth()"
 							>
 								<VListTileTitle>Sign In/Up</VListTileTitle>
@@ -60,17 +60,17 @@
 							About
 						</VBtn>
 						<VBtn
-							v-if="$auth.loggedIn"
-							:loading="isLoadingAuth"
-							:disabled="isLoadingAuth"
+							v-if="$lock.loggedIn"
+							:loading="$lock.isLoadingAuth"
+							:disabled="$lock.isLoadingAuth"
 							@click.native="logout()"
 						>
 							Logout
 						</VBtn>
 						<VBtn
 							v-else
-							:loading="isLoadingAuth"
-							:disabled="isLoadingAuth"
+							:loading="$lock.isLoadingAuth"
+							:disabled="$lock.isLoadingAuth"
 							@click.native="auth()"
 						>
 							Sign In/Up
@@ -105,34 +105,24 @@ export default {
 			// Toggle. True if we want to open statistics dialog.
 			openStats: false,
 
-			// Toggle. True if authorization process is running atm.
-			isLoadingAuth: false,
-
 			// Toggle. True if list of videos being loaded.
 			isLoadingVideos: false
 		};
 	},
 	mounted() {
-		if (this.$auth.loggedIn) {
+		if (this.$lock.loggedIn) {
 			this.$store.dispatch('updateUser');
 		}
 	},
 	methods: {
 		// Sign in/up
-		async auth() {
-			this.isLoadingAuth = true;
-			if (!this.$auth.loggedIn) {
-				await this.$auth.loginWith('auth0');
-			}
-			this.$store.dispatch('updateUser');
-			this.isLoadingAuth = false;
+		auth() {
+			this.$lock.login();
 		},
 
 		// Logout
-		async logout() {
-			this.isLoadingAuth = true;
-			await this.$auth.logout();
-			this.isLoadingAuth = false;
+		logout() {
+			this.$lock.logout();
 		}
 	}
 };

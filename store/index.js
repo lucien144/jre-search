@@ -44,6 +44,9 @@ export const mutations = {
 	},
 	STATS_SET(state, stats) {
 		state.stats = stats;
+	},
+	USER_IDENTITY_SET(state, identity) {
+		state.user.identity = identity;
 	}
 };
 export const actions = {
@@ -56,7 +59,7 @@ export const actions = {
 		commit('SET_USER_WATCHED', data.watched);
 	},
 	async watch({ state, getters, commit }, video) {
-		if (state.auth.user) {
+		if (state.user.identity) {
 			const { data } = await this.$axios.$post(`/users/watch`, {
 				user: getters.userId,
 				video: video.id
@@ -65,7 +68,7 @@ export const actions = {
 		}
 	},
 	async favourite({ state, getters, commit }, video) {
-		if (state.auth.user) {
+		if (state.user.identity) {
 			const { data } = await this.$axios.$post(`/users/favourite`, {
 				user: getters.userId,
 				video: video.id
@@ -87,8 +90,8 @@ export const getters = {
 		});
 	},
 	userId(state) {
-		if (state.auth.user) {
-			return state.auth.user.sub.replace(/google-oauth2\|/, '');
+		if (state.user.identity) {
+			return state.user.identity.sub.replace(/google-oauth2\|/, '');
 		}
 		return null;
 	}
