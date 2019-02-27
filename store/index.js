@@ -44,6 +44,9 @@ export const mutations = {
 	},
 	STATS_SET(state, stats) {
 		state.stats = stats;
+	},
+	USER_IDENTITY_SET(state, identity) {
+		state.user.identity = identity;
 	}
 };
 export const actions = {
@@ -86,9 +89,12 @@ export const getters = {
 					: 0;
 		});
 	},
+	isLoggedIn(state) {
+		return state.user.identity !== null;
+	},
 	userId(state) {
-		if (state.auth.user) {
-			return state.auth.user.sub.replace(/google-oauth2\|/, '');
+		if (state.user.identity) {
+			return state.user.identity.sub.replace(/google-oauth2\|/, '');
 		}
 		return null;
 	}

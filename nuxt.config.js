@@ -4,6 +4,13 @@ const pkg = require('./package');
 module.exports = {
 	mode: 'universal',
 
+	env: {
+		auth: {
+			domain: process.env.AUTH_DOMAIN,
+			cid: process.env.AUTH_CLIENT_ID
+		}
+	},
+
 	/*
   ** Headers of the page
   */
@@ -48,23 +55,7 @@ module.exports = {
 	/*
 	** Plugins to load before mounting the App
 	*/
-	plugins: ['@/plugins/vuetify', '@/plugins/filters'],
-
-	auth: {
-		redirect: {
-			login: '/',
-			logout: '/',
-			callback: '/login/success',
-			home: '/'
-		},
-		strategies: {
-			auth0: {
-				domain: process.env.AUTH_DOMAIN,
-				client_id: process.env.AUTH_CLIENT_ID // eslint-disable-line camelcase
-			}
-		},
-		plugins: ['~/plugins/auth.js']
-	},
+	plugins: ['@/plugins/vuetify', '@/plugins/filters', '@/plugins/auth'],
 
 	/*
   ** Nuxt.js modules
@@ -72,7 +63,8 @@ module.exports = {
 	modules: [
 		// Doc: https://github.com/nuxt-community/axios-module#usage
 		'@nuxtjs/axios',
-		'@nuxtjs/auth'
+		'cookie-universal-nuxt'
+		// '@nuxtjs/auth'
 	],
 	/*
   ** Axios module configuration

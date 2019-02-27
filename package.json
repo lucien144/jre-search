@@ -15,10 +15,11 @@
     "lint": "xo"
   },
   "dependencies": {
-    "@nuxtjs/auth": "^4.5.3",
     "@nuxtjs/axios": "^5.3.6",
+    "auth0-lock": "^11.14.0",
     "body-parser": "^1.18.3",
     "compendium-js": "0.0.31",
+    "cookie-universal-nuxt": "^2.0.14",
     "cross-env": "^5.2.0",
     "dotenv": "^6.2.0",
     "esm": "^3.0.84",
