@@ -57,13 +57,6 @@ export default ({ app, env }, inject) => {
 		defaultDatabaseConnection: 'acme'
 	};
 
-	const token = app.$cookies.get('auth');
-	if (token) {
-		signIn(token);
-	} else {
-		app.$auth.isLoadingAuth = false;
-	}
-
 	lock.on('authenticated', authResult => {
 		signIn(authResult.accessToken);
 	});
@@ -87,4 +80,20 @@ export default ({ app, env }, inject) => {
 			returnTo: window.location.href
 		});
 	};
+
+	const token = app.$cookies.get('auth');
+	if (token) {
+		signIn(token);
+	} else {
+		const hash = window.location.hash
+			.slice(1)
+			.split('&')
+			.map(i => i.split('='))
+			.flat();
+		// If the access token is present, avoid reseting the loading.
+		// Reason is, the "authenticated" event might have not finished yet.
+		if (hash.indexOf('access_token') === -1) {
+			app.$auth.isLoadingAuth = false;
+		}
+	}
 };
