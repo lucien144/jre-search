@@ -32,7 +32,7 @@
 			<VCardActions>
 				<VSpacer />
 				<div class="text-xs-center">
-					<VTooltip top :disabled="$auth.loggedIn">
+					<VTooltip top :disabled="$lock.loggedIn">
 						<VBtn
 							slot="activator"
 							icon
@@ -41,13 +41,13 @@
 							<VIcon v-if="isFavourite">
 								fas fa-heart
 							</VIcon>
-							<VIcon v-else :disabled="!$auth.loggedIn">
+							<VIcon v-else :disabled="!$lock.loggedIn">
 								far fa-heart
 							</VIcon>
 						</VBtn>
 						<span>You need to sign in to save the video into favourites.</span>
 					</VTooltip>
-					<VTooltip top :disabled="$auth.loggedIn">
+					<VTooltip top :disabled="$lock.loggedIn">
 						<VBtn
 							slot="activator"
 							icon
@@ -56,7 +56,7 @@
 							<VIcon v-if="isWatched">
 								fas fa-eye
 							</VIcon>
-							<VIcon v-else :disabled="!$auth.loggedIn">
+							<VIcon v-else :disabled="!$lock.loggedIn">
 								far fa-eye
 							</VIcon>
 						</VBtn>

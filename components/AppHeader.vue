@@ -30,15 +30,15 @@
 								<VListTileTitle>About</VListTileTitle>
 							</VListTile>
 							<VListTile
-								v-if="$auth.loggedIn"
-								:disabled="$auth.isLoadingAuth"
+								v-if="$lock.loggedIn"
+								:disabled="$lock.isLoadingAuth"
 								@click.native="logout()"
 							>
 								<VListTileTitle>Logout</VListTileTitle>
 							</VListTile>
 							<VListTile
 								v-else
-								:disabled="$auth.isLoadingAuth"
+								:disabled="$lock.isLoadingAuth"
 								@click.native="auth()"
 							>
 								<VListTileTitle>Sign In/Up</VListTileTitle>
@@ -60,17 +60,17 @@
 							About
 						</VBtn>
 						<VBtn
-							v-if="$auth.loggedIn"
-							:loading="$auth.isLoadingAuth"
-							:disabled="$auth.isLoadingAuth"
+							v-if="$lock.loggedIn"
+							:loading="$lock.isLoadingAuth"
+							:disabled="$lock.isLoadingAuth"
 							@click.native="logout()"
 						>
 							Logout
 						</VBtn>
 						<VBtn
 							v-else
-							:loading="$auth.isLoadingAuth"
-							:disabled="$auth.isLoadingAuth"
+							:loading="$lock.isLoadingAuth"
+							:disabled="$lock.isLoadingAuth"
 							@click.native="auth()"
 						>
 							Sign In/Up
@@ -110,19 +110,19 @@ export default {
 		};
 	},
 	mounted() {
-		if (this.$auth.loggedIn) {
+		if (this.$lock.loggedIn) {
 			this.$store.dispatch('updateUser');
 		}
 	},
 	methods: {
 		// Sign in/up
 		auth() {
-			this.$auth.login();
+			this.$lock.login();
 		},
 
 		// Logout
 		logout() {
-			this.$auth.logout();
+			this.$lock.logout();
 		}
 	}
 };

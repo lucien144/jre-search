@@ -5,9 +5,12 @@ module.exports = {
 	mode: 'universal',
 
 	env: {
-		auth: {
-			domain: process.env.AUTH_DOMAIN,
-			cid: process.env.AUTH_CLIENT_ID
+		lock: {
+			domain: process.env.LOCK_DOMAIN,
+			cid: process.env.LOCK_CLIENT_ID,
+			options: {
+				allowShowPassword: true
+			}
 		}
 	},
 
@@ -55,7 +58,7 @@ module.exports = {
 	/*
 	** Plugins to load before mounting the App
 	*/
-	plugins: ['@/plugins/vuetify', '@/plugins/filters', '@/plugins/auth'],
+	plugins: ['@/plugins/vuetify', '@/plugins/filters', '@/plugins/lock'],
 
 	/*
   ** Nuxt.js modules

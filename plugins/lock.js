@@ -3,7 +3,7 @@ import Auth0Lock from 'auth0-lock';
 
 export default ({ app, env }, inject) => {
 	inject(
-		'auth',
+		'lock',
 		new Vue({
 			data: {
 				loggedIn: false,
@@ -21,22 +21,24 @@ export default ({ app, env }, inject) => {
 		return;
 	}
 
-	const lock = new Auth0Lock(env.auth.cid, env.auth.domain, options);
+	const cookieName = 'lockAuth0';
+	const { cid, domain, options } = env.lock;
+	const lock = new Auth0Lock(cid, domain, options);
 
 	const error = err => {
 		console.log(err);
-		app.$auth.isLoadingAuth = false;
+		app.$lock.isLoadingAuth = false;
 	};
 
 	const signIn = token => {
-		app.$auth.isLoadingAuth = true;
+		app.$lock.isLoadingAuth = true;
 
 		lock.getUserInfo(token, (err, profile) => {
 			if (err === null) {
-				app.$cookies.set('auth', token);
-				app.$auth.user = profile;
-				app.$auth.loggedIn = true;
-				app.$auth.isLoadingAuth = false;
+				app.$cookies.set(cookieName, token);
+				app.$lock.user = profile;
+				app.$lock.loggedIn = true;
+				app.$lock.isLoadingAuth = false;
 			} else {
 				error(err);
 			}
@@ -44,17 +46,10 @@ export default ({ app, env }, inject) => {
 	};
 
 	const signOut = () => {
-		app.$auth.user = null;
-		app.$auth.loggedIn = false;
-		app.$cookies.remove('auth');
-		app.$auth.isLoadingAuth = false;
-	};
-
-	const options = {
-		oidcConformant: true,
-		allowShowPassword: true,
-		usernameStyle: 'email',
-		defaultDatabaseConnection: 'acme'
+		app.$lock.user = null;
+		app.$lock.loggedIn = false;
+		app.$cookies.remove(cookieName);
+		app.$lock.isLoadingAuth = false;
 	};
 
 	lock.on('authenticated', authResult => {
@@ -66,22 +61,22 @@ export default ({ app, env }, inject) => {
 	});
 
 	lock.on('hide', () => {
-		app.$auth.isLoadingAuth = false;
+		app.$lock.isLoadingAuth = false;
 	});
 
-	app.$auth.login = () => {
-		app.$auth.isLoadingAuth = true;
+	app.$lock.login = () => {
+		app.$lock.isLoadingAuth = true;
 		lock.show();
 	};
-	app.$auth.logout = () => {
-		app.$auth.isLoadingAuth = true;
+	app.$lock.logout = () => {
+		app.$lock.isLoadingAuth = true;
 		signOut();
 		lock.logout({
 			returnTo: window.location.href
 		});
 	};
 
-	const token = app.$cookies.get('auth');
+	const token = app.$cookies.get(cookieName);
 	if (token) {
 		signIn(token);
 	} else {
@@ -93,7 +88,7 @@ export default ({ app, env }, inject) => {
 		// If the access token is present, avoid reseting the loading.
 		// Reason is, the "authenticated" event might have not finished yet.
 		if (hash.indexOf('access_token') === -1) {
-			app.$auth.isLoadingAuth = false;
+			app.$lock.isLoadingAuth = false;
 		}
 	}
 };
