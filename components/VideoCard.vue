@@ -36,7 +36,7 @@
 						<VBtn
 							slot="activator"
 							icon
-							@click.stop="favorite"
+							@click.prevent="favorite"
 						>
 							<VIcon v-if="isFavourite">
 								fas fa-heart
@@ -51,7 +51,7 @@
 						<VBtn
 							slot="activator"
 							icon
-							@click.stop="watch"
+							@click.prevent="watch"
 						>
 							<VIcon v-if="isWatched">
 								fas fa-eye
