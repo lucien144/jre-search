@@ -39,6 +39,7 @@ export default ({ app, env }, inject) => {
 				app.$lock.user = profile;
 				app.$lock.loggedIn = true;
 				app.$lock.isLoadingAuth = false;
+				app.$lock.$emit('authenticated', profile);
 			} else {
 				error(err);
 			}
@@ -50,6 +51,7 @@ export default ({ app, env }, inject) => {
 		app.$lock.loggedIn = false;
 		app.$cookies.remove(cookieName);
 		app.$lock.isLoadingAuth = false;
+		app.$lock.$emit('logout');
 	};
 
 	lock.on('authenticated', authResult => {

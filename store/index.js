@@ -59,7 +59,7 @@ export const actions = {
 		commit('SET_USER_WATCHED', data.watched);
 	},
 	async watch({ state, getters, commit }, video) {
-		if (state.auth.user) {
+		if (state.user.identity) {
 			const { data } = await this.$axios.$post(`/users/watch`, {
 				user: getters.userId,
 				video: video.id
@@ -68,7 +68,7 @@ export const actions = {
 		}
 	},
 	async favourite({ state, getters, commit }, video) {
-		if (state.auth.user) {
+		if (state.user.identity) {
 			const { data } = await this.$axios.$post(`/users/favourite`, {
 				user: getters.userId,
 				video: video.id
@@ -88,9 +88,6 @@ export const getters = {
 					? -1
 					: 0;
 		});
-	},
-	isLoggedIn(state) {
-		return state.user.identity !== null;
 	},
 	userId(state) {
 		if (state.user.identity) {
