@@ -148,17 +148,6 @@ export default {
 			return val && this.getKeywordVideos(val, 'keywords');
 		}
 	},
-
-	mounted() {
-		const store = this.$store;
-		this.$lock.$on('authenticated', user => {
-			store.commit('USER_IDENTITY_SET', user);
-		});
-		this.$lock.$on('logout', () => {
-			store.commit('USER_IDENTITY_SET', null);
-		});
-	},
-
 	methods: {
 		async findKeywords(keyword, type) {
 			this.isLoadingVideos = true;

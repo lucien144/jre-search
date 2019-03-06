@@ -57,6 +57,7 @@ export const actions = {
 	async updateUser({ commit, getters }) {
 		const { data } = await this.$axios.$get(`/users/${getters.userId}`);
 		commit('SET_USER_WATCHED', data.watched);
+		commit('SET_USER_FAVOURITES', data.favourites);
 	},
 	async watch({ state, getters, commit }, video) {
 		if (state.user.identity) {
