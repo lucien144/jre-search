@@ -18,7 +18,7 @@
 			</VCardTitle>
 			<VCardText>
 				<VContainer pt-0 px-3 fluid grid-list-xl>
-					<VLayout>
+					<VLayout wrap>
 						<VFlex xs12 md8>
 							<iframe
 								:src="`https://www.youtube.com/embed/${$store.state.video.id}?autoplay=1`"
