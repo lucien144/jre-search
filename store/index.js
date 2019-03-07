@@ -56,8 +56,14 @@ export const actions = {
 	},
 	async updateUser({ commit, getters }) {
 		const { data } = await this.$axios.$get(`/users/${getters.userId}`);
-		commit('SET_USER_WATCHED', data.watched);
-		commit('SET_USER_FAVOURITES', data.favourites);
+		if (data) {
+			if (data.watched) {
+				commit('SET_USER_WATCHED', data.watched);
+			}
+			if (data.favourites) {
+				commit('SET_USER_FAVOURITES', data.favourites);
+			}
+		}
 	},
 	async watch({ state, getters, commit }, video) {
 		if (state.user.identity) {
@@ -92,7 +98,7 @@ export const getters = {
 	},
 	userId(state) {
 		if (state.user.identity) {
-			return state.user.identity.sub.replace(/google-oauth2\|/, '');
+			return state.user.identity.sub.replace(/[^a-z0-9]/gi, '_');
 		}
 		return null;
 	}

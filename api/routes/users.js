@@ -13,7 +13,7 @@ module.exports = function(app, db) {
 
 			const count = await db
 				.collection('users')
-				.find({ [list]: video })
+				.find({ id: user, [list]: video })
 				.count();
 
 			if (count) {
