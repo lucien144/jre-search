@@ -88,7 +88,7 @@
 			<AppStats
 				@selectHost="host => { $emit('selectHost', host); openStats = false; }"
 				@selectKeyword="keyword => { $emit('selectKeyword', keyword); openStats = false; }"
-				@selectVideo="video => { $store.commit('video', video); openStats = false; }"
+				@selectVideo="video => { $router.push(`/video/${video.id}/#video`); openStats = false; }"
 				@close="openStats = false"
 			/>
 		</VDialog>
