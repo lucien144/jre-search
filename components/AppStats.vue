@@ -35,7 +35,7 @@
 									:key="index"
 								>
 									<VListTileContent>
-										<a href="#" @click.prevent="$emit('selectHost', item)">
+										<a href="#" @click.prevent="onKeywordClick(item, 'hosts')">
 											{{ item.original }}
 										</a>
 									</VListTileContent>
@@ -59,7 +59,7 @@
 									:key="index"
 								>
 									<VListTileContent>
-										<a href="#" @click.prevent="$emit('selectKeyword', item)">
+										<a href="#" @click.prevent="onKeywordClick(item, 'keywwords')">
 											{{ item.original }}
 										</a>
 									</VListTileContent>
@@ -83,7 +83,7 @@
 									:key="index"
 								>
 									<VListTileContent>
-										<a href="#" @click.prevent="$emit('selectVideo', video)">
+										<a href="#" @click.prevent="onVideoSelect(video)">
 											#{{ video.title.episode }} - {{ video.title.hosts.join(', ') }}
 										</a>
 									</VListTileContent>
@@ -109,7 +109,18 @@
 </template>
 
 <script>
-export default {};
+export default {
+	methods: {
+		onKeywordClick(keyword, type) {
+			this.$store.dispatch('getKeywordVideos', { keyword, type });
+			this.$emit('close');
+		},
+		onVideoSelect(video) {
+			this.$router.push(`/video/${video.id}/#video`);
+			this.$emit('close');
+		}
+	}
+};
 </script>
 
 <style>

@@ -1,4 +1,9 @@
 export const state = () => ({
+	autocomplete: {
+		host: null,
+		keyword: null
+	},
+
 	// List of videos to display
 	videos: [],
 
@@ -47,8 +52,15 @@ export const mutations = {
 	},
 	USER_IDENTITY_SET(state, identity) {
 		state.user.identity = identity;
+	},
+	SET_AUTOCOMPLETE_HOST(state, host) {
+		state.autocomplete.host = host;
+	},
+	SET_AUTOCOMPLETE_KEYWORD(state, keyword) {
+		state.autocomplete.keyword = keyword;
 	}
 };
+
 export const actions = {
 	async nuxtServerInit({ commit }, { app }) {
 		const stats = await app.$axios.$get(`/stats`);
@@ -65,6 +77,31 @@ export const actions = {
 			}
 		}
 	},
+
+	async getKeywordVideos({ commit }, { keyword, type }) {
+		this.$router.push('/');
+
+		if (type === 'hosts') {
+			commit('SET_AUTOCOMPLETE_HOST', keyword);
+		}
+
+		if (type === 'keywords') {
+			commit('SET_AUTOCOMPLETE_KEYWORD', keyword);
+		}
+
+		const { data, pagination } = await this.$axios.$get(
+			`/${type}/${keyword._id}`
+		);
+		commit('VIDEOS_SET', data.videos);
+		commit('SET_PAGINATION', pagination);
+	},
+
+	/**
+	 * Save video to watched
+	 *
+	 * @param {Object} { state, getters, commit } Nuxt context
+	 * @param {String} video Video ID
+	 */
 	async watch({ state, getters, commit }, video) {
 		if (state.user.identity) {
 			const { data } = await this.$axios.$post(`/users/watch`, {
@@ -74,6 +111,13 @@ export const actions = {
 			commit('SET_USER_WATCHED', data.watched);
 		}
 	},
+
+	/**
+	 * Save video to favourites
+	 *
+	 * @param {Object} { state, getters, commit } Nuxt context
+	 * @param {String} video Video ID
+	 */
 	async favourite({ state, getters, commit }, video) {
 		if (state.user.identity) {
 			const { data } = await this.$axios.$post(`/users/favourite`, {

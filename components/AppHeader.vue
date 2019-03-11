@@ -85,12 +85,7 @@
 			@input="v => v || (openStats = false)"
 			@keydown.esc="openStats = false"
 		>
-			<AppStats
-				@selectHost="host => { $emit('selectHost', host); openStats = false; }"
-				@selectKeyword="keyword => { $emit('selectKeyword', keyword); openStats = false; }"
-				@selectVideo="video => { $router.push(`/video/${video.id}/#video`); openStats = false; }"
-				@close="openStats = false"
-			/>
+			<AppStats @close="openStats = false" />
 		</VDialog>
 	</div>
 </template>
@@ -103,10 +98,7 @@ export default {
 	data() {
 		return {
 			// Toggle. True if we want to open statistics dialog.
-			openStats: false,
-
-			// Toggle. True if list of videos being loaded.
-			isLoadingVideos: false
+			openStats: false
 		};
 	},
 	mounted() {

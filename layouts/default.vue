@@ -2,10 +2,7 @@
 	<VApp>
 		<VContainer fluid>
 			<VCard>
-				<AppHeader
-					@selectHost="item => { selectedHost = item; host = item.original }"
-					@selectKeyword="item => { selectedKeyword = item; keyword = item.original }"
-				/>
+				<AppHeader />
 				<VCardText>
 					Explore videos by entering host or either keyword/topic.
 				</VCardText>
@@ -29,6 +26,7 @@
 								return-object
 								:clearable="true"
 								clear-icon="fas fa-times"
+								@click:clear="clear"
 							>
 								<template
 									slot="item"
@@ -66,6 +64,7 @@
 								return-object
 								:clearable="true"
 								clear-icon="fas fa-times"
+								@click:clear="clear"
 							>
 								<template
 									slot="item"
@@ -88,7 +87,6 @@
 						</VCardText>
 					</VFlex>
 				</VLayout>
-				<VProgressLinear :indeterminate="isLoadingVideos" />
 			</VCard>
 			<!-- eslint-disable-next-line vue/component-name-in-template-casing //-->
 			<nuxt />
@@ -108,69 +106,84 @@ export default {
 				keywords: []
 			},
 			host: '',
-			selectedHost: null,
-			keyword: '',
-			selectedKeyword: null,
-			isLoadingVideos: false
+			keyword: ''
 		};
+	},
+	computed: {
+		selectedHost: {
+			get() {
+				if (this.$store.state.autocomplete.host) {
+					this.videos.keywords = []; // eslint-disable-line vue/no-side-effects-in-computed-properties
+					this.videos.hosts = [this.$store.state.autocomplete.host]; // eslint-disable-line vue/no-side-effects-in-computed-properties
+				}
+				return this.$store.state.autocomplete.host;
+			},
+			set(val) {
+				if (val) {
+					this.$store.dispatch('getKeywordVideos', {
+						keyword: val,
+						type: 'hosts'
+					});
+				} else {
+					this.$store.commit('SET_AUTOCOMPLETE_HOST', null);
+					this.loadVideos(1);
+				}
+			}
+		},
+		selectedKeyword: {
+			get() {
+				if (this.$store.state.autocomplete.keyword) {
+					this.videos.hosts = []; // eslint-disable-line vue/no-side-effects-in-computed-properties
+					// eslint-disable-next-line vue/no-side-effects-in-computed-properties
+					this.videos.keywords = [
+						this.$store.state.autocomplete.keyword
+					];
+				}
+				return this.$store.state.autocomplete.keyword;
+			},
+			set(val) {
+				if (val) {
+					this.$store.dispatch('getKeywordVideos', {
+						keyword: val,
+						type: 'keywords'
+					});
+				} else {
+					this.$store.commit('SET_AUTOCOMPLETE_KEYWORD', null);
+					this.loadVideos(1);
+				}
+			}
+		}
 	},
 	watch: {
 		host(val) {
-			if (!val) {
-				this.videos.hosts = [];
-				this.loadVideos(1);
-				return;
+			if (val === '') {
+				return this.clear();
 			}
 			return this.findKeywords(val, 'hosts');
 		},
-		selectedHost(val) {
-			if (!val) {
-				this.loadVideos(1);
-				return;
-			}
-
-			return val && this.getKeywordVideos(val, 'hosts');
-		},
 		keyword(val) {
-			if (!val) {
-				this.videos.keywords = [];
-				this.loadVideos(1);
-				return;
+			if (val === '') {
+				return this.clear();
 			}
 			return this.findKeywords(val, 'keywords');
-		},
-		selectedKeyword(val) {
-			if (!val) {
-				this.loadVideos(1);
-				return;
-			}
-
-			return val && this.getKeywordVideos(val, 'keywords');
 		}
 	},
 	methods: {
 		async findKeywords(keyword, type) {
-			this.isLoadingVideos = true;
 			const { data, pagination } = await this.$axios.$get(
 				`/${type}?search=${keyword}`
 			);
 			this.videos[type] = data;
 			this.$store.commit('SET_PAGINATION', pagination);
-			this.isLoadingVideos = false;
 		},
-		async getKeywordVideos(keywordObj, type) {
-			this.$router.push('/');
 
-			this.isLoadingVideos = true;
-			const { data, pagination } = await this.$axios.$get(
-				`/${type}/${keywordObj._id}`
-			);
-			this.$store.commit('VIDEOS_SET', data.videos);
-			this.$store.commit('SET_PAGINATION', pagination);
-			this.isLoadingVideos = false;
+		clear(_) {
+			this.videos.hosts = [];
+			this.videos.keywords = [];
+			this.loadVideos(1);
 		},
+
 		async loadVideos(page = null) {
-			this.isLoadingVideos = true;
 			const { data, pagination } = await this.$axios.$get(`/videos`, {
 				params: {
 					page:
@@ -179,7 +192,6 @@ export default {
 			});
 			this.$store.commit(page > 0 ? 'VIDEOS_SET' : 'VIDEOS_APPEND', data);
 			this.$store.commit('SET_PAGINATION', pagination);
-			this.isLoadingVideos = false;
 		}
 	}
 };
