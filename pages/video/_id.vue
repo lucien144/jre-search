@@ -34,14 +34,14 @@
 							<p>
 								<VChip
 									v-for="(keyword, index) in $store.state.video.keywords"
-									:key="index"
+									:key="`k${index}`"
 									@click="onChipClick(keyword, 'keywords')"
 								>
 									{{ keyword.original }}
 								</VChip>
 								<VChip
 									v-for="(host, index) in $store.state.video.hosts"
-									:key="index"
+									:key="`h${index}`"
 									@click="onChipClick(host, 'hosts')"
 								>
 									{{ host.original }}
