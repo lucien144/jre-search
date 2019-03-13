@@ -54,9 +54,11 @@ export const mutations = {
 	USER_IDENTITY_SET(state, identity) {
 		state.user.identity = identity;
 	},
+	// Populates the autocomplete's host field
 	SET_AUTOCOMPLETE_HOST(state, host) {
 		state.autocomplete.host = host;
 	},
+	// Populates the autocomplete's keyword/tag field
 	SET_AUTOCOMPLETE_KEYWORD(state, keyword) {
 		state.autocomplete.keyword = keyword;
 	}
@@ -79,6 +81,13 @@ export const actions = {
 		}
 	},
 
+	/**
+	 * Load videos for specific host or keyword/tag.
+	 * Saves the host or keyword/tag reference in the store.
+	 *
+	 * @param {Object} { commit } Nuxt context
+	 * @param {Object} { keyword, type }
+	 */
 	async getKeywordVideos({ commit }, { keyword, type }) {
 		this.$router.push('/');
 
