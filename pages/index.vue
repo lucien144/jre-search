@@ -40,18 +40,18 @@ export default {
 			return;
 		}
 
-		const videos = await app.$axios.$get(`/videos`);
-		store.commit('VIDEOS_SET', videos.data);
-		store.commit('SET_PAGINATION', videos.pagination);
+		const { data, pagination } = await app.$axios.$get(`/videos`);
+		store.commit('VIDEOS_SET', data);
+		store.commit('SET_PAGINATION', pagination);
 	},
 	methods: {
 		async loadVideos() {
-			const { data, pagination } = await this.$axios.$get(`/videos`, {
+			const { data, pagination } = await this.$axios.$get(this.$store.state.pagination.path, {
 				params: {
 					page: this.$store.state.pagination.page + 1
 				}
 			});
-			this.$store.commit('VIDEOS_APPEND', data);
+			this.$store.commit('VIDEOS_APPEND', Object.prototype.hasOwnProperty.call(data, 'videos') ? data.videos : data);
 			this.$store.commit('SET_PAGINATION', pagination);
 		}
 	}

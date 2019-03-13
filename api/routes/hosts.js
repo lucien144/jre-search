@@ -13,7 +13,7 @@ module.exports = function(app, db) {
 		const { search, page = 1 } = req.query;
 
 		if (search) {
-			searchCollection(db.collection('hosts'), res, {
+			searchCollection(db.collection('hosts'), res, req, {
 				search,
 				page,
 				limit
@@ -21,18 +21,23 @@ module.exports = function(app, db) {
 			return;
 		}
 
-		fetchCollection(db.collection('hosts'), res, { page, limit });
+		fetchCollection(db.collection('hosts'), res, req, { page, limit });
 	});
 
 	app.get('/hosts/top', (req, res) => {
-		fetchCollection(db.collection('hosts'), res, { sort: { count: -1 } });
+		fetchCollection(db.collection('hosts'), res, req, { sort: { count: -1 } });
 	});
 
-	app.get('/hosts/:id', (req, res) => {
+	app.get('/hosts/:id', async (req, res) => {
 		const { id } = req.params;
+		const { page = 1 } = req.query;
 		const details = { _id: new ObjectID(id) };
-		db.collection('hosts').findOne(details, (err, data) => {
-			sendJson({ data, limit, res, err });
+
+		const { videos } = await db.collection('hosts').findOne(details);
+		const count = videos.length;
+
+		db.collection('hosts').findOne(details, { projection: { videos: { $slice: [ (page - 1) * limit, limit ] } } }, (err, data) => {
+			sendJson({ data, limit, count, page, res, req, err });
 		});
 	});
 };

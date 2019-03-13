@@ -14,7 +14,8 @@ export const state = () => ({
 	pagination: {
 		page: 1,
 		pages: 1,
-		count: null
+		count: null,
+		path: null
 	},
 
 	// Statistics

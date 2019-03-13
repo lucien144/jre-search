@@ -27,6 +27,7 @@
 								:clearable="true"
 								clear-icon="fas fa-times"
 								@click:clear="clear"
+								@change="keywordSelected = true"
 							>
 								<template
 									slot="item"
@@ -65,6 +66,7 @@
 								:clearable="true"
 								clear-icon="fas fa-times"
 								@click:clear="clear"
+								@change="keywordSelected = true"
 							>
 								<template
 									slot="item"
@@ -106,7 +108,8 @@ export default {
 				keywords: []
 			},
 			host: '',
-			keyword: ''
+			keyword: '',
+			keywordSelected: false
 		};
 	},
 	computed: {
@@ -156,12 +159,22 @@ export default {
 	},
 	watch: {
 		host(val) {
+			if (this.keywordSelected || val === null) {
+				this.keywordSelected = false;
+				return;
+			}
+
 			if (val === '') {
 				return this.clear();
 			}
 			return this.findKeywords(val, 'hosts');
 		},
 		keyword(val) {
+			if (this.keywordSelected || val === null) {
+				this.keywordSelected = false;
+				return;
+			}
+
 			if (val === '') {
 				return this.clear();
 			}

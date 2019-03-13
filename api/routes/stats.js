@@ -60,6 +60,6 @@ module.exports = function(app, db) {
 			a.videos = [];
 			return a;
 		});
-		sendJson({ data, res, err: false });
+		sendJson({ data, res, req, err: false });
 	});
 };
