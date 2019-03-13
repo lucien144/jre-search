@@ -25,7 +25,9 @@ module.exports = function(app, db) {
 	});
 
 	app.get('/hosts/top', (req, res) => {
-		fetchCollection(db.collection('hosts'), res, req, { sort: { count: -1 } });
+		fetchCollection(db.collection('hosts'), res, req, {
+			sort: { count: -1 }
+		});
 	});
 
 	app.get('/hosts/:id', async (req, res) => {
@@ -36,8 +38,12 @@ module.exports = function(app, db) {
 		const { videos } = await db.collection('hosts').findOne(details);
 		const count = videos.length;
 
-		db.collection('hosts').findOne(details, { projection: { videos: { $slice: [ (page - 1) * limit, limit ] } } }, (err, data) => {
-			sendJson({ data, limit, count, page, res, req, err });
-		});
+		db.collection('hosts').findOne(
+			details,
+			{ projection: { videos: { $slice: [(page - 1) * limit, limit] } } },
+			(err, data) => {
+				sendJson({ data, limit, count, page, res, req, err });
+			}
+		);
 	});
 };

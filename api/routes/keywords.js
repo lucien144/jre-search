@@ -39,8 +39,12 @@ module.exports = function(app, db) {
 		const { videos } = await db.collection('keywords').findOne(details);
 		const count = videos.length;
 
-		db.collection('keywords').findOne(details, { projection: { videos: { $slice: [ (page - 1) * limit, limit ] } } }, (err, data) => {
-			sendJson({ data, limit, count, page, res, req, err });
-		});
+		db.collection('keywords').findOne(
+			details,
+			{ projection: { videos: { $slice: [(page - 1) * limit, limit] } } },
+			(err, data) => {
+				sendJson({ data, limit, count, page, res, req, err });
+			}
+		);
 	});
 };

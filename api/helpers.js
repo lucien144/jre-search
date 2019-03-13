@@ -14,7 +14,16 @@ exports.searchCollection = (
 		.limit(limit)
 		.toArray(async (err, data) => {
 			const count = await collection.find({ original: reg }).count();
-			exports.sendJson({ data, count, limit, page, shrunk, res, req, err });
+			exports.sendJson({
+				data,
+				count,
+				limit,
+				page,
+				shrunk,
+				res,
+				req,
+				err
+			});
 		});
 };
 
@@ -33,7 +42,16 @@ exports.fetchCollection = (
 		.limit(limit)
 		.toArray(async (err, data) => {
 			const count = await collection.countDocuments();
-			exports.sendJson({ data, count, limit, page, shrunk, res, req, err });
+			exports.sendJson({
+				data,
+				count,
+				limit,
+				page,
+				shrunk,
+				res,
+				req,
+				err
+			});
 		});
 };
 
