@@ -2,10 +2,10 @@ export const state = () => ({
 	autocomplete: {
 		host: null, // Object. Reference to host
 		keyword: null, // Object. Reference to keyword/tag
-		 /**
-		  * Boolean. Toggle, if the reference to host/keyword was recently set.
-		  * Autocomplete does not have fully functional @change, this is a workaround.
-		  */
+		/**
+		 * Boolean. Toggle, if the reference to host/keyword was recently set.
+		 * Autocomplete does not have fully functional @change, this is a workaround.
+		 */
 		toggled: false
 	},
 
@@ -94,8 +94,8 @@ export const actions = {
 	 * Load videos for specific host or keyword/tag.
 	 * Saves the host or keyword/tag reference in the store.
 	 *
-	 * @param {Object} { commit } Nuxt context
-	 * @param {Object} { keyword, type }
+	 * @param {Object} context Nuxt context
+	 * @param {Object} keywordType Keyword and the type.
 	 */
 	async getKeywordVideos({ commit }, { keyword, type }) {
 		this.$router.push('/');

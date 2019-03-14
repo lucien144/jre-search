@@ -81,7 +81,7 @@ exports.sendJson = ({
 	res.json({
 		status: 'ok',
 		pagination: {
-			page: parseInt(page),
+			page: parseInt(page, 10),
 			pages: Math.ceil(count / limit),
 			count,
 			path: req.path
