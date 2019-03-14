@@ -59,7 +59,7 @@
 									:key="index"
 								>
 									<VListTileContent>
-										<a href="#" @click.prevent="onKeywordClick(item, 'keywwords')">
+										<a href="#" @click.prevent="onKeywordClick(item, 'keywords')">
 											{{ item.original }}
 										</a>
 									</VListTileContent>

@@ -27,6 +27,7 @@
 								:clearable="true"
 								clear-icon="fas fa-times"
 								@click:clear="clear"
+								@change="onAutocompleteChange"
 							>
 								<template
 									slot="item"
@@ -65,6 +66,7 @@
 								:clearable="true"
 								clear-icon="fas fa-times"
 								@click:clear="clear"
+								@change="onAutocompleteChange"
 							>
 								<template
 									slot="item"
@@ -156,12 +158,22 @@ export default {
 	},
 	watch: {
 		host(val) {
+			if (this.$store.state.autocomplete.toggle || val === null) {
+				this.$store.commit('SET_AUTOCOMPLETE_TOGGLE', false);
+				return;
+			}
+
 			if (val === '') {
 				return this.clear();
 			}
 			return this.findKeywords(val, 'hosts');
 		},
 		keyword(val) {
+			if (this.$store.state.autocomplete.toggle || val === null) {
+				this.$store.commit('SET_AUTOCOMPLETE_TOGGLE', false);
+				return;
+			}
+
 			if (val === '') {
 				return this.clear();
 			}
@@ -169,6 +181,10 @@ export default {
 		}
 	},
 	methods: {
+		onAutocompleteChange() {
+			this.$store.commit('SET_AUTOCOMPLETE_TOGGLE', true);
+		},
+
 		async findKeywords(keyword, type) {
 			const { data, pagination } = await this.$axios.$get(
 				`/${type}?search=${keyword}`

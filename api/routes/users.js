@@ -4,7 +4,7 @@ module.exports = function(app, db) {
 	app.get('/users/:id', async (req, res) => {
 		const { id } = req.params;
 		const data = await db.collection('users').findOne({ id });
-		sendJson({ data, res, err: false });
+		sendJson({ data, res, req, err: false });
 	});
 
 	const usersList = async (req, res, list) => {
@@ -34,9 +34,9 @@ module.exports = function(app, db) {
 			}
 
 			const data = await db.collection('users').findOne({ id: user });
-			sendJson({ data, res, err: false });
+			sendJson({ data, res, req, err: false });
 		} catch (error) {
-			sendJson({ data: null, res, err: error });
+			sendJson({ data: null, res, req, err: error });
 		}
 	};
 

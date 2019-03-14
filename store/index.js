@@ -1,7 +1,12 @@
 export const state = () => ({
 	autocomplete: {
-		host: null,
-		keyword: null
+		host: null, // Object. Reference to host
+		keyword: null, // Object. Reference to keyword/tag
+		/**
+		 * Boolean. Toggle, if the reference to host/keyword was recently set.
+		 * Autocomplete does not have fully functional @change, this is a workaround.
+		 */
+		toggled: false
 	},
 
 	// List of videos to display
@@ -14,7 +19,8 @@ export const state = () => ({
 	pagination: {
 		page: 1,
 		pages: 1,
-		count: null
+		count: null,
+		path: null
 	},
 
 	// Statistics
@@ -53,11 +59,17 @@ export const mutations = {
 	USER_IDENTITY_SET(state, identity) {
 		state.user.identity = identity;
 	},
+	// Populates the autocomplete's host field
 	SET_AUTOCOMPLETE_HOST(state, host) {
 		state.autocomplete.host = host;
 	},
+	// Populates the autocomplete's keyword/tag field
 	SET_AUTOCOMPLETE_KEYWORD(state, keyword) {
 		state.autocomplete.keyword = keyword;
+	},
+	// Populates the autocomplete's toggle field
+	SET_AUTOCOMPLETE_TOGGLE(state, toggle) {
+		state.autocomplete.toggle = toggle;
 	}
 };
 
@@ -78,16 +90,25 @@ export const actions = {
 		}
 	},
 
+	/**
+	 * Load videos for specific host or keyword/tag.
+	 * Saves the host or keyword/tag reference in the store.
+	 *
+	 * @param {Object} context Nuxt context
+	 * @param {Object} keywordType Keyword and the type.
+	 */
 	async getKeywordVideos({ commit }, { keyword, type }) {
 		this.$router.push('/');
 
 		if (type === 'hosts') {
 			commit('SET_AUTOCOMPLETE_HOST', keyword);
+		} else if (type === 'keywords') {
+			commit('SET_AUTOCOMPLETE_KEYWORD', keyword);
+		} else {
+			throw new Error('Unknown autocomplete type');
 		}
 
-		if (type === 'keywords') {
-			commit('SET_AUTOCOMPLETE_KEYWORD', keyword);
-		}
+		commit('SET_AUTOCOMPLETE_TOGGLE', true);
 
 		const { data, pagination } = await this.$axios.$get(
 			`/${type}/${keyword._id}`

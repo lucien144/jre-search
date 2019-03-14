@@ -13,7 +13,7 @@ module.exports = function(app, db) {
 		const { search, page = 1 } = req.query;
 
 		if (search) {
-			searchCollection(db.collection('tags'), res, {
+			searchCollection(db.collection('tags'), res, req, {
 				search,
 				page,
 				limit
@@ -21,14 +21,14 @@ module.exports = function(app, db) {
 			return;
 		}
 
-		fetchCollection(db.collection('tags'), res, { page, limit });
+		fetchCollection(db.collection('tags'), res, req, { page, limit });
 	});
 
 	app.get('/tags/:id', (req, res) => {
 		const { id } = req.params;
 		const details = { _id: new ObjectID(id) };
 		db.collection('tags').findOne(details, (err, data) => {
-			sendJson({ data, limit, res, err });
+			sendJson({ data, limit, res, req, err });
 		});
 	});
 };
