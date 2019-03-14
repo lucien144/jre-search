@@ -34,15 +34,17 @@
 							<p>
 								<VChip
 									v-for="(keyword, index) in $store.state.video.keywords"
-									:key="index"
+									:key="`k${index}`"
+									@click="onChipClick(keyword, 'keywords')"
 								>
-									{{ keyword }}
+									{{ keyword.original }}
 								</VChip>
 								<VChip
-									v-for="(hosts, index) in $store.state.video.hosts"
-									:key="index"
+									v-for="(host, index) in $store.state.video.hosts"
+									:key="`h${index}`"
+									@click="onChipClick(host, 'hosts')"
 								>
-									{{ hosts }}
+									{{ host.original }}
 								</VChip>
 							</p>
 
@@ -83,6 +85,11 @@ export default {
 	async fetch({ app, store, params }) {
 		const { data } = await app.$axios.$get(`/videos/${params.id}`);
 		store.commit('VIDEO_SET', data);
+	},
+	methods: {
+		onChipClick(keyword, type) {
+			this.$store.dispatch('getKeywordVideos', { keyword, type });
+		}
 	}
 };
 </script>
@@ -101,5 +108,10 @@ export default {
 <style scoped lang="scss">
 iframe {
 	min-height: 50vh;
+}
+.v-chip {
+	/deep/ .v-chip__content {
+		cursor: pointer;
+	}
 }
 </style>

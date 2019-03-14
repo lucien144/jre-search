@@ -20,7 +20,6 @@ const titles = [];
 	const videos = db.collection('videos').find({});
 	let counter = 0;
 	const promiseUpdates = [];
-	const promiseInserts = [];
 	try {
 		// eslint-disable-next-line no-await-in-loop
 		while (await videos.hasNext()) {
@@ -35,25 +34,7 @@ const titles = [];
 					.length === 0
 			) {
 				titles.push(video.title.original);
-				const dicts = helpers.parseVideo(video, hosts, keywords, tags);
-				promiseUpdates.push(
-					db.collection('videos').updateOne(
-						{ _id: video._id },
-						{
-							$set: {
-								keywords: Object.values(dicts.keywords).map(
-									item => item.original
-								),
-								tags: Object.values(dicts.tags).map(
-									item => item.original
-								),
-								hosts: Object.values(dicts.hosts).map(
-									item => item.original
-								)
-							}
-						}
-					)
-				);
+				helpers.parseVideo(video, hosts, keywords, tags);
 			}
 		}
 
@@ -77,10 +58,24 @@ const titles = [];
 					continue;
 				}
 				const doc = collections[collection][id];
-				promiseInserts.push(db.collection(collection).insertOne(doc));
+				await db.collection(collection).insertOne(doc); // eslint-disable-line no-await-in-loop
+				for (const video of doc.videos) {
+					const docCopy = doc;
+					docCopy.videos = null;
+					promiseUpdates.push(
+						db.collection('videos').updateOne(
+							{ _id: video._id },
+							{
+								$addToSet: {
+									[collection]: docCopy
+								}
+							}
+						)
+					);
+				}
 			}
 		}
-		Promise.all([promiseUpdates, promiseInserts]);
+		Promise.all([promiseUpdates]);
 	} catch (err) {
 		console.error(err);
 	} finally {
