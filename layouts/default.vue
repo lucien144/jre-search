@@ -27,7 +27,7 @@
 								:clearable="true"
 								clear-icon="fas fa-times"
 								@click:clear="clear"
-								@change="keywordSelected = true"
+								@change="onAutocompleteChange"
 							>
 								<template
 									slot="item"
@@ -66,7 +66,7 @@
 								:clearable="true"
 								clear-icon="fas fa-times"
 								@click:clear="clear"
-								@change="keywordSelected = true"
+								@change="onAutocompleteChange"
 							>
 								<template
 									slot="item"
@@ -108,8 +108,7 @@ export default {
 				keywords: []
 			},
 			host: '',
-			keyword: '',
-			keywordSelected: false
+			keyword: ''
 		};
 	},
 	computed: {
@@ -159,8 +158,8 @@ export default {
 	},
 	watch: {
 		host(val) {
-			if (this.keywordSelected || val === null) {
-				this.keywordSelected = false;
+			if (this.$store.state.autocomplete.toggle || val === null) {
+				this.$store.commit('SET_AUTOCOMPLETE_TOGGLE', false);
 				return;
 			}
 
@@ -170,8 +169,8 @@ export default {
 			return this.findKeywords(val, 'hosts');
 		},
 		keyword(val) {
-			if (this.keywordSelected || val === null) {
-				this.keywordSelected = false;
+			if (this.$store.state.autocomplete.toggle || val === null) {
+				this.$store.commit('SET_AUTOCOMPLETE_TOGGLE', false);
 				return;
 			}
 
@@ -182,6 +181,10 @@ export default {
 		}
 	},
 	methods: {
+		onAutocompleteChange() {
+			this.$store.commit('SET_AUTOCOMPLETE_TOGGLE', true);
+		},
+
 		async findKeywords(keyword, type) {
 			const { data, pagination } = await this.$axios.$get(
 				`/${type}?search=${keyword}`

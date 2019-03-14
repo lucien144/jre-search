@@ -1,7 +1,12 @@
 export const state = () => ({
 	autocomplete: {
-		host: null,
-		keyword: null
+		host: null, // Object. Reference to host
+		keyword: null, // Object. Reference to keyword/tag
+		 /**
+		  * Boolean. Toggle, if the reference to host/keyword was recently set.
+		  * Autocomplete does not have fully functional @change, this is a workaround.
+		  */
+		toggled: false
 	},
 
 	// List of videos to display
@@ -61,6 +66,10 @@ export const mutations = {
 	// Populates the autocomplete's keyword/tag field
 	SET_AUTOCOMPLETE_KEYWORD(state, keyword) {
 		state.autocomplete.keyword = keyword;
+	},
+	// Populates the autocomplete's toggle field
+	SET_AUTOCOMPLETE_TOGGLE(state, toggle) {
+		state.autocomplete.toggle = toggle;
 	}
 };
 
@@ -93,11 +102,13 @@ export const actions = {
 
 		if (type === 'hosts') {
 			commit('SET_AUTOCOMPLETE_HOST', keyword);
+		} else if (type === 'keywords') {
+			commit('SET_AUTOCOMPLETE_KEYWORD', keyword);
+		} else {
+			throw new Error('Unknown autocomplete type');
 		}
 
-		if (type === 'keywords') {
-			commit('SET_AUTOCOMPLETE_KEYWORD', keyword);
-		}
+		commit('SET_AUTOCOMPLETE_TOGGLE', true);
 
 		const { data, pagination } = await this.$axios.$get(
 			`/${type}/${keyword._id}`
