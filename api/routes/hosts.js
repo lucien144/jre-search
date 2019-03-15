@@ -60,6 +60,15 @@ module.exports = function(app, db) {
 		const data = await db.collection('hosts').aggregate(aggregation).toArray();
 		const count = data[0].videos.length;
 
+		// Slice videos (~ paginate)
+		aggregation.push({
+			$project: {
+				videos: {
+					$slice: ["$videos", (page - 1) * limit, limit]
+				}
+			}
+		});
+
 		db.collection('hosts').aggregate(aggregation).toArray((err, data) => {
 			if (Array.isArray(data) && data.length > 0) {
 				sendJson({ data: data[0], limit, count, page, res, req, err });
