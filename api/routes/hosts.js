@@ -34,9 +34,11 @@ module.exports = function(app, db) {
 		const { id } = req.params;
 		const { page = 1, userId = '' } = req.query;
 
-		const aggregation = [
-			{ $match: { _id: new ObjectID(id) } },
-			{
+		const aggregation = [{ $match: { _id: new ObjectID(id) } }];
+		const user = await db.collection('users').findOne({ id: userId });
+
+		if (user && Array.isArray(user.watched)) {
+			aggregation.push({
 				$project: {
 					videos: {
 						$filter: {
@@ -45,15 +47,15 @@ module.exports = function(app, db) {
 							cond: {
 								$not: {
 									$in: [
-										"$$video.id", ["SIwSXODoJuU"]
+										"$$video.id", user.watched
 									]
 								}
 							}
 						}
 					}
 				}
-			}
-		];
+			});
+		}
 
 		const data = await db.collection('hosts').aggregate(aggregation).toArray();
 		const count = data[0].videos.length;
