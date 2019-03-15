@@ -32,18 +32,38 @@ module.exports = function(app, db) {
 
 	app.get('/hosts/:id', async (req, res) => {
 		const { id } = req.params;
-		const { page = 1 } = req.query;
-		const details = { _id: new ObjectID(id) };
+		const { page = 1, userId = '' } = req.query;
 
-		const { videos } = await db.collection('hosts').findOne(details);
-		const count = videos.length;
+		const aggregation = [
+			{ $match: { _id: new ObjectID(id) } },
+			{
+				$project: {
+					videos: {
+						$filter: {
+							input: "$videos",
+							as: "video",
+							cond: {
+								$not: {
+									$in: [
+										"$$video.id", ["SIwSXODoJuU"]
+									]
+								}
+							}
+						}
+					}
+				}
+			}
+		];
 
-		db.collection('hosts').findOne(
-			details,
-			{ projection: { videos: { $slice: [(page - 1) * limit, limit] } } },
-			(err, data) => {
+		const data = await db.collection('hosts').aggregate(aggregation).toArray();
+		const count = data[0].videos.length;
+
+		db.collection('hosts').aggregate(aggregation).toArray((err, data) => {
+			if (Array.isArray(data) && data.length > 0) {
+				sendJson({ data: data[0], limit, count, page, res, req, err });
+			} else {
 				sendJson({ data, limit, count, page, res, req, err });
 			}
-		);
+		});
 	});
 };
