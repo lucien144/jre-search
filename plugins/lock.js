@@ -36,6 +36,7 @@ export default ({ app, env }, inject) => {
 		lock.getUserInfo(token, (err, profile) => {
 			if (err === null) {
 				app.$cookies.set(cookieName, token);
+				profile.user_id = profile.sub.replace(/[^a-z0-9]/gi, '_'); // eslint-disable-line camelcase
 				app.$lock.user = profile;
 				app.$lock.loggedIn = true;
 				app.$lock.isLoadingAuth = false;

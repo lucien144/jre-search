@@ -163,7 +163,7 @@ export const getters = {
 	},
 	userId(state) {
 		if (state.user.identity) {
-			return state.user.identity.sub.replace(/[^a-z0-9]/gi, '_');
+			return state.user.identity.user_id;
 		}
 		return null;
 	}
