@@ -2,6 +2,7 @@ export const state = () => ({
 	autocomplete: {
 		host: null, // Object. Reference to host
 		keyword: null, // Object. Reference to keyword/tag
+		hideWatched: false,
 		/**
 		 * Boolean. Toggle, if the reference to host/keyword was recently set.
 		 * Autocomplete does not have fully functional @change, this is a workaround.
@@ -70,6 +71,10 @@ export const mutations = {
 	// Populates the autocomplete's toggle field
 	SET_AUTOCOMPLETE_TOGGLE(state, toggle) {
 		state.autocomplete.toggle = toggle;
+	},
+	// Toggle the switch if watched should be returned in videos
+	SET_AUTOCOMPLETE_WATCHED(state, watched) {
+		state.autocomplete.hideWatched = watched;
 	}
 };
 
@@ -97,7 +102,7 @@ export const actions = {
 	 * @param {Object} context Nuxt context
 	 * @param {Object} keywordType Keyword and the type.
 	 */
-	async getKeywordVideos({ commit }, { keyword, type }) {
+	async getKeywordVideos({ commit, getters, state }, { keyword, type }) {
 		this.$router.push('/');
 
 		if (type === 'hosts') {
@@ -110,8 +115,12 @@ export const actions = {
 
 		commit('SET_AUTOCOMPLETE_TOGGLE', true);
 
-		const { data, pagination } = await this.$axios.$get(
-			`/${type}/${keyword._id}`
+		const { data, pagination } = await this.$axios.$get(`/${type}/${keyword._id}`, {
+				params: {
+					user_id:
+						state.autocomplete.hideWatched ? getters.userId : null
+				}
+			}
 		);
 		commit('VIDEOS_SET', data.videos);
 		commit('SET_PAGINATION', pagination);

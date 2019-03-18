@@ -32,10 +32,10 @@ module.exports = function(app, db) {
 
 	app.get('/hosts/:id', async (req, res) => {
 		const { id } = req.params;
-		const { page = 1, userId = '' } = req.query;
+		const { page = 1, user_id = '' } = req.query;
 
 		const aggregation = [{ $match: { _id: new ObjectID(id) } }];
-		const user = await db.collection('users').findOne({ id: userId });
+		const user = await db.collection('users').findOne({ id: user_id });
 
 		if (user && Array.isArray(user.watched)) {
 			aggregation.push({

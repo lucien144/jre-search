@@ -89,6 +89,14 @@
 						</VCardText>
 					</VFlex>
 				</VLayout>
+			<VCardActions>
+				<VSwitch
+					class="switch__watched"
+					hide-details
+					label="Hide Watched"
+					v-model="hideWatched"
+				></VSwitch>
+			</VCardActions>
 			</VCard>
 			<!-- eslint-disable-next-line vue/component-name-in-template-casing //-->
 			<nuxt />
@@ -112,6 +120,14 @@ export default {
 		};
 	},
 	computed: {
+		hideWatched: {
+			get() {
+				return this.$store.state.autocomplete.hideWatched;
+			},
+			set(val) {
+				this.$store.commit('SET_AUTOCOMPLETE_WATCHED', val);
+			}
+		},
 		selectedHost: {
 			get() {
 				if (this.$store.state.autocomplete.host) {
@@ -230,5 +246,8 @@ body {
 }
 #app {
 	background: #f7f7f7 url(~@/assets/pattern.svg);
+}
+.switch__watched {
+	justify-content: flex-end;
 }
 </style>
