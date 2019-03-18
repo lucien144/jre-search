@@ -125,7 +125,7 @@ export default {
 				return this.$store.state.autocomplete.hideWatched;
 			},
 			set(val) {
-				this.$store.commit('SET_AUTOCOMPLETE_WATCHED', val);
+				this.$store.dispatch('toggleHideWatched', val);
 			}
 		},
 		selectedHost: {

@@ -2,6 +2,7 @@ export const state = () => ({
 	autocomplete: {
 		host: null, // Object. Reference to host
 		keyword: null, // Object. Reference to keyword/tag
+		type: null, // String. Reference to type of the search (host or keyword)
 		hideWatched: false,
 		/**
 		 * Boolean. Toggle, if the reference to host/keyword was recently set.
@@ -68,6 +69,10 @@ export const mutations = {
 	SET_AUTOCOMPLETE_KEYWORD(state, keyword) {
 		state.autocomplete.keyword = keyword;
 	},
+	// Saves the autocomplete type (host/keyword)
+	SET_AUTOCOMPLETE_TYPE(state, type) {
+		state.autocomplete.type = type;
+	},
 	// Populates the autocomplete's toggle field
 	SET_AUTOCOMPLETE_TOGGLE(state, toggle) {
 		state.autocomplete.toggle = toggle;
@@ -113,6 +118,7 @@ export const actions = {
 			throw new Error('Unknown autocomplete type');
 		}
 
+		commit('SET_AUTOCOMPLETE_TYPE', type);
 		commit('SET_AUTOCOMPLETE_TOGGLE', true);
 
 		const { data, pagination } = await this.$axios.$get(`/${type}/${keyword._id}`, {
@@ -124,6 +130,13 @@ export const actions = {
 		);
 		commit('VIDEOS_SET', data.videos);
 		commit('SET_PAGINATION', pagination);
+	},
+
+	async toggleHideWatched({ commit, dispatch, state }, val) {
+		commit('SET_AUTOCOMPLETE_WATCHED', val);
+		const type = state.autocomplete.type;
+		const keyword = type === 'hosts' ? state.autocomplete.host : state.autocomplete.keyword;
+		await dispatch('getKeywordVideos', { keyword, type });
 	},
 
 	/**
