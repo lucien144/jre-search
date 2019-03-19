@@ -89,14 +89,18 @@
 						</VCardText>
 					</VFlex>
 				</VLayout>
-			<VCardActions>
-				<VSwitch
-					class="switch__watched"
-					hide-details
-					label="Hide Watched"
-					v-model="hideWatched"
-				></VSwitch>
-			</VCardActions>
+				<VCardActions class="switch__watched">
+					<VTooltip top :disabled="$lock.loggedIn">
+						<VSwitch
+							slot="activator"
+							hide-details
+							label="Hide Watched"
+							v-model="hideWatched"
+							:disabled="!$lock.loggedIn"
+						></VSwitch>
+						<span>You need to sign in to save the video into favourites.</span>
+					</VTooltip>
+				</VCardActions>
 			</VCard>
 			<!-- eslint-disable-next-line vue/component-name-in-template-casing //-->
 			<nuxt />
