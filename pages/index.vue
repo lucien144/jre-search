@@ -40,27 +40,33 @@ export default {
 			return;
 		}
 
-		const { data, pagination } = await app.$axios.$get(`/videos`);
+		const { data, pagination } = await app.$axios.$get(`/videos`, {
+			params: {
+				userId: app.$cookies.get('userId')
+			}
+		});
 		store.commit('VIDEOS_SET', data);
 		store.commit('SET_PAGINATION', pagination);
 	},
 	methods: {
 		async loadVideos() {
+			const { state, getters, commit } = this.$store;
 			const { data, pagination } = await this.$axios.$get(
-				this.$store.state.pagination.path,
+				state.pagination.path,
 				{
 					params: {
-						page: this.$store.state.pagination.page + 1
+						page: state.pagination.page + 1,
+						user_id: state.autocomplete.hideWatched ? getters.userId : null
 					}
 				}
 			);
-			this.$store.commit(
+			commit(
 				'VIDEOS_APPEND',
 				Object.prototype.hasOwnProperty.call(data, 'videos')
 					? data.videos
 					: data
 			);
-			this.$store.commit('SET_PAGINATION', pagination);
+			commit('SET_PAGINATION', pagination);
 		}
 	}
 };
