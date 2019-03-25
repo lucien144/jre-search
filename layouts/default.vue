@@ -148,7 +148,7 @@ export default {
 					});
 				} else {
 					this.$store.commit('SET_AUTOCOMPLETE_HOST', null);
-					this.loadVideos(1);
+					this.$store.dispatch('loadVideos', 1);
 				}
 			}
 		},
@@ -171,7 +171,7 @@ export default {
 					});
 				} else {
 					this.$store.commit('SET_AUTOCOMPLETE_KEYWORD', null);
-					this.loadVideos(1);
+					this.$store.dispatch('loadVideos', 1);
 				}
 			}
 		}
@@ -216,18 +216,7 @@ export default {
 		clear(_) {
 			this.videos.hosts = [];
 			this.videos.keywords = [];
-			this.loadVideos(1);
-		},
-
-		async loadVideos(page = null) {
-			const { data, pagination } = await this.$axios.$get(`/videos`, {
-				params: {
-					page:
-						page > 0 ? page : this.$store.state.pagination.page + 1
-				}
-			});
-			this.$store.commit(page > 0 ? 'VIDEOS_SET' : 'VIDEOS_APPEND', data);
-			this.$store.commit('SET_PAGINATION', pagination);
+			this.$store.dispatch('loadVideos', 1);
 		}
 	}
 };

@@ -40,13 +40,7 @@ export default {
 			return;
 		}
 
-		const { data, pagination } = await app.$axios.$get(`/videos`, {
-			params: {
-				userId: app.$cookies.get('userId')
-			}
-		});
-		store.commit('VIDEOS_SET', data);
-		store.commit('SET_PAGINATION', pagination);
+		await store.dispatch('loadVideos', 1);
 	},
 	methods: {
 		async loadVideos() {

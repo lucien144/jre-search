@@ -31,12 +31,12 @@ exports.fetchCollection = (
 	collection,
 	res,
 	req,
-	{ page = 1, limit = 20, shrunk = true, sort = { original: 1 } }
+	{ page = 1, limit = 20, shrunk = true, sort = { original: 1 }, find = {} }
 ) => {
 	page = parseInt(page, 10);
 	limit = parseInt(limit, 10);
 	collection
-		.find()
+		.find(find)
 		.sort(sort)
 		.skip(limit * (page - 1))
 		.limit(limit)

@@ -132,11 +132,35 @@ export const actions = {
 		commit('SET_PAGINATION', pagination);
 	},
 
+	/**
+	 * Load all videos if search is not used.
+	 *
+	 * @param {*} { state, getters, commit }
+	 * @param {*} [page=null]
+	 */
+	async loadVideos({ state, getters, commit }, page = null) {
+		const { data, pagination } = await this.$axios.$get(`/videos`, {
+			params: {
+				page:
+					page > 0 ? page : state.pagination.page + 1,
+				user_id:
+					state.autocomplete.hideWatched ? getters.userId : null
+			}
+		});
+
+		commit(page > 0 ? 'VIDEOS_SET' : 'VIDEOS_APPEND', data);
+		commit('SET_PAGINATION', pagination);
+	},
+
 	async toggleHideWatched({ commit, dispatch, state }, val) {
 		commit('SET_AUTOCOMPLETE_WATCHED', val);
-		const type = state.autocomplete.type;
+		const { type } = state.autocomplete;
 		const keyword = type === 'hosts' ? state.autocomplete.host : state.autocomplete.keyword;
-		await dispatch('getKeywordVideos', { keyword, type });
+		if (type) {
+			await dispatch('getKeywordVideos', { keyword, type });
+		} else {
+			await dispatch('getVideos', 1);
+		}
 	},
 
 	/**
