@@ -27,7 +27,7 @@ export default ({ app, env }, inject) => {
 
 	const error = err => {
 		console.log(err);
-		app.$lock.isLoadingAuth = false;
+		signOut();
 	};
 
 	const signIn = token => {
