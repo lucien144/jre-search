@@ -105,9 +105,11 @@ export default {
 		const store = this.$store;
 		this.$lock.$on('authenticated', user => {
 			store.commit('USER_IDENTITY_SET', user);
+			this.$cookies.set('userId', store.getters.userId);
 			store.dispatch('updateUser');
 		});
 		this.$lock.$on('logout', () => {
+			this.$cookies.remove('userId');
 			store.commit('USER_IDENTITY_SET', null);
 		});
 	},

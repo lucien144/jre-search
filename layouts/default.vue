@@ -126,6 +126,11 @@ export default {
 	computed: {
 		hideWatched: {
 			get() {
+				const cookie = this.$cookies.get('toggleHideWatched'); 
+				if (cookie !== '') {
+					this.$store.dispatch('toggleHideWatched', cookie);
+					return cookie;
+				}
 				return this.$store.state.autocomplete.hideWatched;
 			},
 			set(val) {

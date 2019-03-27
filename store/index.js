@@ -139,12 +139,12 @@ export const actions = {
 	 * @param {*} [page=null]
 	 */
 	async loadVideos({ state, getters, commit }, page = null) {
+		const hideWatched = process.client ? state.autocomplete.hideWatched : this.$cookies.get('toggleHideWatched');
+		const user_id = process.client ? getters.userId : this.$cookies.get('userId')
 		const { data, pagination } = await this.$axios.$get(`/videos`, {
 			params: {
-				page:
-					page > 0 ? page : state.pagination.page + 1,
-				user_id:
-					state.autocomplete.hideWatched ? getters.userId : null
+				page: page > 0 ? page : state.pagination.page + 1,
+				user_id: hideWatched ? user_id : null
 			}
 		});
 
@@ -154,6 +154,7 @@ export const actions = {
 
 	async toggleHideWatched({ commit, dispatch, state }, val) {
 		commit('SET_AUTOCOMPLETE_WATCHED', val);
+		this.$cookies.set('toggleHideWatched', val);
 		const { type } = state.autocomplete;
 		const keyword = type === 'hosts' ? state.autocomplete.host : state.autocomplete.keyword;
 		if (type) {
