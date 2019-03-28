@@ -35,32 +35,32 @@ import VideoCard from '~/components/VideoCard.vue';
 
 export default {
 	components: { VideoCard },
-	async fetch({ app, store }) {
-		if (store.state.videos.length > 0) {
-			return;
-		}
-
-		const { data, pagination } = await app.$axios.$get(`/videos`);
-		store.commit('VIDEOS_SET', data);
-		store.commit('SET_PAGINATION', pagination);
+	created() {
+		this.$lock.$on('finished', async () => {
+			await this.$store.dispatch('loadVideos', 1);
+		});
 	},
 	methods: {
 		async loadVideos() {
+			const { state, getters, commit } = this.$store;
 			const { data, pagination } = await this.$axios.$get(
-				this.$store.state.pagination.path,
+				state.pagination.path,
 				{
 					params: {
-						page: this.$store.state.pagination.page + 1
+						page: state.pagination.page + 1,
+						user_id: state.autocomplete.hideWatched // eslint-disable-line camelcase
+							? getters.userId
+							: null
 					}
 				}
 			);
-			this.$store.commit(
+			commit(
 				'VIDEOS_APPEND',
 				Object.prototype.hasOwnProperty.call(data, 'videos')
 					? data.videos
 					: data
 			);
-			this.$store.commit('SET_PAGINATION', pagination);
+			commit('SET_PAGINATION', pagination);
 		}
 	}
 };

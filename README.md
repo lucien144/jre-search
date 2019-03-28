@@ -31,10 +31,10 @@ MONGO_DBNAME=jre-search
 
 ## API
 
-| Endpoint | Description |
-|---------|-------------|
-| `/hosts?page=N` | List of all hosts along with videos with pagination. |
-| `/hosts?search=al` | Search for hosts with name "AL..." |
-| `/hosts/:id` | Detail of the host. |
-| `/hosts/top` | List of hosts ordered by count. |
-| `/stats` | Statistics. |
+| Endpoint | Description | Params |
+|---------|--------------|--------|
+| `/hosts?page=N` | List of all hosts along with videos. Paginated. | `page` |
+| `/hosts?search=al` | Search for hosts with name "AL..." | `search` |
+| `/hosts/:id?page=N&user_id=X` | Detail of the host along with his/her videos. | `page` `user_id` - to filter out user's wached videos |
+| `/hosts/top` | List of hosts ordered by count. |  |
+| `/stats` | Statistics. |  |

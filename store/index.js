@@ -2,6 +2,8 @@ export const state = () => ({
 	autocomplete: {
 		host: null, // Object. Reference to host
 		keyword: null, // Object. Reference to keyword/tag
+		type: null, // String. Reference to type of the search (host or keyword)
+		hideWatched: false,
 		/**
 		 * Boolean. Toggle, if the reference to host/keyword was recently set.
 		 * Autocomplete does not have fully functional @change, this is a workaround.
@@ -67,9 +69,17 @@ export const mutations = {
 	SET_AUTOCOMPLETE_KEYWORD(state, keyword) {
 		state.autocomplete.keyword = keyword;
 	},
+	// Saves the autocomplete type (host/keyword)
+	SET_AUTOCOMPLETE_TYPE(state, type) {
+		state.autocomplete.type = type;
+	},
 	// Populates the autocomplete's toggle field
 	SET_AUTOCOMPLETE_TOGGLE(state, toggle) {
 		state.autocomplete.toggle = toggle;
+	},
+	// Toggle the switch if watched should be returned in videos
+	SET_AUTOCOMPLETE_WATCHED(state, watched) {
+		state.autocomplete.hideWatched = watched;
 	}
 };
 
@@ -97,7 +107,7 @@ export const actions = {
 	 * @param {Object} context Nuxt context
 	 * @param {Object} keywordType Keyword and the type.
 	 */
-	async getKeywordVideos({ commit }, { keyword, type }) {
+	async getKeywordVideos({ commit, getters, state }, { keyword, type }) {
 		this.$router.push('/');
 
 		if (type === 'hosts') {
@@ -108,13 +118,57 @@ export const actions = {
 			throw new Error('Unknown autocomplete type');
 		}
 
+		commit('SET_AUTOCOMPLETE_TYPE', type);
 		commit('SET_AUTOCOMPLETE_TOGGLE', true);
 
 		const { data, pagination } = await this.$axios.$get(
-			`/${type}/${keyword._id}`
+			`/${type}/${keyword._id}`,
+			{
+				params: {
+					user_id: state.autocomplete.hideWatched // eslint-disable-line camelcase
+						? getters.userId
+						: null
+				}
+			}
 		);
 		commit('VIDEOS_SET', data.videos);
 		commit('SET_PAGINATION', pagination);
+	},
+
+	/**
+	 * Load all videos if search is not used.
+	 *
+	 * @param {Object} { state, getters, commit }
+	 * @param {Int} [page=null] Page for pagination.
+	 */
+	async loadVideos({ state, getters, commit }, page = null) {
+		const hideWatched = process.client
+			? state.autocomplete.hideWatched
+			: this.$cookies.get('toggleHideWatched');
+		const { data, pagination } = await this.$axios.$get(`/videos`, {
+			params: {
+				page: page > 0 ? page : state.pagination.page + 1,
+				user_id: hideWatched ? getters.userId : null // eslint-disable-line camelcase
+			}
+		});
+
+		commit(page > 0 ? 'VIDEOS_SET' : 'VIDEOS_APPEND', data);
+		commit('SET_PAGINATION', pagination);
+	},
+
+	async toggleHideWatched({ commit, dispatch, state }, val) {
+		commit('SET_AUTOCOMPLETE_WATCHED', val);
+		this.$cookies.set('toggleHideWatched', val);
+		const { type } = state.autocomplete;
+		const keyword =
+			type === 'hosts'
+				? state.autocomplete.host
+				: state.autocomplete.keyword;
+		if (type && keyword) {
+			await dispatch('getKeywordVideos', { keyword, type });
+		} else {
+			await dispatch('loadVideos', 1);
+		}
 	},
 
 	/**
@@ -163,7 +217,7 @@ export const getters = {
 	},
 	userId(state) {
 		if (state.user.identity) {
-			return state.user.identity.sub.replace(/[^a-z0-9]/gi, '_');
+			return state.user.identity.user_id;
 		}
 		return null;
 	}
