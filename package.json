@@ -38,6 +38,7 @@
     "coveralls": "^3.0.2",
     "eslint": "^5.10.0",
     "eslint-plugin-vue": "^5.0.0",
+    "meow": "^5.0.0",
     "nodemon": "^1.11.0",
     "nyc": "^13.1.0",
     "stylus": "^0.54.5",

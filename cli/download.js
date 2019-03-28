@@ -1,4 +1,27 @@
+#!/usr/bin/env node
+const meow = require('meow');
 require('dotenv').config();
+
+const cli = meow(
+	`
+	Usage
+	  $ download.js
+
+	Options
+	  --purge, -p  Purge all downloads
+
+	Examples
+	  $ node cli/downloads.js --purge
+`,
+	{
+		flags: {
+			purge: {
+				type: 'boolean',
+				alias: 'p'
+			}
+		}
+	}
+);
 
 const YouTube = require('simple-youtube-api');
 
@@ -19,7 +42,11 @@ const syncData = async () => {
 	console.time('execution');
 	await client.connect();
 	const db = client.db(process.env.MONGO_DBNAME);
-	await db.collection('videos').deleteMany({});
+
+	if (cli.flags.purge) {
+		console.warn('Purging DB...');
+		await db.collection('videos').deleteMany({});
+	}
 
 	let results = false;
 	let publishedBefore = null;
@@ -85,5 +112,5 @@ const syncData = async () => {
 };
 
 syncData()
-	.catch(e => console.error(e))
+	.catch(error => console.error(error))
 	.finally(() => process.exit(22));
