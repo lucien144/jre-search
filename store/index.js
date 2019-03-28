@@ -156,7 +156,7 @@ export const actions = {
 		this.$cookies.set('toggleHideWatched', val);
 		const { type } = state.autocomplete;
 		const keyword = type === 'hosts' ? state.autocomplete.host : state.autocomplete.keyword;
-		if (type) {
+		if (type && keyword) {
 			await dispatch('getKeywordVideos', { keyword, type });
 		} else {
 			await dispatch('loadVideos', 1);
