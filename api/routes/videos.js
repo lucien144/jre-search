@@ -2,8 +2,8 @@ const { fetchCollection, sendJson } = require('../helpers.js');
 
 module.exports = function(app, db) {
 	app.get('/videos', async (req, res) => {
-		const { page = 1, user_id = '' } = req.query;
-		const user = await db.collection('users').findOne({ id: user_id });
+		const { page = 1, user_id = '' } = req.query; // eslint-disable-line camelcase
+		const user = await db.collection('users').findOne({ id: user_id }); // eslint-disable-line camelcase
 		const find = user ? { id: { $nin: user.watched } } : {};
 		fetchCollection(db.collection('videos'), res, req, {
 			sort: { publishedAt: -1 },

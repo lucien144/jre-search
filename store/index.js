@@ -121,10 +121,13 @@ export const actions = {
 		commit('SET_AUTOCOMPLETE_TYPE', type);
 		commit('SET_AUTOCOMPLETE_TOGGLE', true);
 
-		const { data, pagination } = await this.$axios.$get(`/${type}/${keyword._id}`, {
+		const { data, pagination } = await this.$axios.$get(
+			`/${type}/${keyword._id}`,
+			{
 				params: {
-					user_id:
-						state.autocomplete.hideWatched ? getters.userId : null
+					user_id: state.autocomplete.hideWatched // eslint-disable-line camelcase
+						? getters.userId
+						: null
 				}
 			}
 		);
@@ -135,15 +138,17 @@ export const actions = {
 	/**
 	 * Load all videos if search is not used.
 	 *
-	 * @param {*} { state, getters, commit }
-	 * @param {*} [page=null]
+	 * @param {Object} { state, getters, commit }
+	 * @param {Int} [page=null] Page for pagination.
 	 */
 	async loadVideos({ state, getters, commit }, page = null) {
-		const hideWatched = process.client ? state.autocomplete.hideWatched : this.$cookies.get('toggleHideWatched');
+		const hideWatched = process.client
+			? state.autocomplete.hideWatched
+			: this.$cookies.get('toggleHideWatched');
 		const { data, pagination } = await this.$axios.$get(`/videos`, {
 			params: {
 				page: page > 0 ? page : state.pagination.page + 1,
-				user_id: hideWatched ? getters.userId : null
+				user_id: hideWatched ? getters.userId : null // eslint-disable-line camelcase
 			}
 		});
 
@@ -155,7 +160,10 @@ export const actions = {
 		commit('SET_AUTOCOMPLETE_WATCHED', val);
 		this.$cookies.set('toggleHideWatched', val);
 		const { type } = state.autocomplete;
-		const keyword = type === 'hosts' ? state.autocomplete.host : state.autocomplete.keyword;
+		const keyword =
+			type === 'hosts'
+				? state.autocomplete.host
+				: state.autocomplete.keyword;
 		if (type && keyword) {
 			await dispatch('getKeywordVideos', { keyword, type });
 		} else {

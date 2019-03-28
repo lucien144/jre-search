@@ -93,11 +93,11 @@
 					<VTooltip top :disabled="$lock.loggedIn">
 						<VSwitch
 							slot="activator"
+							v-model="hideWatched"
 							hide-details
 							label="Hide Watched"
-							v-model="hideWatched"
 							:disabled="!$lock.loggedIn"
-						></VSwitch>
+						/>
 						<span>You need to sign in to save the video into favourites.</span>
 					</VTooltip>
 				</VCardActions>
@@ -126,7 +126,7 @@ export default {
 	computed: {
 		hideWatched: {
 			get() {
-				const cookie = this.$cookies.get('toggleHideWatched'); 
+				const cookie = this.$cookies.get('toggleHideWatched');
 				if (cookie !== '') {
 					this.$store.dispatch('toggleHideWatched', cookie);
 					return cookie;

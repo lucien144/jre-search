@@ -37,7 +37,7 @@ export default ({ app, env }, inject) => {
 						lock.getUserInfo(token, (err, profile) => {
 							if (err === null) {
 								app.$cookies.set(cookieName, token);
-								profile.user_id = profile.sub.replace(/[^a-z0-9]/gi, '_'); // eslint-disable-line camelcase
+								profile.user_id = profile.sub.replace(/[^a-z0-9]/gi, '_'); // eslint-disable-line prettier/prettier, camelcase
 								self.user = profile;
 								self.loggedIn = true;
 								self.$emit('authenticated', profile);

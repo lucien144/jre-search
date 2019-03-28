@@ -48,7 +48,9 @@ export default {
 				{
 					params: {
 						page: state.pagination.page + 1,
-						user_id: state.autocomplete.hideWatched ? getters.userId : null
+						user_id: state.autocomplete.hideWatched // eslint-disable-line camelcase
+							? getters.userId
+							: null
 					}
 				}
 			);
