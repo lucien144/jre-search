@@ -38,7 +38,7 @@ const helpers = require('./helpers');
 const titles = [];
 const episodes = [];
 
-const syncData = async () => {
+const downloadVideos = async () => {
 	console.time('execution');
 	await client.connect();
 	const db = client.db(process.env.MONGO_DBNAME);
@@ -111,6 +111,6 @@ const syncData = async () => {
 	console.timeEnd('execution');
 };
 
-syncData()
+downloadVideos()
 	.catch(error => console.error(error))
 	.finally(() => process.exit(22));
