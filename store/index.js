@@ -140,11 +140,10 @@ export const actions = {
 	 */
 	async loadVideos({ state, getters, commit }, page = null) {
 		const hideWatched = process.client ? state.autocomplete.hideWatched : this.$cookies.get('toggleHideWatched');
-		const user_id = process.client ? getters.userId : this.$cookies.get('userId')
 		const { data, pagination } = await this.$axios.$get(`/videos`, {
 			params: {
 				page: page > 0 ? page : state.pagination.page + 1,
-				user_id: hideWatched ? user_id : null
+				user_id: hideWatched ? getters.userId : null
 			}
 		});
 
@@ -160,7 +159,7 @@ export const actions = {
 		if (type) {
 			await dispatch('getKeywordVideos', { keyword, type });
 		} else {
-			await dispatch('getVideos', 1);
+			await dispatch('loadVideos', 1);
 		}
 	},
 
