@@ -25,18 +25,13 @@ const syncData = async () => {
 	let publishedBefore = null;
 	let options = {};
 	do {
-		try {
-			options = {
-				channelId: 'UCzQUP1qoWDoEbmsQxvdjxgQ',
-				order: 'date',
-				publishedBefore
-			};
-			/* eslint-disable no-await-in-loop */
-			results = await API.search(null, 100, options);
-		} catch (error) {
-			console.error(error);
-			return;
-		}
+		options = {
+			channelId: 'UCzQUP1qoWDoEbmsQxvdjxgQ',
+			order: 'date',
+			publishedBefore
+		};
+		/* eslint-disable no-await-in-loop */
+		results = await API.search(null, 100, options);
 		await Promise.all(
 			results.map(async video => {
 				// Skip on last item
@@ -89,4 +84,6 @@ const syncData = async () => {
 	console.timeEnd('execution');
 };
 
-syncData();
+syncData()
+	.catch(e => console.error(e))
+	.finally(() => process.exit(22));
