@@ -22,6 +22,8 @@ MONGO_DBNAME=jre-search
 | Command | Description |
 |---------|-------------|
 | `node cli/download.js` | Downloads all JRE videos from YouTube. |
+| `node cli/download.js -p --p` | Purge all videos from DB before the scrape. |
+| `node cli/download.js -a --all` | Download all videos in one go. |
 | `node cli/analyse.js` | Analyse the downloaded videos and saves hosts & keywords. |
 | `npm run server` | Run the API server. |
 | `npm run site` | Run the API server. |

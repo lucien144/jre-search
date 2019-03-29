@@ -8,16 +8,21 @@ const cli = meow(
 	  $ download.js
 
 	Options
-	  --purge, -p  Purge all downloads
+	  --purge, -p  Purge all downloads.
+	  --all, -p Download all videos at once.
 
 	Examples
-	  $ node cli/downloads.js --purge
+	  $ node cli/downloads.js --purge --all
 `,
 	{
 		flags: {
 			purge: {
 				type: 'boolean',
 				alias: 'p'
+			},
+			all: {
+				type: 'boolean',
+				alias: 'a'
 			}
 		}
 	}
@@ -48,15 +53,25 @@ const downloadVideos = async () => {
 		await db.collection('videos').deleteMany({});
 	}
 
-	let results = false;
+	let lastVideo = null;
 	let publishedBefore = null;
+	let results = false;
 	let options = {};
+	let counter = 0;
 	do {
+		lastVideo = await db.collection('videos').findOne({}, {sort:{$natural:-1}});
+		if (lastVideo !== null) {
+			publishedBefore = lastVideo.publishedAt;
+			publishedBefore.setSeconds(publishedBefore.getSeconds() - 1);
+			publishedBefore = publishedBefore.toISOString();
+		}
+
 		options = {
 			channelId: 'UCzQUP1qoWDoEbmsQxvdjxgQ',
 			order: 'date',
 			publishedBefore
 		};
+
 		/* eslint-disable no-await-in-loop */
 		results = await API.search(null, 100, options);
 		await Promise.all(
@@ -66,10 +81,6 @@ const downloadVideos = async () => {
 					results = false;
 					return;
 				}
-
-				publishedBefore = video.publishedAt;
-				publishedBefore.setSeconds(publishedBefore.getSeconds() - 1);
-				publishedBefore = publishedBefore.toISOString();
 
 				// Skip other than JRE podcasts
 				const title = helpers.parseTitle(video.title);
@@ -101,14 +112,15 @@ const downloadVideos = async () => {
 
 				video.title = title;
 				await db.collection('videos').insertOne(video);
+				counter++;
 				console.log(video.title.original);
-				console.log('---');
 			})
 		);
-	} while (results);
+	} while (results && cli.flags.all);
 
 	client.close();
 	console.timeEnd('execution');
+	console.log('Videos: ' + counter);
 };
 
 downloadVideos()
