@@ -13,6 +13,18 @@ test('parsing double quotes', t => {
 	t.is(dictionary.doublequotes.count, 1);
 });
 
+test('should parse curved quotes', t => {
+	const dictionary = {};
+	const result = parseQuotes(
+		'He also hosts “The Fighter & The Kid” podcast',
+		null,
+		dictionary
+	);
+	t.is(result, 'He also hosts  podcast');
+	t.is(dictionary.thefighterthekid.original, 'The Fighter & The Kid');
+	t.is(dictionary.thefighterthekid.count, 1);
+});
+
 test('parsing single quotes', t => {
 	const dictionary = {};
 	const result = parseQuotes(
