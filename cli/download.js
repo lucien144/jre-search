@@ -59,7 +59,9 @@ const downloadVideos = async () => {
 	let options = {};
 	let counter = 0;
 	do {
-		lastVideo = await db.collection('videos').findOne({}, {sort:{$natural:-1}});
+		lastVideo = await db // eslint-disable-line no-await-in-loop
+			.collection('videos')
+			.findOne({}, { sort: { $natural: -1 } });
 		if (lastVideo !== null) {
 			publishedBefore = lastVideo.publishedAt;
 			publishedBefore.setSeconds(publishedBefore.getSeconds() - 1);
