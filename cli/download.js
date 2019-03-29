@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+console.time('execution');
+
 const meow = require('meow');
 require('dotenv').config();
 
@@ -44,7 +46,6 @@ const titles = [];
 const episodes = [];
 
 const downloadVideos = async () => {
-	console.time('execution');
 	await client.connect();
 	const db = client.db(process.env.MONGO_DBNAME);
 
@@ -57,7 +58,6 @@ const downloadVideos = async () => {
 	let publishedBefore = null;
 	let results = false;
 	let options = {};
-	let counter = 0;
 	do {
 		lastVideo = await db // eslint-disable-line no-await-in-loop
 			.collection('videos')
@@ -114,17 +114,18 @@ const downloadVideos = async () => {
 
 				video.title = title;
 				await db.collection('videos').insertOne(video);
-				counter++;
 				console.log(video.title.original);
 			})
 		);
 	} while (results && cli.flags.all);
 
 	client.close();
-	console.timeEnd('execution');
-	console.log('Videos: ' + counter);
 };
 
 downloadVideos()
 	.catch(error => console.error(error))
-	.finally(() => process.exit(22));
+	.finally(() => {
+		console.timeEnd('execution');
+		console.log('Videos: ' + titles.length);
+		process.exit(22);
+	});
