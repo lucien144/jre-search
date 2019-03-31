@@ -45,7 +45,7 @@
 								far fa-heart
 							</VIcon>
 						</VBtn>
-						<span>You need to sign in to save the video into favourites.</span>
+						<span>You need to be logged in to save the video to favourites.</span>
 					</VTooltip>
 					<VTooltip top :disabled="$lock.loggedIn">
 						<VBtn
@@ -60,7 +60,7 @@
 								far fa-eye
 							</VIcon>
 						</VBtn>
-						<span>You need to sign in to save the video into watched.</span>
+						<span>You need to be logged in to save the video to the watched list.</span>
 					</VTooltip>
 					<VBtn
 						icon
@@ -94,10 +94,19 @@ export default {
 	},
 	methods: {
 		favorite() {
-			this.$store.dispatch('favourite', this.video);
+			if (this.$lock.loggedIn) {
+				this.$store.dispatch('favourite', this.video);
+			} else {
+				this.$lock.login();
+			}
 		},
 		watch() {
-			this.$store.dispatch('watch', this.video);
+			if (this.$lock.loggedIn) {
+				this.$store.dispatch('watch', this.video);
+			} else {
+				this.$lock.login();
+			}
+
 		},
 		share() {
 			console.log('share');
