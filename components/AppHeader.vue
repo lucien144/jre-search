@@ -29,20 +29,22 @@
 							<VListTile>
 								<VListTileTitle>About</VListTileTitle>
 							</VListTile>
-							<VListTile
-								v-if="$lock.loggedIn"
-								:disabled="$lock.isLoadingAuth"
-								@click.native="logout()"
-							>
-								<VListTileTitle>Logout</VListTileTitle>
-							</VListTile>
-							<VListTile
-								v-else
-								:disabled="$lock.isLoadingAuth"
-								@click.native="auth()"
-							>
-								<VListTileTitle>Sign In/Up</VListTileTitle>
-							</VListTile>
+							<no-ssr>
+								<VListTile
+									v-if="$lock.loggedIn"
+									:disabled="$lock.isLoadingAuth"
+									@click.native="logout()"
+								>
+									<VListTileTitle>Logout</VListTileTitle>
+								</VListTile>
+								<VListTile
+									v-else
+									:disabled="$lock.isLoadingAuth"
+									@click.native="auth()"
+								>
+									<VListTileTitle>Sign In/Up</VListTileTitle>
+								</VListTile>
+							</no-ssr>
 						</VList>
 					</VMenu>
 				</VFlex>
@@ -59,22 +61,24 @@
 						<VBtn to="/about">
 							About
 						</VBtn>
-						<VBtn
-							v-if="$lock.loggedIn"
-							:loading="$lock.isLoadingAuth"
-							:disabled="$lock.isLoadingAuth"
-							@click.native="logout()"
-						>
-							Logout
-						</VBtn>
-						<VBtn
-							v-else
-							:loading="$lock.isLoadingAuth"
-							:disabled="$lock.isLoadingAuth"
-							@click.native="auth()"
-						>
-							Sign In/Up
-						</VBtn>
+						<no-ssr>
+							<VBtn
+								v-if="$lock.loggedIn"
+								:loading="$lock.isLoadingAuth"
+								:disabled="$lock.isLoadingAuth"
+								@click.native="logout()"
+							>
+								Logout
+							</VBtn>
+							<VBtn
+								v-else
+								:loading="$lock.isLoadingAuth"
+								:disabled="$lock.isLoadingAuth"
+								@click.native="auth()"
+							>
+								Sign In/Up
+							</VBtn>
+						</no-ssr>
 					</VLayout>
 				</VFlex>
 			</VLayout>
