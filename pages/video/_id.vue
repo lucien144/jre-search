@@ -1,7 +1,7 @@
 <template>
 	<div
 		id="video"
-		class="video"
+		class="video mt-4"
 	>
 		<VCard>
 			<VCardTitle>
