@@ -110,6 +110,9 @@ export default {
 		this.$lock.$on('logout', () => {
 			store.commit('USER_IDENTITY_SET', null);
 		});
+		this.$lock.$on('finished', async () => {
+			await store.dispatch('loadVideos', 1);
+		});
 		this.$lock.init();
 	},
 	methods: {

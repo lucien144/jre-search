@@ -35,11 +35,6 @@ import VideoCard from '~/components/VideoCard.vue';
 
 export default {
 	components: { VideoCard },
-	created() {
-		this.$lock.$on('finished', async () => {
-			await this.$store.dispatch('loadVideos', 1);
-		});
-	},
 	methods: {
 		async loadVideos() {
 			const { state, getters, commit } = this.$store;
