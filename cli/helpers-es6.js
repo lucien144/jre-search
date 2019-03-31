@@ -126,7 +126,7 @@ export const saveKeyword = (keyword, dict, video) => {
  */
 export const parseQuotes = (description, video, dictionary) => {
 	const regex = new RegExp(
-		'("(?<title>.+?)")|((?=[^w]|A)\'(?<title2>.+?)\'(?=[^s]))',
+		'(["“](?<title>.+?)["”])|((?=[^w]|A)\'(?<title2>.+?)\'(?=[^s]))',
 		'gms'
 	); // eslint-disable-line no-useless-escape
 	let match;

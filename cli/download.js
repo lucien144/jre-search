@@ -1,4 +1,34 @@
+#!/usr/bin/env node
+console.time('execution');
+
+const meow = require('meow');
 require('dotenv').config();
+
+const cli = meow(
+	`
+	Usage
+	  $ download.js
+
+	Options
+	  --purge, -p  Purge all downloads.
+	  --all, -p Download all videos at once.
+
+	Examples
+	  $ node cli/downloads.js --purge --all
+`,
+	{
+		flags: {
+			purge: {
+				type: 'boolean',
+				alias: 'p'
+			},
+			all: {
+				type: 'boolean',
+				alias: 'a'
+			}
+		}
+	}
+);
 
 const YouTube = require('simple-youtube-api');
 
@@ -15,28 +45,37 @@ const helpers = require('./helpers');
 const titles = [];
 const episodes = [];
 
-const syncData = async () => {
-	console.time('execution');
+const downloadVideos = async () => {
 	await client.connect();
 	const db = client.db(process.env.MONGO_DBNAME);
-	await db.collection('videos').deleteMany({});
 
-	let results = false;
+	if (cli.flags.purge) {
+		console.warn('Purging DB...');
+		await db.collection('videos').deleteMany({});
+	}
+
+	let lastVideo = null;
 	let publishedBefore = null;
+	let results = false;
 	let options = {};
 	do {
-		try {
-			options = {
-				channelId: 'UCzQUP1qoWDoEbmsQxvdjxgQ',
-				order: 'date',
-				publishedBefore
-			};
-			/* eslint-disable no-await-in-loop */
-			results = await API.search(null, 100, options);
-		} catch (error) {
-			console.error(error);
-			return;
+		lastVideo = await db // eslint-disable-line no-await-in-loop
+			.collection('videos')
+			.findOne({}, { sort: { $natural: -1 } });
+		if (lastVideo !== null) {
+			publishedBefore = lastVideo.publishedAt;
+			publishedBefore.setSeconds(publishedBefore.getSeconds() - 1);
+			publishedBefore = publishedBefore.toISOString();
 		}
+
+		options = {
+			channelId: 'UCzQUP1qoWDoEbmsQxvdjxgQ',
+			order: 'date',
+			publishedBefore
+		};
+
+		/* eslint-disable no-await-in-loop */
+		results = await API.search(null, 100, options);
 		await Promise.all(
 			results.map(async video => {
 				// Skip on last item
@@ -44,10 +83,6 @@ const syncData = async () => {
 					results = false;
 					return;
 				}
-
-				publishedBefore = video.publishedAt;
-				publishedBefore.setSeconds(publishedBefore.getSeconds() - 1);
-				publishedBefore = publishedBefore.toISOString();
 
 				// Skip other than JRE podcasts
 				const title = helpers.parseTitle(video.title);
@@ -80,13 +115,17 @@ const syncData = async () => {
 				video.title = title;
 				await db.collection('videos').insertOne(video);
 				console.log(video.title.original);
-				console.log('---');
 			})
 		);
-	} while (results);
+	} while (results && cli.flags.all);
 
 	client.close();
-	console.timeEnd('execution');
 };
 
-syncData();
+downloadVideos()
+	.catch(error => console.error(error))
+	.finally(() => {
+		console.timeEnd('execution');
+		console.log('Videos: ' + titles.length);
+		process.exit(22);
+	});

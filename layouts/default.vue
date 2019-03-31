@@ -89,6 +89,18 @@
 						</VCardText>
 					</VFlex>
 				</VLayout>
+				<VCardActions class="switch__watched">
+					<VTooltip top :disabled="$lock.loggedIn">
+						<VSwitch
+							slot="activator"
+							v-model="hideWatched"
+							hide-details
+							label="Hide Watched"
+							:disabled="!$lock.loggedIn"
+						/>
+						<span>You need to sign in to save the video into favourites.</span>
+					</VTooltip>
+				</VCardActions>
 			</VCard>
 			<!-- eslint-disable-next-line vue/component-name-in-template-casing //-->
 			<nuxt />
@@ -112,6 +124,19 @@ export default {
 		};
 	},
 	computed: {
+		hideWatched: {
+			get() {
+				const cookie = this.$cookies.get('toggleHideWatched');
+				if (cookie !== '') {
+					this.$store.dispatch('toggleHideWatched', cookie);
+					return cookie;
+				}
+				return this.$store.state.autocomplete.hideWatched;
+			},
+			set(val) {
+				this.$store.dispatch('toggleHideWatched', val);
+			}
+		},
 		selectedHost: {
 			get() {
 				if (this.$store.state.autocomplete.host) {
@@ -128,7 +153,7 @@ export default {
 					});
 				} else {
 					this.$store.commit('SET_AUTOCOMPLETE_HOST', null);
-					this.loadVideos(1);
+					this.$store.dispatch('loadVideos', 1);
 				}
 			}
 		},
@@ -151,7 +176,7 @@ export default {
 					});
 				} else {
 					this.$store.commit('SET_AUTOCOMPLETE_KEYWORD', null);
-					this.loadVideos(1);
+					this.$store.dispatch('loadVideos', 1);
 				}
 			}
 		}
@@ -196,18 +221,7 @@ export default {
 		clear(_) {
 			this.videos.hosts = [];
 			this.videos.keywords = [];
-			this.loadVideos(1);
-		},
-
-		async loadVideos(page = null) {
-			const { data, pagination } = await this.$axios.$get(`/videos`, {
-				params: {
-					page:
-						page > 0 ? page : this.$store.state.pagination.page + 1
-				}
-			});
-			this.$store.commit(page > 0 ? 'VIDEOS_SET' : 'VIDEOS_APPEND', data);
-			this.$store.commit('SET_PAGINATION', pagination);
+			this.$store.dispatch('loadVideos', 1);
 		}
 	}
 };
@@ -230,5 +244,8 @@ body {
 }
 #app {
 	background: #f7f7f7 url(~@/assets/pattern.svg);
+}
+.switch__watched {
+	justify-content: flex-end;
 }
 </style>

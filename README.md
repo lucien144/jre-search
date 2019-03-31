@@ -22,6 +22,8 @@ MONGO_DBNAME=jre-search
 | Command | Description |
 |---------|-------------|
 | `node cli/download.js` | Downloads all JRE videos from YouTube. |
+| `node cli/download.js -p --p` | Purge all videos from DB before the scrape. |
+| `node cli/download.js -a --all` | Download all videos in one go. |
 | `node cli/analyse.js` | Analyse the downloaded videos and saves hosts & keywords. |
 | `npm run server` | Run the API server. |
 | `npm run site` | Run the API server. |
@@ -31,10 +33,10 @@ MONGO_DBNAME=jre-search
 
 ## API
 
-| Endpoint | Description |
-|---------|-------------|
-| `/hosts?page=N` | List of all hosts along with videos with pagination. |
-| `/hosts?search=al` | Search for hosts with name "AL..." |
-| `/hosts/:id` | Detail of the host. |
-| `/hosts/top` | List of hosts ordered by count. |
-| `/stats` | Statistics. |
+| Endpoint | Description | Params |
+|---------|--------------|--------|
+| `/hosts?page=N` | List of all hosts along with videos. Paginated. | `page` |
+| `/hosts?search=al` | Search for hosts with name "AL..." | `search` |
+| `/hosts/:id?page=N&user_id=X` | Detail of the host along with his/her videos. | `page` `user_id` - to filter out user's wached videos |
+| `/hosts/top` | List of hosts ordered by count. |  |
+| `/stats` | Statistics. |  |

@@ -101,7 +101,7 @@ export default {
 			openStats: false
 		};
 	},
-	mounted() {
+	created() {
 		const store = this.$store;
 		this.$lock.$on('authenticated', user => {
 			store.commit('USER_IDENTITY_SET', user);
@@ -110,6 +110,7 @@ export default {
 		this.$lock.$on('logout', () => {
 			store.commit('USER_IDENTITY_SET', null);
 		});
+		this.$lock.init();
 	},
 	methods: {
 		// Sign in/up
