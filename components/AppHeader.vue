@@ -12,7 +12,11 @@
 				<VFlex xs10 sm9>
 					<span class="hidden-xs-only">
 						JRE on
-					</span>✨ 🍄
+					</span>
+					<VTooltip top>
+						<span slot="activator">✨ 🍄</span>
+						<span>Magic Mushrooms</span>
+					</VTooltip>
 				</VFlex>
 				<VFlex xs2 sm3 text-xs-right class="hidden-md-and-up">
 					<VMenu offset-x offset-y bottom left>
