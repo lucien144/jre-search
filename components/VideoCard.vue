@@ -4,12 +4,13 @@
 			slot-scope="{ hover }"
 			height="100%"
 			:to="`video/${video.id}/#video`"
-			:class="`elevation-${hover ? 12 : 2}`"
+			:class="[`elevation-${hover ? 12 : 2}`, 'flexcard']"
 		>
 			<VImg
 				:src="video.thumbnails.high.url"
 				:lazy-src="video.thumbnails.default.url"
 				height="200"
+				max-height="200"
 			>
 				<VLayout
 					slot="placeholder"
@@ -24,7 +25,7 @@
 			<VCardTitle class="title">
 				#{{ video.title.episode }} - {{ video.title.hosts.join(', ') }}
 			</VCardTitle>
-			<VCardText class="pt-0 pb-0">
+			<VCardText class="pt-0 pb-0 grow">
 				<p class="caption">
 					{{ video.description }}
 				</p>
@@ -132,6 +133,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.flexcard {
+	display: flex;
+	flex-direction: column;
+}
 .v-chip {
 	/deep/ .v-chip__content {
 		cursor: pointer;
