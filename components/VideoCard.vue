@@ -30,6 +30,16 @@
 				</p>
 			</VCardText>
 			<VCardActions>
+				<div>
+					<VChip
+						v-for="(keyword, index) in bestKeywords(video.keywords)"
+						:key="`k${index}`"
+						@click.prevent="onChipClick(keyword, 'keywords')"
+						small
+					>
+						{{ keyword.original }}
+					</VChip>
+				</div>
 				<VSpacer />
 				<div class="text-xs-center">
 					<VTooltip top :disabled="$lock.loggedIn">
@@ -110,7 +120,21 @@ export default {
 		},
 		share() {
 			console.log('share');
+		},
+		bestKeywords(keywords) {
+			return [...keywords].filter(el => el.count > 1).slice(0, 2);
+		},
+		onChipClick(keyword, type) {
+			this.$store.dispatch('getKeywordVideos', { keyword, type });
 		}
 	}
 };
 </script>
+
+<style scoped lang="scss">
+.v-chip {
+	/deep/ .v-chip__content {
+		cursor: pointer;
+	}
+}
+</style>

@@ -14,7 +14,8 @@
 					v-for="video in $store.getters.orderedVideos"
 					:key="video.id"
 					xs12
-					md3
+					md4
+					lg3
 				>
 					<VideoCard :video="video" />
 				</VFlex>

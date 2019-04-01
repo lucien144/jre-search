@@ -36,6 +36,7 @@
 									v-for="(keyword, index) in $store.state.video.keywords"
 									:key="`k${index}`"
 									@click="onChipClick(keyword, 'keywords')"
+									small
 								>
 									{{ keyword.original }}
 								</VChip>
@@ -43,6 +44,7 @@
 									v-for="(host, index) in $store.state.video.hosts"
 									:key="`h${index}`"
 									@click="onChipClick(host, 'hosts')"
+									small
 								>
 									{{ host.original }}
 								</VChip>
