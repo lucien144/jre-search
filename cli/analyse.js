@@ -19,7 +19,7 @@ const titles = [];
 	const db = client.db(process.env.MONGO_DBNAME);
 	const videos = db.collection('videos').find({});
 	let counter = 0;
-	const promiseUpdates = [];
+	let promiseUpdates = [];
 	try {
 		// eslint-disable-next-line no-await-in-loop
 		while (await videos.hasNext()) {
@@ -35,8 +35,24 @@ const titles = [];
 			) {
 				titles.push(video.title.original);
 				helpers.parseVideo(video, hosts, keywords, tags);
+				promiseUpdates.push(
+					db.collection('videos').updateOne(
+						{ _id: video._id },
+						{
+							$set: {
+								hosts: [],
+								keywords: [],
+								tags: []
+							}
+						}
+					)
+				);
 			}
 		}
+
+		// Cleanup all videos
+		await Promise.all([promiseUpdates]);
+		promiseUpdates = [];
 
 		// Mongo: Save all dictionaries to collections
 		const collections = { hosts, tags, keywords };

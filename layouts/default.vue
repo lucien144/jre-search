@@ -98,7 +98,7 @@
 							label="Hide Watched"
 							:disabled="!$lock.loggedIn"
 						/>
-						<span>You need to sign in to save the video into favourites.</span>
+						<span>You need to be logged in to filter out watched videos.</span>
 					</VTooltip>
 				</VCardActions>
 			</VCard>

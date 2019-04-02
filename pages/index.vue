@@ -14,14 +14,19 @@
 					v-for="video in $store.getters.orderedVideos"
 					:key="video.id"
 					xs12
-					md3
+					md4
+					lg3
 				>
 					<VideoCard :video="video" />
 				</VFlex>
 			</VLayout>
 			<VLayout>
 				<VFlex xs12 text-xs-center>
-					<VBtn v-if="$store.state.pagination.page < $store.state.pagination.pages" @click="loadVideos">
+					<VBtn
+						v-if="$store.state.pagination.page < $store.state.pagination.pages"
+						@click="loadVideos"
+						:loading="loadingVideos"
+					>
 						Load More
 					</VBtn>
 				</VFlex>
@@ -35,8 +40,14 @@ import VideoCard from '~/components/VideoCard.vue';
 
 export default {
 	components: { VideoCard },
+	data() {
+		return {
+			loadingVideos: false
+		};
+	},
 	methods: {
 		async loadVideos() {
+			this.loadingVideos = true;
 			const { state, getters, commit } = this.$store;
 			const { data, pagination } = await this.$axios.$get(
 				state.pagination.path,
@@ -56,6 +67,7 @@ export default {
 					: data
 			);
 			commit('SET_PAGINATION', pagination);
+			this.loadingVideos = false;
 		}
 	}
 };

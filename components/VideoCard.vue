@@ -4,12 +4,13 @@
 			slot-scope="{ hover }"
 			height="100%"
 			:to="`video/${video.id}/#video`"
-			:class="`elevation-${hover ? 12 : 2}`"
+			:class="[`elevation-${hover ? 12 : 2}`, 'flexcard']"
 		>
 			<VImg
 				:src="video.thumbnails.high.url"
 				:lazy-src="video.thumbnails.default.url"
 				height="200"
+				max-height="200"
 			>
 				<VLayout
 					slot="placeholder"
@@ -24,50 +25,25 @@
 			<VCardTitle class="title">
 				#{{ video.title.episode }} - {{ video.title.hosts.join(', ') }}
 			</VCardTitle>
-			<VCardText class="pt-0 pb-0">
+			<VCardText class="pt-0 pb-0 grow">
 				<p class="caption">
 					{{ video.description }}
 				</p>
 			</VCardText>
 			<VCardActions>
+				<div>
+					<VChip
+						v-for="(keyword, index) in bestKeywords(video.keywords)"
+						:key="`k${index}`"
+						@click.prevent="onChipClick(keyword, 'keywords')"
+						small
+					>
+						{{ keyword.original }}
+					</VChip>
+				</div>
 				<VSpacer />
 				<div class="text-xs-center">
-					<VTooltip top :disabled="$lock.loggedIn">
-						<VBtn
-							slot="activator"
-							icon
-							@click.prevent="favorite"
-						>
-							<VIcon v-if="isFavourite">
-								fas fa-heart
-							</VIcon>
-							<VIcon v-else :disabled="!$lock.loggedIn">
-								far fa-heart
-							</VIcon>
-						</VBtn>
-						<span>You need to sign in to save the video into favourites.</span>
-					</VTooltip>
-					<VTooltip top :disabled="$lock.loggedIn">
-						<VBtn
-							slot="activator"
-							icon
-							@click.prevent="watch"
-						>
-							<VIcon v-if="isWatched">
-								fas fa-eye
-							</VIcon>
-							<VIcon v-else :disabled="!$lock.loggedIn">
-								far fa-eye
-							</VIcon>
-						</VBtn>
-						<span>You need to sign in to save the video into watched.</span>
-					</VTooltip>
-					<VBtn
-						icon
-						@click.stop="share"
-					>
-						<VIcon>fas fa-share-alt</VIcon>
-					</VBtn>
+					<ShareBar/>
 				</div>
 			</VCardActions>
 		</VCard>
@@ -75,7 +51,10 @@
 </template>
 
 <script>
+import ShareBar from '@/components/ShareBar.vue';
+
 export default {
+	components: { ShareBar },
 	props: {
 		video: {
 			type: Object,
@@ -93,15 +72,24 @@ export default {
 		}
 	},
 	methods: {
-		favorite() {
-			this.$store.dispatch('favourite', this.video);
+		bestKeywords(keywords) {
+			return [...keywords].filter(el => el.count > 1).slice(0, 2);
 		},
-		watch() {
-			this.$store.dispatch('watch', this.video);
-		},
-		share() {
-			console.log('share');
+		onChipClick(keyword, type) {
+			this.$store.dispatch('getKeywordVideos', { keyword, type });
 		}
 	}
 };
 </script>
+
+<style scoped lang="scss">
+.flexcard {
+	display: flex;
+	flex-direction: column;
+}
+.v-chip {
+	/deep/ .v-chip__content {
+		cursor: pointer;
+	}
+}
+</style>

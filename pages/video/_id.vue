@@ -1,7 +1,7 @@
 <template>
 	<div
 		id="video"
-		class="video"
+		class="video mt-4"
 	>
 		<VCard>
 			<VCardTitle>
@@ -15,9 +15,11 @@
 					</VIcon>
 				</VBtn>
 				<VToolbarTitle>{{ $store.state.video.title.original }}</VToolbarTitle>
+				<VSpacer />
+				<ShareBar/>
 			</VCardTitle>
-			<VCardText>
-				<VContainer pt-0 px-3 fluid grid-list-xl>
+			<VCardText class="pb-0">
+				<VContainer py-0 px-3 fluid grid-list-xl>
 					<VLayout wrap>
 						<VFlex xs12 md8>
 							<iframe
@@ -36,6 +38,7 @@
 									v-for="(keyword, index) in $store.state.video.keywords"
 									:key="`k${index}`"
 									@click="onChipClick(keyword, 'keywords')"
+									small
 								>
 									{{ keyword.original }}
 								</VChip>
@@ -43,44 +46,49 @@
 									v-for="(host, index) in $store.state.video.hosts"
 									:key="`h${index}`"
 									@click="onChipClick(host, 'hosts')"
+									small
 								>
 									{{ host.original }}
-								</VChip>
-							</p>
-
-							<VDivider />
-							<p>
-								<VChip label color="white">
-									<VIcon left>
-										fas fa-eye
-									</VIcon>{{ $store.state.video.statistics.viewCount | format }}
-								</VChip>
-								<VChip label color="white">
-									<VIcon left>
-										fas fa-thumbs-up
-									</VIcon>{{ $store.state.video.statistics.likeCount | format }}
-								</VChip>
-								<VChip label color="white">
-									<VIcon left>
-										fas fa-thumbs-down
-									</VIcon>{{ $store.state.video.statistics.dislikeCount | format }}
-								</VChip>
-								<VChip label color="white">
-									<VIcon left>
-										fas fa-comment-alt
-									</VIcon>{{ $store.state.video.statistics.commentCount | format }}
 								</VChip>
 							</p>
 						</VFlex>
 					</VLayout>
 				</VContainer>
 			</VCardText>
+			<VCardActions>
+				<VSpacer />
+				<div class="stats">
+					<VChip label color="white" small>
+						<VIcon left small>
+							fas fa-eye
+						</VIcon>{{ $store.state.video.statistics.viewCount | format }}
+					</VChip>
+					<VChip label color="white" small>
+						<VIcon left small>
+							fas fa-thumbs-up
+						</VIcon>{{ $store.state.video.statistics.likeCount | format }}
+					</VChip>
+					<VChip label color="white" small>
+						<VIcon left small>
+							fas fa-thumbs-down
+						</VIcon>{{ $store.state.video.statistics.dislikeCount | format }}
+					</VChip>
+					<VChip label color="white" small>
+						<VIcon left small>
+							fas fa-comment-alt
+						</VIcon>{{ $store.state.video.statistics.commentCount | format }}
+					</VChip>
+				</div>
+			</VCardActions>
 		</VCard>
 	</div>
 </template>
 
 <script>
+import ShareBar from '@/components/ShareBar.vue';
+
 export default {
+	components: { ShareBar },
 	transition: 'transition',
 	async fetch({ app, store, params }) {
 		const { data } = await app.$axios.$get(`/videos/${params.id}`);
@@ -102,6 +110,10 @@ export default {
 .transition-enter,
 .transition-leave-active {
 	opacity: 0;
+}
+
+.stats {
+	opacity: .6;
 }
 </style>
 
