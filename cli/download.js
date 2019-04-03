@@ -75,48 +75,46 @@ const downloadVideos = async () => {
 		};
 
 		/* eslint-disable no-await-in-loop */
-		results = await API.search(null, 100, options);
-		await Promise.all(
-			results.map(async video => {
-				// Skip on last item
-				if (video.title === undefined) {
-					results = false;
-					return;
-				}
+		results = await API.search(null, 10, options);
+		for (const video of results) {
+			// Skip on last item
+			if (video.title === undefined) {
+				results = false;
+				continue;
+			}
 
-				// Skip other than JRE podcasts
-				const title = helpers.parseTitle(video.title);
-				if (title === false) {
-					return;
-				}
+			// Skip other than JRE podcasts
+			const title = helpers.parseTitle(video.title);
+			if (title === false) {
+				continue;
+			}
 
-				// Skip duplicates
-				const id = helpers.getId(title.original);
-				if (
-					episodes.indexOf(title.episode) > -1 ||
-					titles.indexOf(id) > -1
-				) {
-					return;
-				}
-				titles.push(title.original);
-				episodes.push(title.episode);
+			// Skip duplicates
+			const id = helpers.getId(title.original);
+			if (
+				episodes.indexOf(title.episode) > -1 ||
+				titles.indexOf(id) > -1
+			) {
+				continue;
+			}
+			titles.push(title.original);
+			episodes.push(title.episode);
 
-				const { raw } = await API.getVideoByID(video.id, {
-					part: 'statistics'
-				});
-				video.statistics = {
-					viewCount: parseInt(raw.statistics.viewCount, 10),
-					likeCount: parseInt(raw.statistics.likeCount, 10),
-					dislikeCount: parseInt(raw.statistics.dislikeCount, 10),
-					favoriteCount: parseInt(raw.statistics.favoriteCount, 10),
-					commentCount: parseInt(raw.statistics.commentCount, 10)
-				};
+			const { raw } = await API.getVideoByID(video.id, {
+				part: 'statistics'
+			});
+			video.statistics = {
+				viewCount: parseInt(raw.statistics.viewCount, 10),
+				likeCount: parseInt(raw.statistics.likeCount, 10),
+				dislikeCount: parseInt(raw.statistics.dislikeCount, 10),
+				favoriteCount: parseInt(raw.statistics.favoriteCount, 10),
+				commentCount: parseInt(raw.statistics.commentCount, 10)
+			};
 
-				video.title = title;
-				await db.collection('videos').insertOne(video);
-				console.log(video.title.original);
-			})
-		);
+			video.title = title;
+			await db.collection('videos').insertOne(video);
+			console.log(video.title.original);
+		}
 	} while (results && cli.flags.all);
 
 	client.close();
