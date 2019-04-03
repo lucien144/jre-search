@@ -43,7 +43,7 @@
 				</div>
 				<VSpacer />
 				<div class="text-xs-center">
-					<ShareBar/>
+					<ShareBar :video="video" />
 				</div>
 			</VCardActions>
 		</VCard>
@@ -59,16 +59,6 @@ export default {
 		video: {
 			type: Object,
 			required: true
-		}
-	},
-	computed: {
-		isWatched() {
-			return this.$store.state.user.watched.indexOf(this.video.id) > -1;
-		},
-		isFavourite() {
-			return (
-				this.$store.state.user.favourites.indexOf(this.video.id) > -1
-			);
 		}
 	},
 	methods: {
