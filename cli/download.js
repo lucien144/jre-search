@@ -10,11 +10,13 @@ const cli = meow(
 	  $ download.js
 
 	Options
+	  --limit, -l Limit of downloads to parse. Max 100.
 	  --purge, -p  Purge all downloads.
 	  --all, -p Download all videos at once.
+	  --verbose, -v Verbose information.
 
 	Examples
-	  $ node cli/downloads.js --purge --all
+	  $ node cli/downloads.js --purge --all --limit=10 -v
 `,
 	{
 		flags: {
@@ -25,6 +27,16 @@ const cli = meow(
 			all: {
 				type: 'boolean',
 				alias: 'a'
+			},
+			limit: {
+				type: 'integer',
+				alias: 'l',
+				default: 100
+			},
+			verbose: {
+				type: 'boolean',
+				alias: 'v',
+				default: false
 			}
 		}
 	}
@@ -45,12 +57,18 @@ const helpers = require('./helpers');
 const titles = [];
 const episodes = [];
 
+const verbose = (message) => {
+	if (cli.flags.verbose) {
+		console.log(message);
+	}
+};
+
 const downloadVideos = async () => {
 	await client.connect();
 	const db = client.db(process.env.MONGO_DBNAME);
 
 	if (cli.flags.purge) {
-		console.warn('Purging DB...');
+		verbose('Purging DB...');
 		await db.collection('videos').deleteMany({});
 	}
 
@@ -62,7 +80,10 @@ const downloadVideos = async () => {
 		lastVideo = await db // eslint-disable-line no-await-in-loop
 			.collection('videos')
 			.findOne({}, { sort: { $natural: -1 } });
+
 		if (lastVideo !== null) {
+			verbose(`Starting from last video: ${lastVideo.title.original}`);
+			verbose(`-> published at: ${lastVideo.publishedAt}`);
 			publishedBefore = lastVideo.publishedAt;
 			publishedBefore.setSeconds(publishedBefore.getSeconds() - 1);
 			publishedBefore = publishedBefore.toISOString();
@@ -75,7 +96,7 @@ const downloadVideos = async () => {
 		};
 
 		/* eslint-disable no-await-in-loop */
-		results = await API.search(null, 100, options);
+		results = await API.search(null, cli.flags.limit > 100 ? 100 : cli.flags.limit, options);
 		for (const video of results) {
 			// Skip on last item
 			if (video.title === undefined) {
