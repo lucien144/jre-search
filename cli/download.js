@@ -79,7 +79,7 @@ const downloadVideos = async () => {
 	do {
 		lastVideo = await db // eslint-disable-line no-await-in-loop
 			.collection('videos')
-			.findOne({}, { sort: { $natural: -1 } });
+			.findOne({}, { sort: { publishedAt: 1 } });
 
 		if (lastVideo !== null) {
 			verbose(`Starting from last video: ${lastVideo.title.original}`);
