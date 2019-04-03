@@ -10,15 +10,25 @@
 				row
 				wrap
 			>
-				<VFlex
-					v-for="video in $store.getters.orderedVideos"
-					:key="video.id"
-					xs12
-					md4
-					lg3
-				>
-					<VideoCard :video="video" />
+				<VFlex xs12 text-xs-center v-if="$store.state.loadingVideos">
+					<VProgressCircular
+						color="grey"
+						:size="70"
+						:width="7"
+						indeterminate
+					/>
 				</VFlex>
+				<template v-else>
+					<VFlex
+						v-for="video in $store.getters.orderedVideos"
+						:key="video.id"
+						xs12
+						md4
+						lg3
+					>
+						<VideoCard :video="video" />
+					</VFlex>
+				</template>
 			</VLayout>
 			<VLayout>
 				<VFlex xs12 text-xs-center>

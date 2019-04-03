@@ -17,6 +17,9 @@ export const state = () => ({
 	// Currently watched video
 	video: null,
 
+	// Information if we are in the process of loading videos or not. To show progressbar.
+	loadingVideos: false,
+
 	// Current pagination information
 	pagination: {
 		page: 1,
@@ -80,7 +83,10 @@ export const mutations = {
 	// Toggle the switch if watched should be returned in videos
 	SET_AUTOCOMPLETE_WATCHED(state, watched) {
 		state.autocomplete.hideWatched = watched;
-	}
+	},
+	SET_LOADING_VIDEOS(state, loading) {
+		state.loadingVideos = loading;
+	},
 };
 
 export const actions = {
@@ -142,18 +148,25 @@ export const actions = {
 	 * @param {Int} [page=null] Page for pagination.
 	 */
 	async loadVideos({ state, getters, commit }, page = null) {
-		const hideWatched = process.client
-			? state.autocomplete.hideWatched
-			: this.$cookies.get('toggleHideWatched');
-		const { data, pagination } = await this.$axios.$get(`/videos`, {
-			params: {
-				page: page > 0 ? page : state.pagination.page + 1,
-				user_id: hideWatched ? getters.userId : null // eslint-disable-line camelcase
-			}
-		});
+		try {
+			commit('SET_LOADING_VIDEOS', true);
+			const hideWatched = process.client
+				? state.autocomplete.hideWatched
+				: this.$cookies.get('toggleHideWatched');
+			const { data, pagination } = await this.$axios.$get(`/videos`, {
+				params: {
+					page: page > 0 ? page : state.pagination.page + 1,
+					user_id: hideWatched ? getters.userId : null // eslint-disable-line camelcase
+				}
+			});
 
-		commit(page > 0 ? 'VIDEOS_SET' : 'VIDEOS_APPEND', data);
-		commit('SET_PAGINATION', pagination);
+			commit(page > 0 ? 'VIDEOS_SET' : 'VIDEOS_APPEND', data);
+			commit('SET_PAGINATION', pagination);
+		} catch (error) {
+			console.error(error);
+		} finally {
+			commit('SET_LOADING_VIDEOS', false);
+		}
 	},
 
 	async toggleHideWatched({ commit, dispatch, state }, val) {
