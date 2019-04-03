@@ -14,7 +14,9 @@
 						JRE on
 					</span>
 					<VTooltip top>
-						<span slot="activator">✨ 🍄</span>
+						<span slot="activator">
+							✨ 🍄
+						</span>
 						<span>Magic Mushrooms</span>
 					</VTooltip>
 				</VFlex>
@@ -33,7 +35,7 @@
 							<VListTile>
 								<VListTileTitle>About</VListTileTitle>
 							</VListTile>
-							<no-ssr>
+							<NoSsr>
 								<VListTile
 									v-if="$lock.loggedIn"
 									:disabled="$lock.isLoadingAuth"
@@ -48,7 +50,7 @@
 								>
 									<VListTileTitle>Sign In/Up</VListTileTitle>
 								</VListTile>
-							</no-ssr>
+							</NoSsr>
 						</VList>
 					</VMenu>
 				</VFlex>
@@ -65,7 +67,7 @@
 						<VBtn to="/about">
 							About
 						</VBtn>
-						<no-ssr>
+						<NoSsr>
 							<VBtn
 								v-if="$lock.loggedIn"
 								:loading="$lock.isLoadingAuth"
@@ -82,7 +84,7 @@
 							>
 								Sign In/Up
 							</VBtn>
-						</no-ssr>
+						</NoSsr>
 					</VLayout>
 				</VFlex>
 			</VLayout>

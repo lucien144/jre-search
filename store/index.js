@@ -86,7 +86,7 @@ export const mutations = {
 	},
 	SET_LOADING_VIDEOS(state, loading) {
 		state.loadingVideos = loading;
-	},
+	}
 };
 
 export const actions = {

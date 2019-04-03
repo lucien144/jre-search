@@ -71,15 +71,13 @@ export default {
 			} else {
 				this.$lock.login();
 			}
-
 		},
 		share() {
 			console.log('share');
 		}
 	}
-}
+};
 </script>
 
 <style>
-
 </style>
