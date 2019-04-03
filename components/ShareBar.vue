@@ -41,6 +41,22 @@
 
 <script>
 export default {
+	props: {
+		video: {
+			type: Object,
+			default: () => ({})
+		}
+	},
+	computed: {
+		isWatched() {
+			return this.$store.state.user.watched.indexOf(this.video.id) > -1;
+		},
+		isFavourite() {
+			return (
+				this.$store.state.user.favourites.indexOf(this.video.id) > -1
+			);
+		}
+	},
 	methods: {
 		favorite() {
 			if (this.$lock.loggedIn) {

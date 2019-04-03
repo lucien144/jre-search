@@ -16,7 +16,7 @@
 				</VBtn>
 				<VToolbarTitle>{{ $store.state.video.title.original }}</VToolbarTitle>
 				<VSpacer />
-				<ShareBar/>
+				<ShareBar :video="$store.state.video" />
 			</VCardTitle>
 			<VCardText class="pb-0">
 				<VContainer py-0 px-3 fluid grid-list-xl>
