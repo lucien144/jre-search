@@ -63,7 +63,15 @@ export default {
 	},
 	methods: {
 		bestKeywords(keywords) {
-			return [...keywords].filter(el => el.count > 1).slice(0, 2);
+			if (!Array.isArray(keywords)) {
+				return [];
+			}
+			const top = [...keywords].filter(el => el.count > 1).slice(0, 2);
+			const diff = 2 - top.length;
+			if (diff > 0 && keywords.length >= diff) {
+				return [...top, ...[...keywords].slice(0, diff)];
+			}
+			return top;
 		},
 		onChipClick(keyword, type) {
 			this.$store.dispatch('getKeywordVideos', { keyword, type });
