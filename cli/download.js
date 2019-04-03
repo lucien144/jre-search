@@ -75,7 +75,7 @@ const downloadVideos = async () => {
 		};
 
 		/* eslint-disable no-await-in-loop */
-		results = await API.search(null, 10, options);
+		results = await API.search(null, 100, options);
 		for (const video of results) {
 			// Skip on last item
 			if (video.title === undefined) {
