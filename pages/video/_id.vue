@@ -37,16 +37,16 @@
 								<VChip
 									v-for="(keyword, index) in $store.state.video.keywords"
 									:key="`k${index}`"
-									@click="onChipClick(keyword, 'keywords')"
 									small
+									@click="onChipClick(keyword, 'keywords')"
 								>
 									{{ keyword.original }}
 								</VChip>
 								<VChip
 									v-for="(host, index) in $store.state.video.hosts"
 									:key="`h${index}`"
-									@click="onChipClick(host, 'hosts')"
 									small
+									@click="onChipClick(host, 'hosts')"
 								>
 									{{ host.original }}
 								</VChip>
@@ -113,7 +113,7 @@ export default {
 }
 
 .stats {
-	opacity: .6;
+	opacity: 0.6;
 }
 </style>
 

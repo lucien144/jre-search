@@ -10,7 +10,7 @@
 				row
 				wrap
 			>
-				<VFlex xs12 text-xs-center v-if="$store.state.loadingVideos">
+				<VFlex v-if="$store.state.loadingVideos" xs12 text-xs-center>
 					<VProgressCircular
 						color="grey"
 						:size="70"
@@ -34,8 +34,8 @@
 				<VFlex xs12 text-xs-center>
 					<VBtn
 						v-if="$store.state.pagination.page < $store.state.pagination.pages"
-						@click="loadVideos"
 						:loading="loadingVideos"
+						@click="loadVideos"
 					>
 						Load More
 					</VBtn>
