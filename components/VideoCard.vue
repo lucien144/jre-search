@@ -35,8 +35,8 @@
 					<VChip
 						v-for="(keyword, index) in bestKeywords(video.keywords)"
 						:key="`k${index}`"
-						@click.prevent="onChipClick(keyword, 'keywords')"
 						small
+						@click.prevent="onChipClick(keyword, 'keywords')"
 					>
 						{{ keyword.original }}
 					</VChip>
